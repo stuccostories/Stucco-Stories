@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vaishali Suresh</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    :root {
+      --coconut:  #faf6ee;
+      --cream:    #f2ebe0;
+      --rice:     #e8dfd0;
+      --turmeric: #c8a84b;
+      --terracota:#c07850;
+      --palm:     #7a8c6e;
+      --teak:     #6b5540;
+      --shadow:   #3a2e28;
+      --mango:    #d4824a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--coconut);
+      color: var(--shadow);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    .cur { position:fixed; pointer-events:none; z-index:9999; }
+    #cdot {
+      width:7px; height:7px; background:var(--terracota);
+      border-radius:50%; transform:translate(-50%,-50%);
+    }
+    #cring {
+      width:32px; height:32px;
+      border:1px solid rgba(192,120,80,0.45);
+      border-radius:50%; transform:translate(-50%,-50%);
+      transition: width .3s, height .3s, border-color .3s;
+    }
+    #cring.expand { width:52px; height:52px; border-color:var(--terracota); }
+
+    body::before {
+      content:'';
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      opacity: 0.6;
+    }
+
+    nav {
+      position:fixed; top:0; left:0; right:0; z-index:100;
+      display:flex; justify-content:space-between; align-items:center;
+      padding:1.6rem 5vw;
+      background: rgba(250,246,238,0.82);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav-name {
+      font-family:'Cormorant', serif;
+      font-style:italic; font-size:1rem;
+      color:var(--teak); text-decoration:none;
+      letter-spacing:0.04em;
+    }
+
+    .nav-right { display:flex; gap:2rem; align-items:center; }
+    .nav-right a {
+      font-size:0.6rem; letter-spacing:0.28em;
+      text-transform:uppercase; color:var(--teak);
+      text-decoration:none; opacity:0.6; transition:opacity 0.3s;
+    }
+    .nav-right a:hover { opacity:1; }
+
+    #hero {
+      min-height:100vh;
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      text-align:center;
+      padding:14vh 6vw 10vh;
+      position:relative;
+    }
+
+    .ring-deco {
+      position:absolute; border-radius:50%;
+      border:1px solid rgba(122,140,110,0.12);
+      pointer-events:none;
+    }
+    .ring-deco.r1 { width:420px; height:420px; top:50%; left:50%; transform:translate(-50%,-50%); }
+    .ring-deco.r2 { width:660px; height:660px; top:50%; left:50%; transform:translate(-50%,-50%); }
+    .ring-deco.r3 { width:920px; height:920px; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.4; }
+
+    .leaf {
+      position:absolute; font-size:1.4rem;
+      opacity:0.18; pointer-events:none;
+      animation: leafSway 6s ease-in-out infinite;
+    }
+    .leaf.l1 { top:22%; left:12%; animation-delay:0s; }
+    .leaf.l2 { top:18%; right:10%; animation-delay:1.5s; }
+    .leaf.l3 { bottom:24%; left:8%; animation-delay:3s; }
+    .leaf.l4 { bottom:20%; right:14%; animation-delay:1s; }
+
+    @keyframes leafSway {
+      0%,100% { transform:rotate(-5deg) scale(1); }
+      50%      { transform:rotate(5deg) scale(1.05); }
+    }
+
+    .hero-eyebrow {
+      font-size:0.58rem; letter-spacing:0.45em;
+      text-transform:uppercase; color:var(--palm);
+      margin-bottom:2.2rem;
+      opacity:0; animation:up 0.9s 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family:'Cormorant', serif;
+      font-size:clamp(1rem, 2.5vw, 1.6rem);
+      font-weight:300; letter-spacing:0.15em;
+      text-transform:uppercase; color:var(--teak);
+      margin-bottom:1rem;
+      opacity:0; animation:up 0.9s 0.4s forwards;
+    }
+
+    .hero-tagline {
+      font-family:'Cormorant', serif;
+      font-style:italic;
+      font-size:clamp(0.85rem, 1.8vw, 1.1rem);
+      color:var(--terracota); letter-spacing:0.06em;
+      margin-bottom:5rem;
+      opacity:0; animation:up 0.9s 0.6s forwards;
+    }
+
+    .cards {
+      display:grid; grid-template-columns:1fr 1fr;
+      gap:2rem; width:100%; max-width:900px;
+      opacity:0; animation:up 1s 0.9s forwards;
+    }
+
+    .card {
+      position:relative; overflow:hidden;
+      background:var(--cream);
+      border:1px solid rgba(107,85,64,0.1);
+      text-decoration:none;
+      display:flex; flex-direction:column;
+      transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.5s;
+      cursor:none;
+    }
+    .card:hover {
+      transform:translateY(-6px);
+      box-shadow:0 24px 60px rgba(58,46,40,0.1);
+    }
+
+    .card-img { aspect-ratio:4/3; position:relative; overflow:hidden; }
+    .card-img.stucco { background: linear-gradient(135deg, #e8dac8 0%, #d4c4a8 40%, #c8b898 100%); }
+    .card-img.hours  { background: linear-gradient(135deg, #dde4d8 0%, #c8d4c0 40%, #b8c8b0 100%); }
+
+    .card-img-inner {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+    }
+    .card-img-text {
+      font-family:'Cormorant', serif;
+      font-style:italic; font-size:0.8rem;
+      color:rgba(107,85,64,0.35); letter-spacing:0.1em;
+      text-align:center; padding:1rem; line-height:1.8;
+    }
+
+    .card-img::after {
+      content:'';
+      position:absolute; inset:0;
+      background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
+      transform:translateX(-100%); transition:transform 0.7s;
+    }
+    .card:hover .card-img::after { transform:translateX(100%); }
+
+    .card-body { padding:2rem 2rem 2.5rem; }
+
+    .card-tag {
+      font-size:0.55rem; letter-spacing:0.35em;
+      text-transform:uppercase; margin-bottom:0.8rem; display:block;
+    }
+    .tag-stucco { color:var(--terracota); }
+    .tag-hours  { color:var(--palm); }
+
+    .card-title {
+      font-family:'Cormorant', serif;
+      font-size:clamp(1.4rem, 2.5vw, 2rem);
+      font-weight:300; line-height:1.1;
+      color:var(--shadow); margin-bottom:1rem;
+    }
+    .card-title em { font-style:italic; }
+
+    .card-desc {
+      font-size:0.75rem; line-height:1.9;
+      color:var(--teak); margin-bottom:1.8rem;
+    }
+
+    .card-cta {
+      display:inline-flex; align-items:center; gap:0.6rem;
+      font-size:0.58rem; letter-spacing:0.28em;
+      text-transform:uppercase; transition:gap 0.3s;
+    }
+    .cta-stucco { color:var(--terracota); }
+    .cta-hours  { color:var(--palm); }
+    .card:hover .card-cta { gap:1rem; }
+
+    .card-accent {
+      height:2px; width:0; background:var(--terracota);
+      transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+      position:absolute; bottom:0; left:0;
+    }
+    .card.hours-card .card-accent { background:var(--palm); }
+    .card:hover .card-accent { width:100%; }
+
+    .scroll-hint {
+      position:absolute; bottom:6vh; left:50%;
+      transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+      opacity:0; animation:fadeIn 1s 1.5s forwards;
+    }
+    .scroll-hint span {
+      font-size:0.52rem; letter-spacing:0.35em;
+      text-transform:uppercase; color:var(--palm); opacity:0.6;
+    }
+    .s-line {
+      width:1px; height:44px;
+      background:linear-gradient(to bottom, var(--palm), transparent);
+      animation:pulse 2.2s infinite;
+    }
+
+    #about {
+      padding:10vh 5vw;
+      display:grid; grid-template-columns:1fr 2fr;
+      gap:6vw; align-items:start;
+      border-top:1px solid rgba(107,85,64,0.1);
+    }
+
+    .about-left { position:sticky; top:30vh; }
+
+    .about-kicker {
+      font-size:0.58rem; letter-spacing:0.4em;
+      text-transform:uppercase; color:var(--terracota);
+      display:flex; align-items:center; gap:0.7rem; margin-bottom:1.5rem;
+    }
+    .about-kicker::before { content:''; width:24px; height:1px; background:var(--terracota); }
+
+    .about-left h2 {
+      font-family:'Cormorant', serif;
+      font-size:clamp(2rem, 4vw, 3.2rem);
+      font-weight:300; line-height:1.1; color:var(--shadow);
+    }
+    .about-left h2 em { font-style:italic; color:var(--terracota); }
+
+    .about-right p {
+      font-size:0.85rem; line-height:2.2; color:var(--teak);
+      margin-bottom:1.5rem; max-width:540px;
+    }
+    .about-right p strong { font-weight:400; color:var(--shadow); }
+
+    .location-tag {
+      display:inline-flex; align-items:center; gap:0.6rem;
+      margin-top:1rem; font-size:0.6rem; letter-spacing:0.25em;
+      text-transform:uppercase; color:var(--palm);
+      border:1px solid rgba(122,140,110,0.25); padding:0.5rem 1rem;
+    }
+
+    footer {
+      padding:3vh 5vw;
+      border-top:1px solid rgba(107,85,64,0.1);
+      display:flex; justify-content:space-between; align-items:center;
+      flex-wrap:wrap; gap:1rem;
+    }
+    .footer-brand {
+      font-family:'Cormorant', serif;
+      font-style:italic; font-size:0.9rem; color:var(--teak);
+    }
+    footer p {
+      font-size:0.58rem; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--teak); opacity:0.5;
+    }
+    .footer-links { display:flex; gap:2rem; }
+    .footer-links a {
+      font-size:0.58rem; letter-spacing:0.2em;
+      text-transform:uppercase; color:var(--teak);
+      text-decoration:none; opacity:0.5; transition:opacity 0.3s;
+    }
+    .footer-links a:hover { opacity:1; }
+
+    .reveal {
+      opacity:0; transform:translateY(24px);
+      transition:opacity 0.9s ease, transform 0.9s ease;
+    }
+    .reveal.visible { opacity:1; transform:translateY(0); }
+
+    @keyframes up {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+    @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:0.9;} }
+
+    @media(max-width:700px) {
+      .cards { grid-template-columns:1fr; max-width:420px; }
+      #about { grid-template-columns:1fr; }
+      .about-left { position:static; }
+      footer { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cur" id="cdot"></div>
+  <div class="cur" id="cring"></div>
+
+  <nav>
+    <a class="nav-name" href="#">Vaishali Suresh</a>
+    <div class="nav-right">
+      <a href="#about">About</a>
+      <a href="https://www.instagram.com/_vaishou_" target="_blank">Instagram</a>
+      <a href="https://www.behance.net/vaishalisuresh" target="_blank">Behance</a>
+    </div>
+  </nav>
+
+  <section id="hero">
+    <div class="ring-deco r1"></div>
+    <div class="ring-deco r2"></div>
+    <div class="ring-deco r3"></div>
+    <span class="leaf l1">🌿</span>
+    <span class="leaf l2">🌴</span>
+    <span class="leaf l3">🌱</span>
+    <span class="leaf l4">🪴</span>
+
+    <p class="hero-eyebrow">A creative practice by</p>
+    <h2 class="hero-name">Vaishali Suresh</h2>
+    <p class="hero-tagline">Chennai, India &nbsp;·&nbsp; Architect · Interiors · Casual Photographer</p>
+
+    <div class="cards">
+      <a class="card" href="stucco.html" title="Visit Stucco Stories">
+        <div class="card-img stucco">
+          <div class="card-img-inner">
+            <p class="card-img-text">Add a preview image<br>of your architecture work</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-stucco">Architecture & Interiors</span>
+          <h3 class="card-title">Stucco<br><em>Stories</em></h3>
+          <p class="card-desc">Where walls hold memory. An exploration of built spaces, material textures, and the quiet poetry of architecture.</p>
+          <span class="card-cta cta-stucco">Enter &nbsp;→</span>
+        </div>
+        <div class="card-accent"></div>
+      </a>
+
+      <a class="card hours-card" href="index.html" title="Visit From Ordinary Hours">
+        <div class="card-img hours">
+          <div class="card-img-inner">
+            <p class="card-img-text">Add a preview image<br>of your photography</p>
+          </div>
+        </div>
+        <div class="card-body">
+          <span class="card-tag tag-hours">Photography</span>
+          <h3 class="card-title">from<br><em>ordinary hours</em></h3>
+          <p class="card-desc">Finding the extraordinary in everyday light. Portraits, moments, and the texture of time passing slowly.</p>
+          <span class="card-cta cta-hours">Enter &nbsp;→</span>
+        </div>
+        <div class="card-accent"></div>
+      </a>
+    </div>
+
+    <div class="scroll-hint">
+      <div class="s-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="about-left reveal">
+      <p class="about-kicker">About</p>
+      <h2>Two worlds,<br><em>one eye</em></h2>
+    </div>
+    <div class="about-right reveal">
+      <p>I'm Vaishali — an architect and interior designer based in <strong>Chennai, Tamil Nadu.</strong> My work is rooted in material honesty, spatial light, and the quiet character of built things.</p>
+      <p><strong>Stucco Stories</strong> is my architectural practice — renovation, interiors, heritage, and the careful documentation of spaces that hold memory.</p>
+      <p><strong>From Ordinary Hours</strong> is what happens when I'm not at a drawing board — a casual photographer's eye turned toward the world around me. Architecture, people, places, light. Both practices share the same instinct: <em>to notice what most people walk past.</em></p>
+      <span class="location-tag">
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+          <circle cx="12" cy="9" r="2.5"/>
+        </svg>
+        Chennai, Tamil Nadu
+      </span>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-brand">Vaishali Suresh</span>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/_vaishou_" target="_blank">Instagram</a>
+      <a href="https://www.behance.net/vaishalisuresh" target="_blank">Behance</a>
+    </div>
+    <p>© 2025 · All rights reserved</p>
+  </footer>
+
+  <script>
+    const dot = document.getElementById('cdot');
+    const ring = document.getElementById('cring');
+    let mx=0,my=0,rx=0,ry=0;
+    document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
+    (function loop(){ rx+=(mx-rx)*0.11; ry+=(my-ry)*0.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+    document.querySelectorAll('a,.card').forEach(el=>{ el.addEventListener('mouseenter',()=>ring.classList.add('expand')); el.addEventListener('mouseleave',()=>ring.classList.remove('expand')); });
+    window.addEventListener('scroll',()=>{ document.querySelector('nav').classList.toggle('scrolled', scrollY>40); });
+    const obs=new IntersectionObserver(entries=>{ entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*120); }); },{threshold:0.1});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+  </script>
+</body>
+</html>
