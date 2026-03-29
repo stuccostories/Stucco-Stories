@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chennai 2BHK — Lift-Up Bed · Stucco Stories</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --off:   #F0EBE3;
+    --ink:   #1C1713;
+    --mid:   #7A7068;
+    --rule:  #D8D1C8;
+    --brick: #9B5A3C;
+    --teak:  #6B4226;
+    --panel: #FAF7F2;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--off);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 300;
+    font-size: 12px;
+    min-height: 100vh;
+  }
+  .back-bar {
+    padding: 10px 32px;
+    background: var(--panel);
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .back-link {
+    font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--brick); text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem; transition: gap 0.2s;
+  }
+  .back-link:hover { gap: 0.8rem; }
+  .back-sep     { font-size: 0.6rem; color: var(--rule); }
+  .back-current { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--mid); }
+
+  .header {
+    padding: 24px 32px 20px;
+    border-bottom: 1px solid var(--ink);
+    display: flex; justify-content: space-between; align-items: baseline;
+    flex-wrap: wrap; gap: 8px;
+  }
+  .header-brand { font-family: 'EB Garamond', serif; font-style: italic; font-size: 0.95rem; color: var(--mid); }
+  .header-title { font-family: 'EB Garamond', serif; font-size: 1.35rem; margin-top: 3px; }
+  .header-meta  { font-size: 0.68rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--mid); text-align: right; line-height: 1.9; }
+
+  .controls {
+    padding: 14px 32px;
+    border-bottom: 1px solid var(--rule);
+    display: flex; align-items: center; gap: 28px; flex-wrap: wrap;
+  }
+  .toggle-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); }
+  .toggle-wrap  { display: flex; align-items: center; gap: 10px; }
+  .toggle-state { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); min-width: 52px; }
+  .toggle {
+    width: 48px; height: 24px; background: var(--rule); border-radius: 0;
+    position: relative; cursor: pointer; border: 1px solid var(--mid); transition: background 0.3s;
+  }
+  .toggle.active { background: var(--teak); border-color: var(--teak); }
+  .toggle-knob { width: 18px; height: 18px; background: white; position: absolute; top: 2px; left: 2px; transition: left 0.3s; }
+  .toggle.active .toggle-knob { left: 26px; }
+  .hint { font-size: 0.68rem; color: var(--mid); }
+  .hint span {
+    display: inline-block; width: 7px; height: 7px; background: var(--brick);
+    border-radius: 50%; margin-right: 5px; vertical-align: middle; animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+  .anim-btn {
+    margin-left: auto;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--brick); background: none; border: 1px solid var(--brick);
+    padding: 5px 14px; cursor: pointer; transition: background 0.2s, color 0.2s;
+  }
+  .anim-btn:hover { background: var(--brick); color: white; }
+
+  .main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    height: calc(100vh - 148px);
+    min-height: 480px;
+    overflow: hidden;
+  }
+  .bed-wrap {
+    padding: 28px 40px;
+    border-right: 1px solid var(--rule);
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    overflow: hidden;
+  }
+  .bed-label { font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--mid); align-self: flex-start; }
+  .bed-canvas { position: relative; width: 100%; max-width: 600px; flex-shrink: 0; }
+  .bed-svg { width: 100%; height: auto; display: block; }
+  .credit { font-size: 0.6rem; color: var(--mid); letter-spacing: 0.08em; text-transform: uppercase; align-self: flex-start; margin-top: 4px; }
+
+  .hotspot {
+    position: absolute; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--brick); border: 1.5px solid white; cursor: pointer;
+    transform: translate(-50%,-50%); z-index: 10;
+    transition: transform 0.2s, background 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.2);
+  }
+  .hotspot:hover, .hotspot.active { transform: translate(-50%,-50%) scale(1.25); background: var(--ink); }
+  .hotspot::after {
+    content:''; position:absolute; inset:-4px; border-radius:50%;
+    border:1px solid var(--brick); opacity:0.4; animation:ring 2.5s infinite;
+  }
+  @keyframes ring { 0%{transform:scale(1);opacity:0.4} 100%{transform:scale(1.8);opacity:0} }
+
+  .detail-panel {
+    background: var(--panel);
+    border-left: 1px solid var(--rule);
+    display: flex; flex-direction: column;
+    overflow: hidden; height: 100%;
+  }
+  .panel-top {
+    padding: 24px 22px 18px;
+    border-bottom: 1px solid var(--rule);
+    flex-shrink: 0;
+  }
+  .panel-eyebrow { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--mid); margin-bottom: 6px; }
+  .panel-title   { font-family: 'EB Garamond', serif; font-size: 1.25rem; font-style: italic; line-height: 1.2; }
+  .panel-sub     { font-size: 0.68rem; color: var(--mid); margin-top: 5px; line-height: 1.5; }
+  .panel-body {
+    padding: 18px 22px; flex: 1; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: var(--rule) transparent;
+  }
+  .panel-body::-webkit-scrollbar { width: 4px; }
+  .panel-body::-webkit-scrollbar-thumb { background: var(--rule); }
+  .detail-section { margin-bottom: 18px; }
+  .detail-heading {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid); border-bottom: 1px solid var(--rule);
+    padding-bottom: 5px; margin-bottom: 8px;
+  }
+  .detail-row {
+    display: grid; grid-template-columns: 86px 1fr;
+    gap: 6px; padding: 5px 0;
+    border-bottom: 1px solid rgba(216,209,200,0.4);
+    font-size: 0.7rem;
+  }
+  .detail-key { color: var(--mid); }
+  .detail-val { color: var(--ink); }
+  .detail-note {
+    font-size: 0.68rem; color: var(--mid); line-height: 1.8;
+    padding: 10px; background: rgba(216,209,200,0.25);
+    border-left: 2px solid var(--rule); margin-top: 6px;
+  }
+  .tag {
+    display: inline-block; font-size: 0.58rem; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 2px 7px;
+    background: var(--brick); color: white; margin-top: 10px;
+  }
+  .panel-empty {
+    padding: 40px 22px; text-align: center;
+    color: var(--mid); font-size: 0.72rem; line-height: 2.4;
+  }
+  .panel-empty-icon { font-size: 1.8rem; margin-bottom: 14px; opacity: 0.25; }
+  .detail-links { margin-top: 14px; }
+  .detail-links-heading {
+    font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--mid); border-bottom: 1px solid var(--rule);
+    padding-bottom: 5px; margin-bottom: 8px;
+  }
+  .detail-link {
+    display: flex; flex-direction: column; gap: 3px;
+    padding: 6px 0; border-bottom: 1px solid rgba(216,209,200,0.4);
+    font-size: 0.68rem;
+  }
+  .detail-link a { color: var(--brick); text-decoration: none; transition: opacity 0.15s; }
+  .detail-link a:hover { opacity: 0.7; text-decoration: underline; }
+  .detail-link-desc { color: var(--mid); font-size: 0.62rem; }
+
+  .foot {
+    padding: 12px 32px; border-top: 1px solid var(--rule);
+    display: flex; justify-content: space-between;
+    font-size: 0.6rem; letter-spacing: 0.1em; color: var(--mid);
+  }
+</style>
+</head>
+<body>
+
+<div class="back-bar">
+  <a class="back-link" href="stucco.html">← Stucco Stories</a>
+  <span class="back-sep">/</span>
+  <a class="back-link" href="chennai-2bhk.html">Chennai 2BHK</a>
+  <span class="back-sep">/</span>
+  <span class="back-current">Bedroom 02 — Lift-Up Bed</span>
+</div>
+
+<div class="header">
+  <div>
+    <div class="header-brand">Stucco Stories</div>
+    <div class="header-title">Chennai 2BHK — Bedroom 02 · Lift-Up Storage Bed</div>
+  </div>
+  <div class="header-meta">Project 001<br>Chennai, 2023<br>Built</div>
+</div>
+
+<div class="controls">
+  <span class="toggle-label">Animate</span>
+  <div class="toggle-wrap">
+    <span class="toggle-state" id="stateLabel">Closed</span>
+    <div class="toggle" id="toggle" onclick="toggleBed()">
+      <div class="toggle-knob"></div>
+    </div>
+    <span class="toggle-state">Open</span>
+  </div>
+  <span class="hint"><span></span>Tap a dot to explore</span>
+  <button class="anim-btn" onclick="toggleBed()">▶ Open / Close</button>
+</div>
+
+<div class="main">
+
+  <div class="bed-wrap">
+    <p class="bed-label" id="bedLabel">Section — Closed · Hinge at headboard wall (right)</p>
+    <div class="bed-canvas" id="bedCanvas">
+
+      <!--
+        KEY GEOMETRY (all in SVG user units):
+        
+        viewBox: 0 0 660 400
+        
+        Wall (headboard, HINGE side): right edge x=610
+        Foot end (lifts up): left x=60
+        
+        Bed base: x=60..610  width=550  (6'6")
+        Floor y=310
+        Base runs y=215..310  (95px tall)
+        Lid top: y=205, lid bottom y=215  (10px thick)
+        Mattress top: y=177, bottom y=205  (28px = 4")
+        
+        1'6" FFL = y=177 to y=310 = 133px (single annotation)
+        
+        Drawer: x=60..228  (168px = 2'0")
+        Storage: x=228..610  (382px = 4'6")
+        
+        ── HINGE PIVOT POINT: (610, 205) ──
+        This is the TOP-RIGHT corner of the lid surface at the wall.
+        Rotating CCW (negative angle) around this point lifts the foot end UP.
+      -->
+
+      <svg class="bed-svg" id="bedSvg" viewBox="0 0 660 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="wGH" x="0" y="0" width="14" height="5" patternUnits="userSpaceOnUse">
+            <rect width="14" height="5" fill="#A07040"/>
+            <line x1="0" y1="1.8" x2="14" y2="1.8" stroke="#b07848" stroke-width="0.4" opacity="0.45"/>
+            <line x1="0" y1="3.6" x2="14" y2="3.6" stroke="#8b6030" stroke-width="0.3" opacity="0.35"/>
+          </pattern>
+          <pattern id="wGV" x="0" y="0" width="7" height="50" patternUnits="userSpaceOnUse">
+            <rect width="7" height="50" fill="#8B5E3C"/>
+            <line x1="1.5" y1="0" x2="2"   y2="50" stroke="#9d6a44" stroke-width="0.5" opacity="0.5"/>
+            <line x1="4"   y1="0" x2="4.3" y2="50" stroke="#7a5232" stroke-width="0.4" opacity="0.4"/>
+          </pattern>
+          <pattern id="mTick" x="0" y="0" width="22" height="7" patternUnits="userSpaceOnUse">
+            <rect width="22" height="7" fill="#E8E0D6"/>
+            <line x1="0" y1="3.5" x2="22" y2="3.5" stroke="#D0C8BE" stroke-width="0.7" opacity="0.5"/>
+          </pattern>
+          <pattern id="floorP" x="0" y="0" width="36" height="6" patternUnits="userSpaceOnUse">
+            <rect width="36" height="6" fill="#D2C8BC"/>
+            <line x1="0"  y1="0" x2="36" y2="0" stroke="#C0B6AA" stroke-width="0.5"/>
+            <line x1="18" y1="0" x2="18" y2="6" stroke="#CABFB4" stroke-width="0.3"/>
+          </pattern>
+          <linearGradient id="storeFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%"   stop-color="#28180E" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#180E06"/>
+          </linearGradient>
+          <linearGradient id="chromGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"   stop-color="#AAAAAA"/>
+            <stop offset="50%"  stop-color="#EEEEEE"/>
+            <stop offset="100%" stop-color="#AAAAAA"/>
+          </linearGradient>
+        </defs>
+
+        <!-- ROOM — everything shifted down 120px vs original -->
+        <rect x="0" y="120" width="660" height="310" fill="#EAE4DB"/>
+        <rect x="608" y="0"   width="52" height="460" fill="#DDD6CC"/>
+        <line x1="608" y1="0" x2="608" y2="460"      stroke="#1C1713" stroke-width="2"/>
+        <rect x="0" y="430" width="660" height="90"   fill="url(#floorP)"/>
+        <line x1="0" y1="430" x2="660" y2="430"      stroke="#1C1713" stroke-width="1.5"/>
+        <!-- skirting -->
+        <rect x="608" y="410" width="52" height="20" fill="#CAC2B8"/>
+        <line x1="608" y1="410" x2="660" y2="410"    stroke="#B8B0A6" stroke-width="0.7"/>
+
+        <!-- DIMENSIONS -->
+        <!-- Overall 6'6" -->
+        <line x1="60"  y1="475" x2="610" y2="475" stroke="#7A7068" stroke-width="0.7" stroke-dasharray="3,3"/>
+        <line x1="60"  y1="470" x2="60"  y2="480" stroke="#7A7068" stroke-width="0.7"/>
+        <line x1="610" y1="470" x2="610" y2="480" stroke="#7A7068" stroke-width="0.7"/>
+        <text x="335" y="492" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="8" text-anchor="middle" letter-spacing="1">6'–6"  OVERALL</text>
+
+        <!-- Drawer 2'0" -->
+        <line x1="60"  y1="458" x2="228" y2="458" stroke="#9B5A3C" stroke-width="0.6" stroke-dasharray="2,2"/>
+        <line x1="60"  y1="454" x2="60"  y2="462" stroke="#9B5A3C" stroke-width="0.6"/>
+        <line x1="228" y1="454" x2="228" y2="462" stroke="#9B5A3C" stroke-width="0.6"/>
+        <text x="144" y="469" fill="#9B5A3C" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle">2'–0"  PULLOUT</text>
+
+        <!-- Storage 4'6" -->
+        <line x1="228" y1="458" x2="610" y2="458" stroke="#9B5A3C" stroke-width="0.6" stroke-dasharray="2,2"/>
+        <text x="419" y="469" fill="#9B5A3C" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle">4'–6"  LIFT STORAGE</text>
+
+        <!-- 1'6" FFL — single annotation right of wall -->
+        <line x1="626" y1="297" x2="626" y2="430" stroke="#7A7068" stroke-width="0.7" stroke-dasharray="3,3"/>
+        <line x1="621" y1="297" x2="631" y2="297" stroke="#7A7068" stroke-width="0.7"/>
+        <line x1="621" y1="430" x2="631" y2="430" stroke="#7A7068" stroke-width="0.7"/>
+        <text x="648" y="369" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle" transform="rotate(90,648,369)">1'–6"  FFL</text>
+
+        <!-- 4" mattress tick -->
+        <line x1="618" y1="297" x2="618" y2="325" stroke="#7A7068" stroke-width="0.5" stroke-dasharray="1.5,2"/>
+        <line x1="614" y1="297" x2="622" y2="297" stroke="#7A7068" stroke-width="0.5"/>
+        <line x1="614" y1="325" x2="622" y2="325" stroke="#7A7068" stroke-width="0.5"/>
+        <text x="612" y="314" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="end">4"</text>
+
+        <!-- BED BASE (static) -->
+        <rect x="60" y="335" width="550" height="95" fill="url(#wGV)" stroke="#3A2010" stroke-width="1.5"/>
+        <!-- foot-end cap -->
+        <rect x="60" y="335" width="12"  height="95" fill="#7A5230" stroke="#3A2010" stroke-width="0.8"/>
+        <!-- divider -->
+        <rect x="228" y="335" width="8"  height="95" fill="#6B4226" stroke="#3A2010" stroke-width="0.8"/>
+        <!-- drawer void -->
+        <rect x="72"  y="343" width="148" height="82" fill="#2A1A0A"/>
+        <!-- storage void -->
+        <rect x="236" y="343" width="368" height="84" fill="url(#storeFill)"/>
+        <!-- hinge bracket -->
+        <rect x="603" y="332" width="7" height="16" rx="1" fill="#9B5A3C" stroke="#7A3A20" stroke-width="0.8"/>
+        <circle cx="607" cy="337" r="1.8" fill="#7A3A20"/>
+        <circle cx="607" cy="345" r="1.8" fill="#7A3A20"/>
+        <!-- legs -->
+        <rect x="64"  y="426" width="16" height="7" rx="1" fill="#5A3A1A" stroke="#3A2010" stroke-width="0.8"/>
+        <rect x="588" y="426" width="16" height="7" rx="1" fill="#5A3A1A" stroke="#3A2010" stroke-width="0.8"/>
+
+        <!-- DRAWER pullout (animated via JS translateX) -->
+        <g id="drawerGrp">
+          <rect x="72"  y="343" width="148" height="82" fill="#5A3C20" stroke="#3A2010" stroke-width="1"/>
+          <rect x="72"  y="343" width="11"  height="82" fill="#6B4A28" stroke="#3A2010" stroke-width="0.5"/>
+          <rect x="84"  y="380" width="20"  height="6" rx="2" fill="#C8A060" stroke="#A07838" stroke-width="0.8"/>
+          <circle cx="98"  cy="423" r="5" fill="#3A3A3A" stroke="#222" stroke-width="0.8"/>
+          <circle cx="185" cy="423" r="5" fill="#3A3A3A" stroke="#222" stroke-width="0.8"/>
+          <circle cx="98"  cy="423" r="2" fill="#666"/>
+          <circle cx="185" cy="423" r="2" fill="#666"/>
+        </g>
+
+        <!--
+          LID + MATTRESS GROUP
+          Pivot: (610, 335) — bottom-right corner of lid at wall = true hinge axis
+          Rotate +60 (clockwise) = foot end swings UP
+        -->
+        <g id="lidMattGrp">
+          <!-- Lid: y=325..335 (10px thick) -->
+          <rect x="60" y="325" width="550" height="10" fill="url(#wGH)" stroke="#3A2010" stroke-width="1.4"/>
+          <rect x="60" y="334" width="8"   height="3"  fill="#5A3A1A" opacity="0.65"/>
+          <line x1="148" y1="325" x2="148" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+          <line x1="250" y1="325" x2="250" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+          <line x1="360" y1="325" x2="360" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+          <line x1="470" y1="325" x2="470" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+          <line x1="560" y1="325" x2="560" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+
+          <!-- Gas lift arm (hidden until open, drawn in resting position — JS rotates with lid) -->
+          <g id="gasGrp" opacity="0">
+            <line x1="600" y1="330" x2="390" y2="327" stroke="url(#chromGrad)" stroke-width="5" stroke-linecap="round"/>
+            <line x1="530" y1="329" x2="450" y2="327" stroke="#EEE" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+            <circle cx="600" cy="330" r="4"   fill="#BBBBBB" stroke="#888" stroke-width="0.8"/>
+            <circle cx="390" cy="327" r="3.5" fill="#BBBBBB" stroke="#888" stroke-width="0.8"/>
+          </g>
+
+          <!-- Mattress: y=297..325 (28px = 4") -->
+          <rect x="60" y="297" width="550" height="28" fill="url(#mTick)" stroke="#C8BEB4" stroke-width="1"/>
+          <line x1="60" y1="299" x2="610" y2="299" stroke="#DDD6CC" stroke-width="1.2"/>
+          <line x1="60" y1="323" x2="610" y2="323" stroke="#C0B8AE" stroke-width="0.8"/>
+          <text x="335" y="316" fill="#9A9088" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle" letter-spacing="1.2">MATTRESS  5' × 6'6" × 4"</text>
+        </g>
+
+      </svg>
+
+      <!-- Hotspots -->
+      <div class="hotspot" style="left:17%;top:62%" id="hs-drawer"  onclick="showDetail('drawer')"></div>
+      <div class="hotspot" style="left:57%;top:62%" id="hs-storage" onclick="showDetail('storage')"></div>
+      <div class="hotspot" style="left:88%;top:54%" id="hs-hinge"   onclick="showDetail('hinge')"></div>
+      <div class="hotspot" style="left:46%;top:40%" id="hs-matt"    onclick="showDetail('mattress')"></div>
+
+    </div>
+    <p class="credit">Section view · Documented by Stucco Stories · Design: Studio 360</p>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="detail-panel">
+    <div class="panel-top">
+      <div class="panel-eyebrow">Element Detail</div>
+      <div class="panel-title" id="panelTitle">Select an element</div>
+      <div class="panel-sub"   id="panelSub">Animate then tap a dot</div>
+    </div>
+    <div class="panel-body" id="panelBody">
+      <div class="panel-empty">
+        <div class="panel-empty-icon">◎</div>
+        Press Open / Close<br>to animate,<br>then tap any dot<br>to read details.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="foot">
+  <span>Stucco Stories — Chennai 2BHK · Bedroom 02</span>
+  <span>Design: Studio 360 · Documentation: Stucco Stories</span>
+</div>
+
+<script>
+  /* ─── Animation ───────────────────────────────────────────────
+     Pivot: (610, 335) — bottom-right corner of lid where it
+     meets the headboard wall. This is the physical hinge axis.
+
+     rotate(+60, 610, 335) = clockwise = foot end (left) swings UP.
+     ViewBox extended to 520px tall to show full open swing.
+  ────────────────────────────────────────────────────────────── */
+
+  const PIVOT_X  = 610;
+  const PIVOT_Y  = 335;   // bottom-right corner of lid at wall — true hinge axis
+  const OPEN_DEG = 60;    // positive = clockwise in SVG = foot end swings UP
+  const DUR_MS   = 1400;
+
+  let isOpen    = false;
+  let animStart = null;
+  let fromDeg   = 0;
+  let toDeg     = 0;
+  let rafId     = null;
+
+  const lidGrp = document.getElementById('lidMattGrp');
+  const gasGrp = document.getElementById('gasGrp');
+  const drwGrp = document.getElementById('drawerGrp');
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+  }
+
+  function setLidAngle(deg) {
+    lidGrp.setAttribute('transform', `rotate(${deg}, ${PIVOT_X}, ${PIVOT_Y})`);
+  }
+
+  function setDrawerX(px) {
+    drwGrp.setAttribute('transform', `translate(${px}, 0)`);
+  }
+
+  function animateFrame(ts) {
+    if (!animStart) animStart = ts;
+    const elapsed = ts - animStart;
+    const t       = Math.min(elapsed / DUR_MS, 1);
+    const eased   = easeInOut(t);
+    const current = fromDeg + (toDeg - fromDeg) * eased;
+
+    setLidAngle(current);
+
+    /* Drawer slides out (left = negative X) when opening */
+    const drawerTarget = isOpen ? -75 : 0;
+    const drawerFrom   = isOpen ? 0   : -75;
+    setDrawerX(drawerFrom + (drawerTarget - drawerFrom) * eased);
+
+    if (t < 1) {
+      rafId = requestAnimationFrame(animateFrame);
+    } else {
+      setLidAngle(toDeg);
+      setDrawerX(drawerTarget);
+      /* Show gas arm after lid is mostly open */
+      if (isOpen) {
+        gasGrp.setAttribute('opacity', '1');
+      }
+    }
+  }
+
+  function toggleBed() {
+    isOpen = !isOpen;
+
+    if (rafId) cancelAnimationFrame(rafId);
+    animStart = null;
+
+    /* Read current angle from transform attribute */
+    const cur = lidGrp.getAttribute('transform') || 'rotate(0,0,0)';
+    const m   = cur.match(/rotate\(([-\d.]+)/);
+    fromDeg   = m ? parseFloat(m[1]) : 0;
+    toDeg     = isOpen ? OPEN_DEG : 0;
+
+    /* Hide gas arm immediately when closing */
+    if (!isOpen) gasGrp.setAttribute('opacity', '0');
+
+    document.getElementById('toggle').classList.toggle('active', isOpen);
+    document.getElementById('stateLabel').textContent = isOpen ? 'Open' : 'Closed';
+    document.getElementById('bedLabel').textContent   = isOpen
+      ? 'Section — Open · Foot end rises · Gas lift active'
+      : 'Section — Closed · Hinge at headboard wall (right)';
+
+    rafId = requestAnimationFrame(animateFrame);
+  }
+
+  /* ─── Detail panel data ─────────────────────────────────────── */
+  const details = {
+    drawer: {
+      title: 'Pullout Drawer',
+      sub: "Front 2'–0\" · Full bed width · Caster-mounted",
+      sections: [
+        { heading: 'Dimensions', rows: [
+          ['Depth',  "2'–0\" (610 mm)"],
+          ['Width',  "5'–6\" full bed width"],
+          ['Height', "~10\" internal clear"]
+        ]},
+        { heading: 'Operation', rows: [
+          ['Action',  'Full pull-out from foot end'],
+          ['Runners', 'Heavy-duty ball-bearing slides'],
+          ['Casters', '4 no. — rolls freely on floor']
+        ]}
+      ],
+      note: "Flush face — no handle visible when closed. Operates independently of the lift lid.",
+      tag: "Pullout · 2'–0\" Depth"
+    },
+    storage: {
+      title: 'Lift Storage',
+      sub: "4'–6\" deep · Full 6'6\" top opens as one lid",
+      sections: [
+        { heading: 'Dimensions', rows: [
+          ['Zone',     "4'–6\" (1372 mm)"],
+          ['Width',    "5'–6\" full bed"],
+          ['Clear ht', "~10\" internal"]
+        ]},
+        { heading: 'Access', rows: [
+          ['Lid',      "Full 6'6\" top lifts as one piece"],
+          ['Pivot',    'Hinge at headboard wall — foot rises'],
+          ['Max angle','60° — stops clear of wall'],
+          ['Hardware', 'Fully sealed inside when closed']
+        ]}
+      ],
+      note: "All gas lift hardware lives inside the sealed box. Only the teak surface is visible when closed.",
+      tag: "Lift Storage · 4'–6\"",
+      links: [
+        { url: 'https://ebco.in/livsmart/pro-lift-bed-system-lift-system-frame-with-slats-and-mounting-bracket-kit-without-gas-lifts',
+          label: 'Ebco — Pro-Lift Bed System',
+          desc: 'Lift frame, slat base & bracket kit reference' }
+      ]
+    },
+    hinge: {
+      title: 'Hinge & Gas Lift',
+      sub: "Ebco Pro-Lift · Pivot at headboard wall",
+      sections: [
+        { heading: 'Mechanism', rows: [
+          ['System',   'Ebco Pro-Lift bed system'],
+          ['Pivot',    'Headboard wall — foot end lifts up'],
+          ['Max open', '60° from horizontal'],
+          ['Gas lifts','2 no. — sized per mattress weight'],
+          ['Slats',    'Integrated base rides with lid']
+        ]}
+      ],
+      note: "All hardware concealed inside the storage box. 60° stop prevents lid contacting the wall.",
+      tag: "Ebco Pro-Lift · Concealed",
+      links: [
+        { url: 'https://ebco.in/livsmart/pro-lift-bed-system-lift-system-frame-with-slats-and-mounting-bracket-kit-without-gas-lifts',
+          label: 'Ebco — Pro-Lift Bed System',
+          desc: 'Lift frame, slat base & bracket kit (gas lifts ordered separately)' }
+      ]
+    },
+    mattress: {
+      title: 'Mattress',
+      sub: "5' × 6'6\" × 4\" · Queen · Top at 1'6\" FFL",
+      sections: [
+        { heading: 'Dimensions', rows: [
+          ['Length',    "6'–6\" (1981 mm)"],
+          ['Width',     "5'–0\" (1524 mm)"],
+          ['Thickness', "4\" (100 mm)"],
+          ['FFL',       "1'–6\" to top of mattress"]
+        ]}
+      ],
+      note: "Low-slung intentionally — 1'6\" FFL is lower than standard bed height for the aesthetic of this room.",
+      tag: "Queen · 4\" · 1'–6\" FFL"
+    }
+  };
+
+  function showDetail(key) {
+    const d = details[key];
+    if (!d) return;
+    document.querySelectorAll('.hotspot').forEach(h => h.classList.remove('active'));
+    document.getElementById('hs-' + key)?.classList.add('active');
+    document.getElementById('panelTitle').textContent = d.title;
+    document.getElementById('panelSub').textContent   = d.sub;
+    let html = '';
+    d.sections.forEach(sec => {
+      html += `<div class="detail-section"><div class="detail-heading">${sec.heading}</div>`;
+      sec.rows.forEach(([k,v]) => {
+        html += `<div class="detail-row"><span class="detail-key">${k}</span><span class="detail-val">${v}</span></div>`;
+      });
+      html += '</div>';
+    });
+    if (d.note) html += `<div class="detail-note">${d.note}</div>`;
+    if (d.tag)  html += `<div><span class="tag">${d.tag}</span></div>`;
+    if (d.links?.length) {
+      html += `<div class="detail-links"><div class="detail-links-heading">Hardware Reference</div>`;
+      d.links.forEach(l => {
+        html += `<div class="detail-link"><a href="${l.url}" target="_blank" rel="noopener">${l.label}</a><span class="detail-link-desc">${l.desc}</span></div>`;
+      });
+      html += '</div>';
+    }
+    document.getElementById('panelBody').innerHTML = html;
+  }
+
+  /* Initialise */
+  setLidAngle(0);
+  setDrawerX(0);
+</script>
+</body>
+</html>

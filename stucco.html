@@ -252,6 +252,7 @@
       display:grid;
       grid-template-columns:repeat(12,1fr);
       gap:1rem;
+      grid-auto-flow: dense;
     }
 
     .gi {
@@ -407,6 +408,116 @@
     @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
     @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:0.9;} }
 
+    /* ── DOOR WARPING CARD (material grid item) ── */
+    .gi-guide {
+      position:relative; overflow:hidden;
+      background:var(--plaster);
+      transition:opacity 0.5s;
+      cursor:none;
+    }
+    .gi-guide-inner {
+      position:absolute; inset:0;
+      display:flex; flex-direction:column;
+      align-items:flex-start; justify-content:flex-end;
+      padding:1.6rem;
+      background:#f2ebe0;
+    }
+    .gi-guide-svg-wrap {
+      position:absolute; top:0; right:0;
+      width:65%; height:100%;
+      display:flex; align-items:center; justify-content:center;
+      pointer-events:none;
+      opacity:0.85;
+    }
+    .gi-guide-eyebrow {
+      font-size:0.48rem; letter-spacing:0.35em;
+      text-transform:uppercase; color:var(--terracota);
+      margin-bottom:0.5rem; position:relative; z-index:2;
+    }
+    .gi-guide-title {
+      font-family:'Cormorant', serif; font-size:1.35rem;
+      font-weight:300; line-height:1.15; color:var(--shadow);
+      position:relative; z-index:2;
+      max-width:180px;
+    }
+    .gi-guide-title em { font-style:italic; color:var(--terracota); }
+    .gi-guide-cta {
+      margin-top:0.9rem; font-size:0.5rem; letter-spacing:0.3em;
+      text-transform:uppercase; color:var(--teak);
+      display:flex; align-items:center; gap:0.5rem;
+      position:relative; z-index:2;
+      transition:color 0.3s;
+    }
+    .gi-guide:hover .gi-guide-cta { color:var(--terracota); }
+    .gi-guide .gi-over { position:absolute; inset:0; background:rgba(58,46,40,0); transition:background 0.4s; display:flex; align-items:flex-end; padding:1.2rem; }
+    .gi-guide:hover .gi-over { background:rgba(58,46,40,0.08); }
+
+    /* ── 2BHK MODAL ── */
+    #bhk-modal {
+      position:fixed; inset:0; z-index:1000;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(26,20,14,0.75);
+      backdrop-filter:blur(8px);
+    }
+    #bhk-modal.open { display:flex; animation:fadeIn 0.35s forwards; }
+    #bhk-modal-inner {
+      background:#F0EBE3;
+      width:100vw; height:100vh;
+      overflow:hidden;
+      position:relative;
+      display:flex; flex-direction:column;
+      font-family:'IBM Plex Mono', monospace;
+      font-weight:300; font-size:12px;
+      color:#1C1713;
+      animation:up 0.35s forwards;
+    }
+    #bhk-modal-close {
+      position:absolute; top:8px; right:12px;
+      width:34px; height:34px;
+      background:rgba(240,235,227,0.95);
+      border:1px solid #D8D1C8; border-radius:50%;
+      font-size:1rem; color:#6b5540;
+      cursor:none; z-index:20;
+      display:flex; align-items:center; justify-content:center;
+      transition:background 0.2s;
+    }
+    #bhk-modal-close:hover { background:var(--terracota); color:#fff; }
+
+    /* ── GUIDE MODAL ── */
+    #guide-modal {
+      position:fixed; inset:0; z-index:1000;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(26,20,14,0.7);
+      backdrop-filter:blur(8px);
+      padding:2rem;
+    }
+    #guide-modal.open { display:flex; animation:fadeIn 0.35s forwards; }
+    #guide-modal-inner {
+      background:#f6f3ed;
+      width:100%; max-width:960px;
+      max-height:90vh;
+      overflow-y:auto;
+      border-radius:4px;
+      position:relative;
+      animation:up 0.4s forwards;
+      scrollbar-width:thin;
+      scrollbar-color:var(--sand) transparent;
+    }
+    #guide-modal-close {
+      position:sticky; top:0; left:100%;
+      float:right;
+      width:40px; height:40px;
+      background:rgba(246,243,237,0.95);
+      border:none; border-radius:50%;
+      font-size:1.1rem; color:var(--teak);
+      cursor:none; z-index:10;
+      display:flex; align-items:center; justify-content:center;
+      margin:1rem 1rem 0 0;
+      transition:background 0.2s;
+    }
+    #guide-modal-close:hover { background:var(--terracota); color:#fff; }
+    #guide-modal-content { padding:0 2rem 2rem; }
+
     @media(max-width:768px) {
       #hero { grid-template-columns:1fr; }
       .hero-right { align-items:flex-start; margin-top:3rem; }
@@ -419,7 +530,90 @@
       .gi:nth-child(n) { grid-column:span 12; }
       .gi:nth-child(3),.gi:nth-child(4) { grid-column:span 6; }
     }
-  </style>
+  
+    /* ── LIFT-BED MODAL ── */
+    #liftbed-modal {
+      position:fixed; inset:0; z-index:1000;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(26,20,14,0.75);
+      backdrop-filter:blur(8px);
+    }
+    #liftbed-modal.open { display:flex; animation:fadeIn 0.35s forwards; }
+    #liftbed-modal-inner {
+      background:#F0EBE3;
+      width:100vw; height:100vh;
+      overflow:hidden; position:relative;
+      display:flex; flex-direction:column;
+      font-family:'IBM Plex Mono',monospace;
+      font-weight:300; font-size:12px; color:#1C1713;
+      animation:up 0.35s forwards;
+    }
+    #liftbed-modal-close {
+      position:absolute; top:8px; right:12px;
+      width:34px; height:34px;
+      background:rgba(240,235,227,0.95);
+      border:1px solid #D8D1C8; border-radius:50%;
+      font-size:1rem; color:#6b5540;
+      cursor:none; z-index:20;
+      display:flex; align-items:center; justify-content:center;
+      transition:background 0.2s;
+    }
+    #liftbed-modal-close:hover { background:var(--terracota); color:#fff; }
+    .lb-back-bar { padding:10px 32px; background:#FAF7F2; border-bottom:1px solid #D8D1C8; display:flex; align-items:center; gap:1rem; }
+    .lb-back-txt { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:#9B5A3C; }
+    .lb-back-sep { font-size:0.6rem; color:#D8D1C8; }
+    .lb-back-current { font-size:0.65rem; letter-spacing:0.15em; color:#7A7068; }
+    .lb-header { padding:20px 32px 16px; border-bottom:1px solid #1C1713; display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; }
+    .lb-header-brand { font-family:'Cormorant',serif; font-style:italic; font-size:0.95rem; color:#7A7068; }
+    .lb-header-title { font-family:'Cormorant',serif; font-size:1.35rem; margin-top:3px; }
+    .lb-header-meta { font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:#7A7068; text-align:right; line-height:1.9; }
+    .lb-controls { padding:12px 32px; border-bottom:1px solid #D8D1C8; display:flex; align-items:center; gap:28px; flex-wrap:wrap; }
+    .lb-toggle-label { font-size:0.68rem; letter-spacing:0.2em; text-transform:uppercase; color:#7A7068; }
+    .lb-toggle-wrap { display:flex; align-items:center; gap:10px; }
+    .lb-toggle-state { font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:#1C1713; min-width:52px; }
+    .lb-toggle { width:48px; height:24px; background:#D8D1C8; border-radius:0; position:relative; cursor:none; border:1px solid #7A7068; transition:background 0.3s; }
+    .lb-toggle.active { background:#6B4226; border-color:#6B4226; }
+    .lb-toggle-knob { width:18px; height:18px; background:white; position:absolute; top:2px; left:2px; transition:left 0.3s; }
+    .lb-toggle.active .lb-toggle-knob { left:26px; }
+    .lb-hint { font-size:0.68rem; color:#7A7068; }
+    .lb-hint span { display:inline-block; width:7px; height:7px; background:#9B5A3C; border-radius:50%; margin-right:5px; vertical-align:middle; animation:pulse 2s infinite; }
+    .lb-anim-btn { margin-left:auto; font-family:'IBM Plex Mono',monospace; font-size:0.65rem; letter-spacing:0.18em; text-transform:uppercase; color:#9B5A3C; background:none; border:1px solid #9B5A3C; padding:5px 14px; cursor:none; transition:background 0.2s,color 0.2s; }
+    .lb-anim-btn:hover { background:#9B5A3C; color:white; }
+    .lb-main { display:grid; grid-template-columns:1fr 300px; flex:1; overflow:hidden; min-height:0; }
+    .lb-bed-wrap { padding:24px 36px; border-right:1px solid #D8D1C8; display:flex; flex-direction:column; align-items:center; gap:12px; overflow:hidden; }
+    .lb-bed-label { font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:#7A7068; align-self:flex-start; }
+    .lb-bed-canvas { position:relative; width:100%; max-width:600px; flex-shrink:0; }
+    .lb-bed-svg { width:100%; height:auto; display:block; }
+    .lb-credit { font-size:0.6rem; color:#7A7068; letter-spacing:0.08em; text-transform:uppercase; align-self:flex-start; margin-top:4px; }
+    .lb-hotspot { position:absolute; width:14px; height:14px; border-radius:50%; background:#9B5A3C; border:1.5px solid white; cursor:none; transform:translate(-50%,-50%); z-index:10; transition:transform 0.2s,background 0.2s; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 6px rgba(0,0,0,0.2); }
+    .lb-hotspot:hover,.lb-hotspot.lb-active { transform:translate(-50%,-50%) scale(1.25); background:#1C1713; }
+    .lb-hotspot::after { content:''; position:absolute; inset:-4px; border-radius:50%; border:1px solid #9B5A3C; opacity:0.4; animation:ring 2.5s infinite; }
+    @keyframes ring { 0%{transform:scale(1);opacity:0.4} 100%{transform:scale(1.8);opacity:0} }
+    .lb-detail-panel { background:#FAF7F2; border-left:1px solid #D8D1C8; display:flex; flex-direction:column; overflow:hidden; height:100%; }
+    .lb-panel-top { padding:22px 20px 16px; border-bottom:1px solid #D8D1C8; flex-shrink:0; }
+    .lb-panel-eyebrow { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#7A7068; margin-bottom:6px; }
+    .lb-panel-title { font-family:'Cormorant',serif; font-size:1.25rem; font-style:italic; line-height:1.2; }
+    .lb-panel-sub { font-size:0.68rem; color:#7A7068; margin-top:5px; line-height:1.5; }
+    .lb-panel-body { padding:16px 20px; flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:#D8D1C8 transparent; }
+    .lb-panel-body::-webkit-scrollbar { width:4px; }
+    .lb-panel-body::-webkit-scrollbar-thumb { background:#D8D1C8; }
+    .lb-detail-section { margin-bottom:16px; }
+    .lb-detail-heading { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#7A7068; border-bottom:1px solid #D8D1C8; padding-bottom:5px; margin-bottom:8px; }
+    .lb-detail-row { display:grid; grid-template-columns:86px 1fr; gap:6px; padding:5px 0; border-bottom:1px solid rgba(216,209,200,0.4); font-size:0.7rem; }
+    .lb-detail-key { color:#7A7068; }
+    .lb-detail-val { color:#1C1713; }
+    .lb-detail-note { font-size:0.68rem; color:#7A7068; line-height:1.8; padding:10px; background:rgba(216,209,200,0.25); border-left:2px solid #D8D1C8; margin-top:6px; }
+    .lb-tag { display:inline-block; font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; padding:2px 7px; background:#9B5A3C; color:white; margin-top:10px; }
+    .lb-panel-empty { padding:36px 20px; text-align:center; color:#7A7068; font-size:0.72rem; line-height:2.4; }
+    .lb-panel-empty-icon { font-size:1.8rem; margin-bottom:14px; opacity:0.25; }
+    .lb-detail-links { margin-top:14px; }
+    .lb-detail-links-heading { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:#7A7068; border-bottom:1px solid #D8D1C8; padding-bottom:5px; margin-bottom:8px; }
+    .lb-detail-link { display:flex; flex-direction:column; gap:3px; padding:6px 0; border-bottom:1px solid rgba(216,209,200,0.4); font-size:0.68rem; }
+    .lb-detail-link a { color:#9B5A3C; text-decoration:none; }
+    .lb-detail-link a:hover { opacity:0.7; text-decoration:underline; }
+    .lb-detail-link-desc { color:#7A7068; font-size:0.62rem; }
+    .lb-foot { padding:10px 32px; border-top:1px solid #D8D1C8; display:flex; justify-content:space-between; font-size:0.6rem; letter-spacing:0.1em; color:#7A7068; flex-shrink:0; }
+</style>
 </head>
 <body>
 
@@ -457,10 +651,9 @@
         <div class="swatch sw5"><span class="swatch-label">Shadow</span></div>
       </div>
       <div class="hero-cats">
-        <div class="hcat"><span>Architecture</span><span class="hcat-n">01</span></div>
-        <div class="hcat"><span>Interiors</span><span class="hcat-n">02</span></div>
-        <div class="hcat"><span>Materials & Texture</span><span class="hcat-n">03</span></div>
-
+        <div class="hcat" onclick="goFilter('arch')" style="cursor:none;"><span>Architecture</span><span class="hcat-n">01</span></div>
+        <div class="hcat" onclick="goFilter('interior')" style="cursor:none;"><span>Interiors</span><span class="hcat-n">02</span></div>
+        <div class="hcat" onclick="goFilter('material')" style="cursor:none;"><span>Materials & Texture</span><span class="hcat-n">03</span></div>
       </div>
     </div>
 
@@ -520,9 +713,43 @@
         <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add interior photo</p></div>
         <div class="gi-over"><span class="gi-label">Space</span></div>
       </div>
-      <div class="gi" data-cat="material">
-        <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add material study</p></div>
-        <div class="gi-over"><span class="gi-label">Texture</span></div>
+      <div class="gi gi-guide" data-cat="material" onclick="openGuide()">
+        <div class="gi-guide-inner">
+          <!-- mini door SVG preview -->
+          <div class="gi-guide-svg-wrap">
+            <svg viewBox="0 0 260 340" width="200" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="tgPrev" x="0" y="0" width="14" height="300" patternUnits="userSpaceOnUse">
+                  <path d="M7,0 C5,45 9,90 6,150 C4,210 8,265 7,300" fill="none" stroke="#5a2808" stroke-width="0.9" opacity="0.28"/>
+                </pattern>
+              </defs>
+              <!-- flat door -->
+              <rect x="10" y="10" width="100" height="8" rx="2" fill="#d4cec0"/>
+              <rect x="10" y="282" width="100" height="8" rx="2" fill="#d4cec0"/>
+              <rect x="10" y="10" width="14" height="280" rx="2" fill="#b8b0a0"/>
+              <rect x="24" y="14" width="86" height="272" rx="2" fill="#7a3c12"/>
+              <rect x="24" y="14" width="86" height="272" rx="2" fill="url(#tgPrev)"/>
+              <rect x="32" y="26" width="34" height="80" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.2" opacity=".5"/>
+              <rect x="72" y="26" width="34" height="80" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.2" opacity=".5"/>
+              <rect x="32" y="118" width="74" height="140" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.2" opacity=".5"/>
+              <text x="67" y="300" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#2d6a4f">flat ✓</text>
+              <!-- warped door -->
+              <rect x="140" y="10" width="110" height="8" rx="2" fill="#d4cec0"/>
+              <rect x="140" y="282" width="110" height="8" rx="2" fill="#d4cec0"/>
+              <rect x="140" y="10" width="14" height="280" rx="2" fill="#b8b0a0"/>
+              <path d="M154,14 L228,14 Q250,148 228,286 L154,286 Q154,148 154,14" fill="#7a3c12"/>
+              <path d="M154,14 L228,14 Q250,148 228,286 L154,286 Q154,148 154,14" fill="url(#tgPrev)"/>
+              <path d="M154,14 L228,14 Q250,148 228,286 L154,286 Q154,148 154,14" fill="none" stroke="#3a1604" stroke-width="1.5"/>
+              <text x="195" y="300" text-anchor="middle" font-family="sans-serif" font-size="8" fill="#8a3020">warped ✗</text>
+              <line x1="118" y1="148" x2="148" y2="148" stroke="#ede8df" stroke-width="1"/>
+              <text x="133" y="160" text-anchor="middle" font-family="sans-serif" font-size="7" fill="#c8c0b0" font-style="italic">→</text>
+            </svg>
+          </div>
+          <div class="gi-guide-eyebrow">Material Study · Wood</div>
+          <div class="gi-guide-title">Why Doors <em>Warp</em></div>
+          <div class="gi-guide-cta">Read illustrated guide &nbsp;→</div>
+        </div>
+        <div class="gi-over"><span class="gi-label">Open guide</span></div>
       </div>
     </div>
 
@@ -563,10 +790,12 @@
   <!-- FEATURED PROJECT -->
   <section id="projects" style="padding:10vh 5vw; border-top:1px solid var(--sand);">
     <div class="disc-head reveal">
-      <span class="sec-label">Featured Study</span>
+      <span class="sec-label">Featured Studies</span>
       <h2>An <em>interactive</em><br>project</h2>
     </div>
-    <a href="chennai-2bhk.html" style="display:block; text-decoration:none; cursor:none;" class="reveal">
+
+    <!-- Card 1: Facade Renovation (existing) -->
+    <a href="#" onclick="openBhk(); return false;" style="display:block; text-decoration:none; cursor:none;" class="reveal">
       <div style="
         display:grid; grid-template-columns:1fr 1fr; gap:0;
         border:1px solid var(--sand);
@@ -578,7 +807,7 @@
       >
         <!-- left: visual -->
         <div style="
-          background:linear-gradient(135deg, #e8dac8 0%, #d4c0a0 50%, #c8b090 100%);
+          background:#f2ebe0;
           aspect-ratio:4/3; position:relative; overflow:hidden;
           display:flex; align-items:center; justify-content:center;
         ">
@@ -638,6 +867,87 @@
         </div>
       </div>
     </a>
+
+    <!-- Card 2: Bedroom — Space Saving Furniture -->
+    <a href="#" onclick="openLiftBed(); return false;" style="display:block; text-decoration:none; cursor:none; margin-top:1.5rem;" class="reveal">
+      <div style="
+        display:grid; grid-template-columns:1fr 1fr; gap:0;
+        border:1px solid var(--sand);
+        transition:box-shadow 0.4s, transform 0.4s;
+        background:var(--cream);
+      "
+      onmouseenter="this.style.boxShadow='0 20px 50px rgba(58,46,40,0.1)'; this.style.transform='translateY(-4px)'"
+      onmouseleave="this.style.boxShadow='none'; this.style.transform='translateY(0)'"
+      >
+        <!-- left: visual — mini lift-bed section drawing -->
+        <div style="
+          background:#f2ebe0;
+          aspect-ratio:4/3; position:relative; overflow:hidden;
+          display:flex; align-items:center; justify-content:center;
+        ">
+          <svg viewBox="0 0 220 160" width="190" opacity="0.88" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="wV2" x="0" y="0" width="5" height="40" patternUnits="userSpaceOnUse">
+                <rect width="5" height="40" fill="#8B5E3C"/>
+                <line x1="1.2" y1="0" x2="1.5" y2="40" stroke="#9d6a44" stroke-width="0.5" opacity="0.5"/>
+              </pattern>
+              <pattern id="wH2" x="0" y="0" width="10" height="4" patternUnits="userSpaceOnUse">
+                <rect width="10" height="4" fill="#A07040"/>
+                <line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#b07848" stroke-width="0.3" opacity="0.4"/>
+              </pattern>
+            </defs>
+            <!-- room wall -->
+            <rect x="8" y="8" width="204" height="110" fill="#EAE4DB"/>
+            <rect x="178" y="8" width="34" height="120" fill="#DDD6CC"/>
+            <line x1="178" y1="8" x2="178" y2="128" stroke="#1C1713" stroke-width="1.5"/>
+            <!-- floor -->
+            <rect x="8" y="118" width="204" height="34" fill="#D2C8BC"/>
+            <line x1="8" y1="118" x2="212" y2="118" stroke="#1C1713" stroke-width="1"/>
+            <!-- bed base -->
+            <rect x="20" y="88" width="158" height="32" fill="url(#wV2)" stroke="#3A2010" stroke-width="1"/>
+            <rect x="20" y="88" width="6" height="32" fill="#7A5230" stroke="#3A2010" stroke-width="0.5"/>
+            <!-- storage void -->
+            <rect x="26" y="91" width="147" height="26" fill="#1C0E06"/>
+            <!-- lid closed -->
+            <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
+            <!-- mattress -->
+            <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
+            <!-- lid open — rotated CW 60deg around pivot (178,89) -->
+            <g transform="rotate(60, 178, 89)">
+              <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
+              <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
+              <!-- gas arm -->
+              <line x1="172" y1="86" x2="100" y2="84" stroke="#CCCCCC" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <!-- label -->
+            <text x="14" y="155" fill="#7A7068" font-family="monospace" font-size="6" letter-spacing="0.5">Lift-up · Gas assisted · 60°</text>
+          </svg>
+          <div style="
+            position:absolute; bottom:1rem; left:1rem;
+            font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase;
+            color:var(--teak); opacity:0.6;
+            font-family:'DM Sans',sans-serif;
+          ">Section · Open state</div>
+        </div>
+        <!-- right: info -->
+        <div style="padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--terracota); margin-bottom:1rem; font-family:'DM Sans',sans-serif;">Project 001 · Bedroom 02</div>
+            <h3 style="font-family:'Cormorant',serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:300; line-height:1.1; color:var(--shadow); margin-bottom:1.2rem;">Chennai 2BHK<br><em style="font-style:italic; color:var(--terracota);">Space Saving Furniture</em></h3>
+            <p style="font-size:0.78rem; line-height:2; color:var(--teak); max-width:340px; font-family:'DM Sans',sans-serif;">An animated section study of a lift-up storage bed — gas-assisted lid, pullout drawer, and concealed hardware. Tap each element to read dimensions and specifications.</p>
+          </div>
+          <div style="margin-top:2.5rem; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--sand); padding-top:1.5rem;">
+            <div style="display:flex; gap:1.5rem;">
+              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Teak</span>
+              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Gas Lift</span>
+              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Storage</span>
+            </div>
+            <span style="font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--terracota); font-family:'DM Sans',sans-serif;">Open study →</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
   </section>
 
   <!-- CONNECT -->
@@ -671,6 +981,497 @@
     <p>© 2025 · Chennai, Tamil Nadu</p>
   </footer>
 
+  <!-- ═══════════════════ CHENNAI 2BHK MODAL ═══════════════════ -->
+  <div id="bhk-modal">
+    <div id="bhk-modal-inner">
+      <button id="bhk-modal-close" onclick="closeBhk()" title="Close">✕</button>
+
+      <style>
+        /* scoped 2BHK styles — prefixed bm- */
+        #bhk-modal-inner { --boff:#F0EBE3; --bink:#1C1713; --bmid:#7A7068; --brule:#D8D1C8; --bbrick:#9B5A3C; --bteak:#6B4226; --bpanel:#FAF7F2; }
+        .bm-back-bar { padding:10px 32px 10px 16px; background:var(--bpanel); border-bottom:1px solid var(--brule); display:flex; align-items:center; gap:1rem; }
+        .bm-back-current { font-size:0.65rem; letter-spacing:0.15em; color:var(--bmid); padding-left:3rem; }
+        .bm-header { padding:18px 32px 14px; border-bottom:1px solid var(--bink); display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; }
+        .bm-header-brand { font-family:'Cormorant',serif; font-style:italic; font-size:0.95rem; color:var(--bmid); }
+        .bm-header-title { font-family:'Cormorant',serif; font-size:1.3rem; margin-top:3px; }
+        .bm-header-meta  { font-size:0.68rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--bmid); text-align:right; line-height:1.9; }
+        .bm-controls { padding:12px 32px; border-bottom:1px solid var(--brule); display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+        .bm-toggle-label { font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--bmid); }
+        .bm-toggle-wrap  { display:flex; align-items:center; gap:10px; }
+        .bm-toggle-state { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--bink); min-width:44px; }
+        .bm-toggle { width:48px; height:24px; background:var(--brule); border-radius:0; position:relative; cursor:pointer; border:1px solid var(--bmid); transition:background 0.3s; }
+        .bm-toggle.active { background:var(--bteak); border-color:var(--bteak); }
+        .bm-toggle-knob { width:18px; height:18px; background:white; position:absolute; top:2px; left:2px; transition:left 0.3s; }
+        .bm-toggle.active .bm-toggle-knob { left:26px; }
+        .bm-hint { font-size:0.65rem; color:var(--bmid); }
+        .bm-hint span { display:inline-block; width:7px; height:7px; background:var(--bbrick); border-radius:50%; margin-right:5px; vertical-align:middle; animation:bmPulse 2s infinite; }
+        @keyframes bmPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+        .bm-main { display:grid; grid-template-columns:1fr 280px; flex:1; overflow:hidden; min-height:0; }
+        .bm-elevation-wrap { padding:24px 32px; border-right:1px solid var(--brule); display:flex; flex-direction:column; align-items:center; gap:12px; overflow:hidden; }
+        .bm-elev-label { font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--bmid); align-self:flex-start; }
+        .bm-elevation { position:relative; width:100%; max-width:520px; flex-shrink:0; }
+        .bm-elev-svg { width:100%; height:auto; display:block; }
+        .bm-credit { font-size:0.58rem; color:var(--bmid); letter-spacing:0.08em; text-transform:uppercase; align-self:flex-start; margin-top:4px; }
+        .bm-before-group { transition:opacity 0.5s ease; }
+        .bm-after-group  { transition:opacity 0.5s ease; opacity:0; }
+        .bm-state-after .bm-before-group { opacity:0; }
+        .bm-state-after .bm-after-group  { opacity:1; }
+        .bm-hotspot { position:absolute; width:13px; height:13px; border-radius:50%; background:var(--bbrick); border:1.5px solid white; cursor:pointer; transform:translate(-50%,-50%); z-index:10; transition:transform 0.2s, background 0.2s; display:flex; align-items:center; justify-content:center; font-size:6px; color:white; box-shadow:0 1px 6px rgba(0,0,0,0.2); font-family:'IBM Plex Mono',monospace; }
+        .bm-hotspot:hover, .bm-hotspot.active { transform:translate(-50%,-50%) scale(1.25); background:var(--bink); }
+        .bm-hotspot::after { content:''; position:absolute; inset:-4px; border-radius:50%; border:1px solid var(--bbrick); opacity:0.4; animation:bmRing 2.5s infinite; }
+        @keyframes bmRing { 0%{transform:scale(1);opacity:0.4} 100%{transform:scale(1.8);opacity:0} }
+        .bm-hs-after { display:none; }
+        .bm-state-after .bm-hs-before { display:none; }
+        .bm-state-after .bm-hs-after  { display:flex; }
+        .bm-detail-panel { background:var(--bpanel); border-left:1px solid var(--brule); display:flex; flex-direction:column; overflow:hidden; height:100%; }
+        .bm-panel-top { padding:20px 18px 14px; border-bottom:1px solid var(--brule); flex-shrink:0; }
+        .bm-panel-eyebrow { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--bmid); margin-bottom:5px; }
+        .bm-panel-title { font-family:'Cormorant',serif; font-size:1.2rem; font-style:italic; line-height:1.2; }
+        .bm-panel-sub { font-size:0.65rem; color:var(--bmid); margin-top:4px; line-height:1.5; }
+        .bm-panel-body { padding:16px 18px; flex:1; overflow-y:auto; scrollbar-width:thin; scrollbar-color:var(--brule) transparent; }
+        .bm-panel-body::-webkit-scrollbar { width:4px; } .bm-panel-body::-webkit-scrollbar-thumb { background:var(--brule); }
+        .bm-detail-section { margin-bottom:18px; }
+        .bm-detail-heading { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--bmid); border-bottom:1px solid var(--brule); padding-bottom:4px; margin-bottom:7px; }
+        .bm-detail-row { display:grid; grid-template-columns:80px 1fr; gap:5px; padding:4px 0; border-bottom:1px solid rgba(216,209,200,0.4); font-size:0.68rem; }
+        .bm-detail-key { color:var(--bmid); } .bm-detail-val { color:var(--bink); }
+        .bm-detail-note { font-size:0.65rem; color:var(--bmid); line-height:1.8; padding:9px; background:rgba(216,209,200,0.25); border-left:2px solid var(--brule); margin-top:5px; }
+        .bm-tag { display:inline-block; font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; padding:2px 7px; background:var(--bbrick); color:white; margin-top:8px; }
+        .bm-panel-empty { padding:36px 18px; text-align:center; color:var(--bmid); font-size:0.7rem; line-height:2.4; }
+        .bm-panel-empty-icon { font-size:1.6rem; margin-bottom:12px; opacity:0.25; }
+        .bm-detail-links { margin-top:12px; }
+        .bm-detail-links-heading { font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--bmid); border-bottom:1px solid var(--brule); padding-bottom:4px; margin-bottom:7px; }
+        .bm-detail-link { display:flex; align-items:baseline; gap:5px; padding:4px 0; border-bottom:1px solid rgba(216,209,200,0.4); font-size:0.65rem; }
+        .bm-detail-link a { color:var(--bbrick); text-decoration:none; } .bm-detail-link a:hover { text-decoration:underline; }
+        .bm-detail-link-desc { color:var(--bmid); font-size:0.6rem; }
+        .bm-foot { padding:10px 32px; border-top:1px solid var(--brule); display:flex; justify-content:space-between; font-size:0.58rem; letter-spacing:0.1em; color:var(--bmid); flex-shrink:0; }
+        @media(max-width:640px){ .bm-main { grid-template-columns:1fr; } }
+      </style>
+
+      <!-- Back bar -->
+      <div class="bm-back-bar">
+        <span class="bm-back-current">Chennai 2BHK — Facade Study</span>
+      </div>
+
+      <!-- Header -->
+      <div class="bm-header">
+        <div>
+          <div class="bm-header-brand">Stucco Stories</div>
+          <div class="bm-header-title">Chennai 2BHK — Facade Study</div>
+        </div>
+        <div class="bm-header-meta">Project 001<br>Chennai, 2023<br>Built</div>
+      </div>
+
+      <!-- Controls -->
+      <div class="bm-controls">
+        <span class="bm-toggle-label">View</span>
+        <div class="bm-toggle-wrap">
+          <span class="bm-toggle-state" id="bm-stateLabel">Before</span>
+          <div class="bm-toggle" id="bm-toggle" onclick="bmToggleState()">
+            <div class="bm-toggle-knob"></div>
+          </div>
+          <span class="bm-toggle-state">After</span>
+        </div>
+        <span class="bm-hint"><span></span>Tap a dot to explore</span>
+      </div>
+
+      <!-- Main -->
+      <div class="bm-main" style="flex:1; min-height:0;">
+
+        <!-- Elevation -->
+        <div class="bm-elevation-wrap">
+          <p class="bm-elev-label" id="bm-elevLabel">Existing Facade — Before Renovation</p>
+          <div class="bm-elevation" id="bm-elevationBox">
+            <svg class="bm-elev-svg" viewBox="0 0 660 500" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="bm-tG" x="0" y="0" width="9" height="60" patternUnits="userSpaceOnUse">
+                  <rect width="9" height="60" fill="#6B4226"/>
+                  <line x1="1.5" y1="0" x2="2" y2="60" stroke="#7e4f2c" stroke-width="0.7" opacity="0.55"/>
+                  <line x1="4.5" y1="0" x2="5" y2="60" stroke="#56341a" stroke-width="0.5" opacity="0.45"/>
+                  <line x1="7.5" y1="0" x2="7.8" y2="60" stroke="#7e4f2c" stroke-width="0.4" opacity="0.35"/>
+                </pattern>
+                <linearGradient id="bm-gG" x1="0" y1="0" x2="0.5" y2="1">
+                  <stop offset="0%" stop-color="#cce0ec" stop-opacity="0.62"/>
+                  <stop offset="50%" stop-color="#b4d2e6" stop-opacity="0.33"/>
+                  <stop offset="100%" stop-color="#9fc4d8" stop-opacity="0.50"/>
+                </linearGradient>
+                <linearGradient id="bm-gGlare" x1="0" y1="0" x2="0.2" y2="1">
+                  <stop offset="0%" stop-color="white" stop-opacity="0.22"/>
+                  <stop offset="100%" stop-color="white" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+
+              <!-- WALL -->
+              <rect x="20" y="45" width="620" height="415" fill="#EAE4DB"/>
+              <rect x="20" y="45" width="22" height="415" fill="#C6BEB0"/>
+              <rect x="20" y="45" width="620" height="15" fill="#D0C8BE"/>
+              <line x1="20" y1="60" x2="640" y2="60" stroke="#1C1713" stroke-width="1.8"/>
+              <line x1="20" y1="460" x2="640" y2="460" stroke="#1C1713" stroke-width="1.8"/>
+              <rect x="20" y="460" width="620" height="9" fill="#BEB6AA" opacity="0.55"/>
+
+              <!-- BEFORE -->
+              <g class="bm-before-group">
+                <rect x="69" y="143" width="192" height="178" fill="#C2BAB0" stroke="#1C1713" stroke-width="2.2"/>
+                <rect x="76" y="150" width="178" height="164" fill="#B4B0AA" stroke="#888" stroke-width="1.5"/>
+                <rect x="76" y="231" width="178" height="5" fill="#A8A4A0" stroke="#888" stroke-width="0.5"/>
+                <rect x="163" y="150" width="5" height="164" fill="#A8A4A0" stroke="#888" stroke-width="0.5"/>
+                <rect x="77" y="151" width="85" height="79" fill="url(#bm-gG)"/><rect x="77" y="151" width="85" height="79" fill="url(#bm-gGlare)"/>
+                <rect x="169" y="151" width="84" height="79" fill="url(#bm-gG)"/><rect x="169" y="151" width="84" height="79" fill="url(#bm-gGlare)"/>
+                <rect x="77" y="237" width="85" height="75" fill="url(#bm-gG)"/><rect x="77" y="237" width="85" height="75" fill="url(#bm-gGlare)"/>
+                <rect x="169" y="237" width="84" height="75" fill="url(#bm-gG)"/><rect x="169" y="237" width="84" height="75" fill="url(#bm-gGlare)"/>
+                <line x1="77" y1="190" x2="119" y2="151" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="77" y1="230" x2="162" y2="151" stroke="#555" stroke-width="0.7" opacity="0.55"/>
+                <line x1="98" y1="230" x2="162" y2="171" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="77" y1="210" x2="140" y2="151" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <line x1="119" y1="230" x2="162" y2="190" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <line x1="169" y1="190" x2="211" y2="151" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="169" y1="230" x2="253" y2="151" stroke="#555" stroke-width="0.7" opacity="0.55"/>
+                <line x1="190" y1="230" x2="253" y2="171" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="169" y1="210" x2="232" y2="151" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <line x1="211" y1="230" x2="253" y2="190" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <line x1="77" y1="276" x2="119" y2="237" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="77" y1="312" x2="162" y2="237" stroke="#555" stroke-width="0.7" opacity="0.55"/>
+                <line x1="98" y1="312" x2="162" y2="255" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="119" y1="312" x2="162" y2="273" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <line x1="169" y1="276" x2="211" y2="237" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="169" y1="312" x2="253" y2="237" stroke="#555" stroke-width="0.7" opacity="0.55"/>
+                <line x1="190" y1="312" x2="253" y2="255" stroke="#555" stroke-width="0.7" opacity="0.55"/><line x1="211" y1="312" x2="253" y2="273" stroke="#555" stroke-width="0.7" opacity="0.35"/>
+                <rect x="422" y="143" width="144" height="319" fill="#C8C2BA" stroke="#1C1713" stroke-width="2.2"/>
+                <rect x="430" y="150" width="128" height="304" fill="#DEDAD3" stroke="#1C1713" stroke-width="1"/>
+                <rect x="440" y="163" width="108" height="110" fill="none" stroke="#C4BEB6" stroke-width="1.2"/>
+                <rect x="440" y="285" width="108" height="156" fill="none" stroke="#C4BEB6" stroke-width="1.2"/>
+                <circle cx="438" cy="318" r="4" fill="#AEAAA4" stroke="#969290" stroke-width="0.8"/>
+                <rect x="554" y="172" width="4" height="16" rx="1" fill="#AEAAA4" stroke="#969290" stroke-width="0.5"/>
+                <rect x="554" y="362" width="4" height="16" rx="1" fill="#AEAAA4" stroke="#969290" stroke-width="0.5"/>
+              </g>
+
+              <!-- AFTER -->
+              <g class="bm-after-group">
+                <rect x="50" y="60" width="258" height="9" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="50" y="60" width="9" height="400" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="299" y="60" width="9" height="400" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="143" y="60" width="9" height="400" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="50" y="146" width="258" height="9" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="50" y="364" width="258" height="9" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="47" y="452" width="264" height="8" fill="#57341a" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="59" y="69" width="84" height="77" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="59" y="69" width="84" height="77" fill="url(#bm-gGlare)"/>
+                <rect x="152" y="69" width="147" height="77" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="152" y="69" width="147" height="77" fill="url(#bm-gGlare)"/>
+                <rect x="59" y="155" width="84" height="209" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="68" y="164" width="66" height="191" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="68" y="164" width="66" height="191" fill="url(#bm-gGlare)"/>
+                <rect x="59" y="155" width="84" height="209" fill="none" stroke="#3a2010" stroke-width="2.6"/>
+                <rect x="56" y="254" width="91" height="2" rx="1" fill="#8B7355" opacity="0.3"/>
+                <rect x="152" y="155" width="147" height="69" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="161" y="163" width="129" height="53" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="161" y="163" width="129" height="53" fill="url(#bm-gGlare)"/>
+                <rect x="152" y="155" width="147" height="69" fill="none" stroke="#3a2010" stroke-width="2.6"/>
+                <rect x="149" y="187" width="153" height="2" rx="1" fill="#8B7355" opacity="0.3"/>
+                <rect x="152" y="225" width="147" height="69" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="161" y="233" width="129" height="53" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="161" y="233" width="129" height="53" fill="url(#bm-gGlare)"/>
+                <rect x="152" y="225" width="147" height="69" fill="none" stroke="#3a2010" stroke-width="2.6"/>
+                <rect x="149" y="257" width="153" height="2" rx="1" fill="#8B7355" opacity="0.3"/>
+                <rect x="152" y="295" width="147" height="69" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="161" y="303" width="129" height="53" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="161" y="303" width="129" height="53" fill="url(#bm-gGlare)"/>
+                <rect x="152" y="295" width="147" height="69" fill="none" stroke="#3a2010" stroke-width="2.6"/>
+                <rect x="149" y="327" width="153" height="2" rx="1" fill="#8B7355" opacity="0.3"/>
+                <rect x="59" y="373" width="84" height="79" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="59" y="373" width="84" height="79" fill="url(#bm-gGlare)"/>
+                <rect x="152" y="373" width="147" height="79" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="152" y="373" width="147" height="79" fill="url(#bm-gGlare)"/>
+                <rect x="424" y="60" width="140" height="9" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="424" y="60" width="9" height="400" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="555" y="60" width="9" height="400" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="424" y="150" width="140" height="9" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1"/>
+                <rect x="421" y="452" width="146" height="8" fill="#57341a" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="433" y="69" width="122" height="81" fill="url(#bm-gG)" stroke="#3a2010" stroke-width="0.8"/>
+                <rect x="433" y="69" width="122" height="81" fill="url(#bm-gGlare)"/>
+                <rect x="433" y="159" width="122" height="293" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="1.2"/>
+                <rect x="443" y="172" width="102" height="124" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="2"/>
+                <rect x="448" y="177" width="92" height="114" fill="url(#bm-tG)" stroke="#4b2c12" stroke-width="0.9"/>
+                <line x1="443" y1="172" x2="545" y2="172" stroke="#3a2010" stroke-width="2.2" opacity="0.45"/>
+                <line x1="443" y1="172" x2="443" y2="296" stroke="#3a2010" stroke-width="2.2" opacity="0.45"/>
+                <rect x="443" y="308" width="102" height="130" fill="url(#bm-tG)" stroke="#3a2010" stroke-width="2"/>
+                <rect x="448" y="313" width="92" height="120" fill="url(#bm-tG)" stroke="#4b2c12" stroke-width="0.9"/>
+                <line x1="443" y1="308" x2="545" y2="308" stroke="#3a2010" stroke-width="2.2" opacity="0.45"/>
+                <line x1="443" y1="308" x2="443" y2="438" stroke="#3a2010" stroke-width="2.2" opacity="0.45"/>
+                <rect x="550" y="178" width="5" height="20" rx="1.5" fill="#9B8060" stroke="#7A6040" stroke-width="0.7"/>
+                <circle cx="552.5" cy="188" r="2.5" fill="#7A6040" opacity="0.6"/>
+                <rect x="550" y="386" width="5" height="20" rx="1.5" fill="#9B8060" stroke="#7A6040" stroke-width="0.7"/>
+                <circle cx="552.5" cy="396" r="2.5" fill="#7A6040" opacity="0.6"/>
+                <rect x="432" y="284" width="6" height="28" rx="1.5" fill="#C8A840" stroke="#A88828" stroke-width="0.8"/>
+                <circle cx="435" cy="298" r="4.5" fill="#C8A840" stroke="#A88828" stroke-width="0.9"/>
+                <circle cx="435" cy="305" r="1.5" fill="#8B6020" opacity="0.7"/>
+              </g>
+            </svg>
+            <p class="bm-credit">Architecture: Studio 360 · Design Development &amp; Presentation: Stucco Stories · Chennai, 2023</p>
+          </div>
+        </div>
+
+        <!-- Detail Panel -->
+        <div class="bm-detail-panel">
+          <div class="bm-panel-top">
+            <p class="bm-panel-eyebrow">Element Detail</p>
+            <p class="bm-panel-title" id="bm-panelTitle">Select an element</p>
+            <p class="bm-panel-sub" id="bm-panelSub">Tap a dot on the elevation</p>
+          </div>
+          <div class="bm-panel-body" id="bm-panelBody">
+            <div class="bm-panel-empty">
+              <div class="bm-panel-empty-icon">◎</div>
+              Toggle before / after,<br>then tap any dot<br>to read element details.
+            </div>
+          </div>
+        </div>
+      </div><!-- /bm-main -->
+
+      <div class="bm-foot">
+        <span>Architecture: Studio 360 · Design Development &amp; Presentation: Stucco Stories · Chennai 2BHK, 2023</span>
+        <span>Interactive Elevation Study</span>
+      </div>
+
+    </div><!-- /bhk-modal-inner -->
+  </div><!-- /bhk-modal -->
+
+  <!-- ═══════════════════ DOOR WARPING GUIDE MODAL ═══════════════════ -->
+  <div id="guide-modal">
+    <div id="guide-modal-inner">
+      <button id="guide-modal-close" onclick="closeGuide()" title="Close">✕</button>
+      <div id="guide-modal-content">
+
+        <!-- Embedded guide styles (scoped via class prefix) -->
+        <style>
+          #guide-modal-content { font-family:'DM Sans',sans-serif; color:#1a1814; font-size:16px; line-height:1.75; }
+          #guide-modal-content .g-eyebrow { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#a05420; margin-bottom:1rem; padding-top:2rem; }
+          #guide-modal-content h1.g-h1 { font-family:'Lora',serif; font-size:clamp(1.8rem,4vw,2.8rem); font-weight:600; line-height:1.12; margin-bottom:.8rem; }
+          #guide-modal-content .g-standfirst { font-family:'Lora',serif; font-style:italic; font-size:1rem; color:#56524c; max-width:560px; margin-bottom:1.2rem; }
+          #guide-modal-content .g-meta { display:flex; gap:1.5rem; flex-wrap:wrap; font-size:11px; color:#98948e; letter-spacing:.05em; padding:1rem 0; border-top:1px solid rgba(26,24,20,0.1); border-bottom:1px solid rgba(26,24,20,0.1); margin-bottom:2rem; }
+          #guide-modal-content .g-chapter { padding:2rem 0; border-bottom:1px solid rgba(26,24,20,0.1); }
+          #guide-modal-content .g-chapter:last-child { border-bottom:none; }
+          #guide-modal-content .g-chnum { font-family:'Lora',serif; font-size:48px; font-weight:600; color:#a05420; opacity:.12; line-height:1; margin-bottom:-0.8rem; }
+          #guide-modal-content h2.g-h2 { font-family:'Lora',serif; font-size:1.5rem; font-weight:600; line-height:1.2; margin-bottom:.5rem; }
+          #guide-modal-content .g-lead { font-family:'Lora',serif; font-style:italic; color:#56524c; margin-bottom:1.2rem; font-size:.95rem; }
+          #guide-modal-content .g-p { color:#56524c; margin-bottom:.9rem; max-width:680px; }
+          #guide-modal-content .g-p strong { color:#1a1814; font-weight:500; }
+          #guide-modal-content .g-scene { background:#fff; border-radius:12px; border:1px solid rgba(26,24,20,0.1); padding:1.5rem 1rem .8rem; margin:1.5rem 0; overflow:hidden; }
+          #guide-modal-content .g-caption { font-size:12px; color:#98948e; text-align:center; margin-top:.6rem; font-style:italic; padding:0 .5rem; }
+          #guide-modal-content .g-note { border-left:3px solid #a05420; padding:.8rem 1rem; background:#f0e2ce; border-radius:0 8px 8px 0; margin:1.2rem 0; font-size:13px; color:#4e2608; line-height:1.6; }
+          #guide-modal-content .g-note.green { border-color:#2d6a4f; background:#ddeee5; color:#1a4030; }
+          #guide-modal-content .g-note.red { border-color:#8a3020; background:#f2dcd8; color:#8a3020; }
+          #guide-modal-content .g-toggle-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.2rem; }
+          #guide-modal-content .g-tog { padding:7px 18px; font-size:13px; border-radius:100px; border:1.5px solid rgba(26,24,20,.15); background:transparent; color:#56524c; cursor:pointer; transition:all .2s; font-family:'DM Sans',sans-serif; }
+          #guide-modal-content .g-tog.on { background:#1a1814; border-color:#1a1814; color:#fff; }
+          #guide-modal-content .g-bar-wrap { margin-bottom:10px; }
+          #guide-modal-content .g-bar-meta { display:flex; justify-content:space-between; font-size:12px; margin-bottom:3px; }
+          #guide-modal-content .g-bar-name { color:#1a1814; font-weight:500; }
+          #guide-modal-content .g-bar-pct { color:#98948e; }
+          #guide-modal-content .g-bar-track { height:7px; background:#ede8df; border-radius:4px; overflow:hidden; }
+          #guide-modal-content .g-bar-fill { height:7px; border-radius:4px; transition:width .55s cubic-bezier(.4,0,.2,1); }
+          #guide-modal-content .g-bar-role { font-size:11px; color:#98948e; margin-top:2px; }
+          #guide-modal-content .g-wcard { background:#f6f3ed; border-radius:8px; padding:10px 14px; margin-bottom:8px; border:1px solid rgba(26,24,20,0.1); }
+          #guide-modal-content .g-wlbl { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:#98948e; margin-bottom:3px; }
+          #guide-modal-content .g-wval { font-size:22px; font-weight:500; color:#1a1814; line-height:1.1; }
+          #guide-modal-content .g-wsub { font-size:11px; color:#98948e; margin-top:2px; }
+          #guide-modal-content .g-door-stage { display:grid; grid-template-columns:180px 1fr; gap:1.5rem; align-items:start; margin-top:1rem; }
+          @media(max-width:520px){ #guide-modal-content .g-door-stage { grid-template-columns:1fr; } }
+          #guide-modal-content .g-core-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:12px; margin:1.2rem 0; }
+          #guide-modal-content .g-cc { background:#fff; border-radius:10px; border:1px solid rgba(26,24,20,0.1); padding:.9rem; }
+          #guide-modal-content .g-cc-name { font-weight:500; font-size:14px; color:#1a1814; margin-bottom:2px; }
+          #guide-modal-content .g-cc-sub { font-size:11px; color:#98948e; margin-bottom:6px; }
+          #guide-modal-content .g-cc .g-p { font-size:12px; margin-bottom:5px; }
+          #guide-modal-content .g-tag { display:inline-block; font-size:10px; padding:2px 7px; border-radius:100px; margin:2px 2px 0 0; }
+          #guide-modal-content .g-tag-g { background:#ddeee5; color:#2d6a4f; }
+          #guide-modal-content .g-tag-r { background:#f2dcd8; color:#8a3020; }
+          @keyframes rainFallG { 0%{transform:translateY(0);opacity:0;} 15%{opacity:.65;} 85%{opacity:.5;} 100%{transform:translateY(100px);opacity:0;} }
+          #guide-modal-content .rdg { animation:rainFallG 1.3s linear infinite; }
+          #guide-modal-content .g-footer { font-size:11px; color:#98948e; padding-top:1rem; border-top:1px solid rgba(26,24,20,0.1); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.4rem; margin-top:1rem; }
+        </style>
+
+        <div class="g-eyebrow">Materials &amp; Construction · Illustrated Guide</div>
+        <h1 class="g-h1">Why Doors Warp</h1>
+        <p class="g-standfirst">A visual story of what happens inside your door when Chennai's monsoon arrives — and what actually stops it.</p>
+        <div class="g-meta">
+          <span>Solid teak · Flush doors</span>
+          <span>IS 2202 · IS 1341 · BIS 2024–25</span>
+          <span>Chennai climate context</span>
+        </div>
+
+        <!-- CH 1 -->
+        <div class="g-chapter">
+          <div class="g-chnum">1</div>
+          <h2 class="g-h2">What does a warped door look like?</h2>
+          <p class="g-lead">The door still opens. The hinges are fine. But something is clearly wrong.</p>
+          <p class="g-p">Warping is when the flat face of a door bends out of its plane. The top and bottom stay fixed at the hinges — the middle bows outward. The latch stops aligning. The door starts rubbing the frame. Left long enough, it will not close at all.</p>
+          <div class="g-scene">
+            <svg width="100%" viewBox="0 0 680 380">
+              <defs>
+                <pattern id="gtgA" x="0" y="0" width="14" height="300" patternUnits="userSpaceOnUse"><path d="M7,0 C5,45 9,90 6,150 C4,210 8,265 7,300" fill="none" stroke="#5a2808" stroke-width="0.9" opacity="0.28"/></pattern>
+                <marker id="garA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1,2 L8,5 L1,8" fill="none" stroke="context-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              </defs>
+              <text x="142" y="20" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" fill="#98948e">Before monsoon — flat</text>
+              <rect x="30" y="30" width="192" height="14" rx="2" fill="#d4cec0"/><rect x="30" y="316" width="192" height="14" rx="2" fill="#d4cec0"/>
+              <rect x="30" y="30" width="22" height="300" rx="2" fill="#b8b0a0" stroke="#a09888" stroke-width="1"/><rect x="44" y="30" width="8" height="300" fill="#a09080" opacity=".25"/>
+              <rect x="52" y="34" width="160" height="292" rx="3" fill="#7a3c12"/><rect x="52" y="34" width="160" height="292" rx="3" fill="url(#gtgA)"/>
+              <rect x="64" y="48" width="60" height="92" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.6" opacity=".5"/><rect x="136" y="48" width="60" height="92" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.6" opacity=".5"/>
+              <rect x="64" y="156" width="60" height="152" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.6" opacity=".5"/><rect x="136" y="156" width="60" height="152" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.6" opacity=".5"/>
+              <rect x="52" y="34" width="160" height="292" rx="3" fill="none" stroke="#3a1604" stroke-width="2"/>
+              <rect x="44" y="50" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="44" y="136" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="44" y="222" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="44" y="290" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/>
+              <circle cx="202" cy="182" r="6" fill="#c09028" stroke="#8a6518" stroke-width="1"/><circle cx="202" cy="182" r="3" fill="#8a6518"/>
+              <text x="142" y="344" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" fill="#2d6a4f" font-weight="500">Flat — sits perfectly in frame ✓</text>
+              <text x="142" y="360" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#98948e">Solid teak · 3'6" × 8' · 45mm</text>
+              <line x1="340" y1="18" x2="340" y2="338" stroke="#ede8df" stroke-width="1.5"/>
+              <text x="340" y="356" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#c8c0b0" font-style="italic">one monsoon later →</text>
+              <text x="520" y="20" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" fill="#98948e">After monsoon — warped</text>
+              <rect x="370" y="30" width="220" height="14" rx="2" fill="#d4cec0"/><rect x="370" y="316" width="220" height="14" rx="2" fill="#d4cec0"/>
+              <rect x="370" y="30" width="22" height="300" rx="2" fill="#b8b0a0" stroke="#a09888" stroke-width="1"/><rect x="384" y="30" width="8" height="300" fill="#a09080" opacity=".25"/>
+              <path d="M392,34 L560,34 Q590,182 560,326 L392,326 Q392,182 392,34" fill="#7a3c12"/><path d="M392,34 L560,34 Q590,182 560,326 L392,326 Q392,182 392,34" fill="url(#gtgA)"/>
+              <path d="M404,48 L464,48 Q476,94 464,140 L404,140 Q404,94 404,48" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".45"/>
+              <path d="M474,48 L534,48 Q558,94 534,140 L474,140 Q462,94 474,48" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".4"/>
+              <path d="M404,154 L464,154 Q476,230 464,322 L404,322 Q404,230 404,154" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".45"/>
+              <path d="M474,154 L534,154 Q558,230 534,322 L474,322 Q462,230 474,154" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".4"/>
+              <path d="M392,34 L560,34 Q590,182 560,326 L392,326 Q392,182 392,34" fill="none" stroke="#3a1604" stroke-width="2"/>
+              <rect x="384" y="50" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="384" y="136" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="384" y="222" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/><rect x="384" y="290" width="16" height="28" rx="2" fill="#c09028" stroke="#8a6518" stroke-width="1"/>
+              <line x1="560" y1="34" x2="586" y2="34" stroke="#8a3020" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/><line x1="560" y1="326" x2="586" y2="326" stroke="#8a3020" stroke-width="1.5" stroke-dasharray="4 3" opacity=".7"/>
+              <text x="628" y="176" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a3020">belly</text>
+              <text x="628" y="190" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#8a3020">~20mm</text>
+              <line x1="612" y1="182" x2="592" y2="182" stroke="#8a3020" stroke-width="1.8" marker-end="url(#garA)"/>
+              <text x="490" y="344" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" fill="#8a3020" font-weight="500">Won't latch — gap at frame edges ✗</text>
+              <text x="490" y="360" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="11" fill="#98948e">Same door — one monsoon later</text>
+            </svg>
+            <p class="g-caption">Elevation view — same door, same hinges, same frame. The bow is emphasised for clarity; in practice 15–25mm is enough to prevent the latch from catching.</p>
+          </div>
+          <p class="g-p">The warped door hasn't failed structurally. The hinges still hold. But it has become unusable. In Chennai, this typically shows within the first two monsoon seasons on an untreated or under-supported door.</p>
+        </div>
+
+        <!-- CH 2 -->
+        <div class="g-chapter">
+          <div class="g-chnum">2</div>
+          <h2 class="g-h2">The moisture story — why it happens</h2>
+          <p class="g-lead">Wood breathes with the weather, even after it's been cut and finished.</p>
+          <p class="g-p">Think of the grain like a bundle of drinking straws running from top to bottom. When monsoon hits, the outer face absorbs moisture — those straws swell sideways. The inner face, sheltered and sealed, stays the same size. <strong>One side grows longer than the other.</strong> The door has no choice but to curve toward the drier face.</p>
+          <p class="g-p">This happens to both solid teak and flush doors — but for slightly different reasons and with different consequences. The monsoon doesn't distinguish between them.</p>
+          <div class="g-note red">
+            <strong>The one step most carpenters skip:</strong> Seal all four edges with exterior PU finish before the door goes into the frame. The bottom edge especially — moisture from the floor wicks up through end grain, travels up the stile, and causes veneer to lift at the corners within two monsoon seasons. Five minutes of sealing prevents years of problems.
+          </div>
+        </div>
+
+        <!-- CH 3 -->
+        <div class="g-chapter">
+          <div class="g-chnum">3</div>
+          <h2 class="g-h2">What hinges actually do</h2>
+          <p class="g-lead">More hinges don't make a door stronger. They make it more constrained.</p>
+          <p class="g-p">The top and bottom hinges are the only structural ones — always. The top holds in tension, the bottom in compression. Together they carry the full weight. Every hinge in between does one job only: <strong>stops the middle of the door from bowing outward.</strong></p>
+
+          <div class="g-toggle-row">
+            <button class="g-tog on" onclick="gSetDoor('teak')" id="g-tb-teak">Solid teak — 3'6" × 8'</button>
+            <button class="g-tog" onclick="gSetDoor('flush')" id="g-tb-flush">Flush door — 3' × 8'</button>
+          </div>
+
+          <div class="g-door-stage">
+            <div>
+              <svg id="g-dsvg" width="100%" viewBox="0 0 200 480">
+                <defs>
+                  <pattern id="gtgC" x="0" y="0" width="14" height="460" patternUnits="userSpaceOnUse"><path d="M7,0 C5,65 9,130 6,230 C4,330 8,400 7,460" fill="none" stroke="#5a2808" stroke-width="0.8" opacity="0.25"/></pattern>
+                  <pattern id="gfgC" x="0" y="0" width="18" height="460" patternUnits="userSpaceOnUse"><line x1="9" y1="0" x2="9" y2="460" stroke="#4a6030" stroke-width="0.5" opacity="0.2"/></pattern>
+                </defs>
+                <rect x="8" y="8" width="22" height="464" rx="3" fill="#b8b0a0" stroke="#a0988a" stroke-width="1"/>
+                <rect x="22" y="8" width="8" height="464" fill="#a09080" opacity=".22"/>
+                <rect id="g-dp" x="30" y="12" width="158" height="456" rx="3" fill="#7a3c12"/>
+                <rect id="g-dpg" x="30" y="12" width="158" height="456" rx="3" fill="url(#gtgC)"/>
+                <rect id="g-pi1" x="42" y="26" width="60" height="102" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.5" opacity=".44"/>
+                <rect id="g-pi2" x="116" y="26" width="60" height="102" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.5" opacity=".44"/>
+                <rect id="g-pi3" x="42" y="144" width="60" height="104" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.5" opacity=".44"/>
+                <rect id="g-pi4" x="116" y="144" width="60" height="104" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.5" opacity=".44"/>
+                <rect id="g-pi5" x="42" y="264" width="134" height="182" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.5" opacity=".44"/>
+                <rect id="g-dpout" x="30" y="12" width="158" height="456" rx="3" fill="none" stroke="#3a1604" stroke-width="2"/>
+                <circle id="g-dk" cx="176" cy="244" r="6" fill="#c09028" stroke="#8a6518" stroke-width="1"/>
+                <circle id="g-dk2" cx="176" cy="244" r="3" fill="#8a6518"/>
+                <g id="g-hg"></g>
+              </svg>
+            </div>
+            <div>
+              <div class="g-wcard"><div class="g-wlbl">Calculated door weight</div><div class="g-wval" id="g-dwt">—</div><div class="g-wsub">width × height × thickness × wood density</div></div>
+              <div class="g-wcard"><div class="g-wlbl">What the middle hinges are doing</div><div class="g-wval" id="g-dex" style="font-size:14px;padding-top:4px;line-height:1.35;">—</div></div>
+              <div id="g-dbars" style="margin-top:1rem;"></div>
+              <div class="g-note" id="g-dnote" style="margin-top:1rem;font-size:13px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CH 4 -->
+        <div class="g-chapter">
+          <div class="g-chnum">4</div>
+          <h2 class="g-h2">Inside a flush door — three core constructions</h2>
+          <p class="g-lead">Every flush door looks the same from outside. Cut one open and you find something completely different inside.</p>
+          <p class="g-p">The core — the material packed inside the outer timber frame — determines weight, warp resistance, screw-holding, and longevity. IS 2202 was updated in 2022–23 and mandates ISI marking on all flush doors sold in India from February 2025.</p>
+          <div class="g-core-grid">
+            <div class="g-cc">
+              <svg width="100%" viewBox="0 0 160 100" style="margin-bottom:8px;"><rect x="4" y="4" width="152" height="92" rx="3" fill="#e8d8b0"/><rect x="4" y="4" width="22" height="92" rx="2" fill="#c8a060"/><rect x="134" y="4" width="22" height="92" rx="2" fill="#c8a060"/><rect x="4" y="4" width="152" height="15" fill="#c8a060"/><rect x="4" y="81" width="152" height="15" fill="#c8a060"/><rect x="60" y="28" width="40" height="44" rx="2" fill="#f4edd8" opacity=".9"/><text x="80" y="55" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="#c8a060" opacity=".65">void</text><rect x="4" y="4" width="152" height="92" rx="3" fill="none" stroke="#9a7838" stroke-width="1.2"/></svg>
+              <div class="g-cc-name">Hollow core</div><div class="g-cc-sub">IS 2191 · 8–14 kg</div>
+              <p class="g-p">Empty frame inside. Lightest, cheapest. Frame itself can twist in humidity.</p>
+              <span class="g-tag g-tag-r">Warps / racks easily</span>
+            </div>
+            <div class="g-cc">
+              <svg width="100%" viewBox="0 0 160 100" style="margin-bottom:8px;"><rect x="4" y="4" width="152" height="92" rx="3" fill="#d8e8c0"/><rect x="4" y="4" width="22" height="92" rx="2" fill="#7aaa58"/><rect x="134" y="4" width="22" height="92" rx="2" fill="#7aaa58"/><rect x="4" y="4" width="152" height="14" fill="#7aaa58"/><rect x="4" y="82" width="152" height="14" fill="#7aaa58"/><rect x="26" y="18" width="26" height="64" rx="1" fill="#9ac878" opacity=".68"/><rect x="54" y="18" width="26" height="64" rx="1" fill="#8ab868" opacity=".68"/><rect x="82" y="18" width="26" height="64" rx="1" fill="#9ac878" opacity=".68"/><rect x="110" y="18" width="22" height="64" rx="1" fill="#8ab868" opacity=".68"/><rect x="4" y="4" width="152" height="92" rx="3" fill="none" stroke="#5a8840" stroke-width="1.2"/></svg>
+              <div class="g-cc-name">Blockboard core</div><div class="g-cc-sub">IS 2202 Pt.1 · 20–30 kg</div>
+              <p class="g-p">Solid timber blocks packed side by side. Adjacent grain opposes — self-stabilising. Most common in India.</p>
+              <span class="g-tag g-tag-g">Best warp resistance</span><span class="g-tag g-tag-g">Strong screw hold</span>
+            </div>
+            <div class="g-cc">
+              <svg width="100%" viewBox="0 0 160 100" style="margin-bottom:8px;"><rect x="4" y="4" width="152" height="92" rx="3" fill="#d8e0f0"/><rect x="4" y="4" width="22" height="92" rx="2" fill="#7a90c8"/><rect x="134" y="4" width="22" height="92" rx="2" fill="#7a90c8"/><rect x="4" y="4" width="152" height="14" fill="#7a90c8"/><rect x="4" y="82" width="152" height="14" fill="#7a90c8"/><rect x="26" y="18" width="108" height="64" fill="#a8b8e0" opacity=".45"/><circle cx="52" cy="42" r="2" fill="#5a70a8" opacity=".4"/><circle cx="72" cy="60" r="2" fill="#5a70a8" opacity=".4"/><circle cx="92" cy="35" r="2" fill="#5a70a8" opacity=".4"/><circle cx="112" cy="58" r="2" fill="#5a70a8" opacity=".4"/><rect x="4" y="4" width="152" height="92" rx="3" fill="none" stroke="#5a70a8" stroke-width="1.2"/><text x="80" y="52" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="8" fill="#5a70a8" opacity=".6">uniform fill</text></svg>
+              <div class="g-cc-name">MDF / particle board core</div><div class="g-cc-sub">IS 2202 Pt.2 · 25–35 kg</div>
+              <p class="g-p">Engineered fill — no grain direction so it doesn't bow. But swells uniformly in moisture. Heaviest option.</p>
+              <span class="g-tag g-tag-g">No directional bow</span><span class="g-tag g-tag-r">Swells in moisture</span>
+            </div>
+          </div>
+          <div class="g-note green">
+            <strong>Always specify BWP grade</strong> — not MR. Boiling Water Proof grade uses phenol formaldehyde resin and survives Chennai's coastal humidity. MR grade will delaminate within 2–3 monsoons in any exposed area. From February 2025, all flush doors sold in India must carry the ISI mark.
+          </div>
+        </div>
+
+        <!-- CH 5 -->
+        <div class="g-chapter" style="border-bottom:none;">
+          <div class="g-chnum">5</div>
+          <h2 class="g-h2">The one thing most people miss</h2>
+          <p class="g-lead">You can have the right door, the right grade, the right hinge count — and still get warping.</p>
+          <p class="g-p">Sealing all four edges of the door before it goes into the frame takes five minutes and prevents the majority of warping. The bottom edge is the most critical: moisture from the floor wicks up through the end grain, travels up the stile, and causes veneer to lift at the corners within two monsoons.</p>
+          <div class="g-scene">
+            <svg width="100%" viewBox="0 0 680 220">
+              <defs>
+                <pattern id="gtgE" x="0" y="0" width="14" height="180" patternUnits="userSpaceOnUse"><path d="M7,0 C5,30 9,60 6,90 C4,120 8,155 7,180" fill="none" stroke="#5a2808" stroke-width="0.7" opacity="0.2"/></pattern>
+                <marker id="garD" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1,2 L8,5 L1,8" fill="none" stroke="context-stroke" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              </defs>
+              <rect x="162" y="10" width="356" height="14" rx="2" fill="#d4cec0"/><rect x="162" y="196" width="356" height="14" rx="2" fill="#d4cec0"/>
+              <rect x="162" y="10" width="22" height="200" rx="2" fill="#b8b0a0"/><rect x="496" y="10" width="22" height="200" rx="2" fill="#b8b0a0"/>
+              <rect x="184" y="14" width="314" height="192" rx="3" fill="#7a3c12"/><rect x="184" y="14" width="314" height="192" rx="3" fill="url(#gtgE)"/>
+              <rect x="198" y="26" width="130" height="74" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".45"/>
+              <rect x="354" y="26" width="130" height="74" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".45"/>
+              <rect x="198" y="114" width="286" height="80" rx="2" fill="none" stroke="#4a1e06" stroke-width="1.4" opacity=".45"/>
+              <rect x="184" y="14" width="314" height="192" rx="3" fill="none" stroke="#3a1604" stroke-width="2"/>
+              <rect x="184" y="14" width="314" height="8" rx="2" fill="#a05420" opacity=".7"/>
+              <rect x="184" y="198" width="314" height="8" rx="2" fill="#8a3020" opacity=".85"/>
+              <rect x="184" y="14" width="8" height="192" rx="2" fill="#a05420" opacity=".55"/>
+              <rect x="490" y="14" width="8" height="192" rx="2" fill="#a05420" opacity=".55"/>
+              <text x="148" y="20" text-anchor="end" font-family="'DM Sans',sans-serif" font-size="11" fill="#a05420">top edge</text>
+              <line x1="150" y1="18" x2="182" y2="18" stroke="#a05420" stroke-width="1" stroke-dasharray="3 2"/>
+              <text x="100" y="112" text-anchor="end" font-family="'DM Sans',sans-serif" font-size="11" fill="#a05420">side edges</text>
+              <line x1="102" y1="110" x2="182" y2="110" stroke="#a05420" stroke-width="1" stroke-dasharray="3 2"/>
+              <text x="341" y="218" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="12" fill="#8a3020" font-weight="500">bottom edge — most critical · moisture wicks up from floor here</text>
+              <text x="540" y="20" font-family="'DM Sans',sans-serif" font-size="11" fill="#a05420">seal with</text>
+              <text x="540" y="33" font-family="'DM Sans',sans-serif" font-size="11" fill="#a05420">exterior PU</text>
+              <line x1="520" y1="18" x2="500" y2="18" stroke="#a05420" stroke-width="1" stroke-dasharray="3 2"/>
+              <line x1="341" y1="196" x2="341" y2="178" stroke="#3a6898" stroke-width="1.8" marker-end="url(#garD)" stroke-dasharray="3 2"/>
+              <text x="341" y="174" text-anchor="middle" font-family="'DM Sans',sans-serif" font-size="9" fill="#3a6898">moisture rises</text>
+            </svg>
+            <p class="g-caption">Apply two coats of exterior PU finish to all four cut edges before the door goes into the frame. A five-minute step that prevents years of problems.</p>
+          </div>
+          <div class="g-note">
+            <strong>In summary:</strong> Warping is a moisture physics problem, not a hinge problem. The right hinge count constrains the bow once it starts — but edge sealing and BWP grade prevent moisture from entering in the first place. Do all three and a door in Chennai's climate will last a generation.
+          </div>
+          <div class="g-footer">
+            <span>IS 2202:2022–23 · IS 2191:2022 · IS 1341:2018 · BIS QCO 2024–25</span>
+            <span>For reference use only — verify with current BIS documentation</span>
+          </div>
+        </div>
+
+      </div><!-- /guide-modal-content -->
+    </div><!-- /guide-modal-inner -->
+  </div><!-- /guide-modal -->
+
   <script>
     const dot=document.getElementById('cdot'), ring=document.getElementById('cring');
     let mx=0,my=0,rx=0,ry=0;
@@ -680,11 +1481,532 @@
     window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40));
     const obs=new IntersectionObserver(entries=>{ entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*100); }); },{threshold:0.1});
     document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+    function goFilter(cat){
+      // scroll to gallery
+      document.getElementById('gallery').scrollIntoView({behavior:'smooth'});
+      // wait for scroll then trigger the right tab
+      setTimeout(()=>{
+        const tabs = document.querySelectorAll('.ftab');
+        const map = {all:0, arch:1, interior:2, material:3};
+        const tab = tabs[map[cat]];
+        if(tab) filter(tab, cat);
+      }, 600);
+    }
+
     function filter(btn,cat){
       document.querySelectorAll('.ftab').forEach(t=>t.classList.remove('active'));
       btn.classList.add('active');
-      document.querySelectorAll('.gi').forEach(item=>{ const show=cat==='all'||item.dataset.cat===cat; item.style.opacity=show?'1':'0.12'; item.style.pointerEvents=show?'auto':'none'; });
+      document.querySelectorAll('.gi').forEach(item=>{
+        const show = cat==='all' || item.dataset.cat===cat;
+        item.style.display = show ? '' : 'none';
+      });
+    }
+
+    /* ── DOOR GUIDE MODAL ── */
+    function openGuide(){
+      document.getElementById('guide-modal').classList.add('open');
+      document.body.style.overflow='hidden';
+      gSetDoor('teak');
+    }
+    function closeGuide(){
+      document.getElementById('guide-modal').classList.remove('open');
+      document.body.style.overflow='';
+    }
+    document.getElementById('guide-modal').addEventListener('click',function(e){
+      if(e.target===this) closeGuide();
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeGuide(); });
+
+    /* ── HINGE INTERACTIVE (guide modal) ── */
+    const gD = {
+      teak:{
+        fill:'#7a3c12',grain:'url(#gtgC)',outline:'#3a1604',panel:'#4a1e06',
+        knob:'#c09028',knob2:'#8a6518',
+        wt:'47 kg',ex:"Clamping the solid grain to prevent bowing across the 8ft span",
+        hinges:[
+          {y:16, f:'#8a3020',s:'#5a1808',lbl:'H1 — top',   role:'Tension — structural',      pct:85},
+          {y:124,f:'#2d6a4f',s:'#1a4a30',lbl:'H2',         role:'Anti-warp clamp',           pct:10},
+          {y:238,f:'#2d6a4f',s:'#1a4a30',lbl:'H3',         role:'Anti-warp clamp',           pct:10},
+          {y:374,f:'#2a4878',s:'#1a2848',lbl:'H4 — bottom',role:'Compression — structural',  pct:75},
+        ],
+        note:"Your 45mm solid teak at 3'6\" × 8' weighs ~47kg. H1 and H4 carry all the structural weight. H2 and H3 are mechanical clamps — they divide the 8ft height into shorter spans so the solid grain physically cannot bow far enough to bind the frame."
+      },
+      flush:{
+        fill:'#5a7848',grain:'url(#gfgC)',outline:'#3a5828',panel:'#3a5828',
+        knob:'#8aaa6a',knob2:'#5a7a3a',
+        wt:'16 kg',ex:"Stopping the lightweight frame from racking sideways",
+        hinges:[
+          {y:16, f:'#8a3020',s:'#5a1808',lbl:'H1 — top',   role:'Tension — structural',      pct:85},
+          {y:228,f:'#9a9690',s:'#6a6460',lbl:'H2 — middle',role:'Anti-rack — frame stability',pct:8},
+          {y:374,f:'#2a4878',s:'#1a2848',lbl:'H3 — bottom',role:'Compression — structural',  pct:75},
+        ],
+        note:"Your flush door at 3' × 8' × 40mm weighs ~16kg. IS 2202 specifies 3 hinges for all flush doors above 2100mm height. H2 stops the lightweight frame from racking sideways — only H1 and H3 are structural load bearers."
+      }
+    };
+    function gMkH(y,f,s){
+      const g=document.createElementNS('http://www.w3.org/2000/svg','g');
+      const r1=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      r1.setAttribute('x','8');r1.setAttribute('y',12+y);r1.setAttribute('width','18');r1.setAttribute('height','28');r1.setAttribute('rx','2');r1.setAttribute('fill',f);r1.setAttribute('stroke',s);r1.setAttribute('stroke-width','1');
+      const r2=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      r2.setAttribute('x','13');r2.setAttribute('y',12+y+4);r2.setAttribute('width','7');r2.setAttribute('height','20');r2.setAttribute('rx','1');r2.setAttribute('fill',s);r2.setAttribute('opacity','.45');
+      [8,14,20].forEach(d=>{ const c=document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('cx','17');c.setAttribute('cy',12+y+d);c.setAttribute('r','1.6');c.setAttribute('fill',f); g.appendChild(c); });
+      g.appendChild(r1);g.appendChild(r2);
+      return g;
+    }
+    function gSetDoor(t){
+      const tb=document.getElementById('g-tb-teak'), fb=document.getElementById('g-tb-flush');
+      if(!tb||!fb) return;
+      tb.classList.toggle('on',t==='teak'); fb.classList.toggle('on',t==='flush');
+      const d=gD[t];
+      document.getElementById('g-dp').setAttribute('fill',d.fill);
+      document.getElementById('g-dpg').setAttribute('fill',d.grain);
+      ['g-pi1','g-pi2','g-pi3','g-pi4','g-pi5'].forEach(id=>document.getElementById(id).setAttribute('stroke',d.panel));
+      document.getElementById('g-dpout').setAttribute('stroke',d.outline);
+      document.getElementById('g-dk').setAttribute('fill',d.knob);
+      document.getElementById('g-dk2').setAttribute('fill',d.knob2);
+      const hg=document.getElementById('g-hg'); hg.innerHTML='';
+      d.hinges.forEach(h=>hg.appendChild(gMkH(h.y,h.f,h.s)));
+      document.getElementById('g-dwt').textContent=d.wt;
+      document.getElementById('g-dex').textContent=d.ex;
+      document.getElementById('g-dnote').textContent=d.note;
+      document.getElementById('g-dbars').innerHTML=d.hinges.map(h=>`
+        <div class="g-bar-wrap">
+          <div class="g-bar-meta"><span class="g-bar-name">${h.lbl}</span><span class="g-bar-pct">${h.pct}% force</span></div>
+          <div class="g-bar-track"><div class="g-bar-fill" style="width:${h.pct}%;background:${h.f};"></div></div>
+          <div class="g-bar-role">${h.role}</div>
+        </div>`).join('');
+    }
+    /* ── 2BHK MODAL ── */
+    function openBhk(){
+      document.getElementById('bhk-modal').classList.add('open');
+      document.body.style.overflow='hidden';
+      bmInit();
+    }
+    function closeBhk(){
+      document.getElementById('bhk-modal').classList.remove('open');
+      document.body.style.overflow='';
+    }
+    document.getElementById('bhk-modal').addEventListener('click',function(e){ if(e.target===this) closeBhk(); });
+
+    let bmInited = false;
+    let bmIsAfter = false;
+
+    function bmInit(){
+      if(bmInited) return; bmInited=true;
+      const elev = document.getElementById('bm-elevationBox');
+      const hsData = {
+        before:[
+          {left:'30%',top:'48%',label:'W',key:'win-before', title:'Existing Window'},
+          {left:'75%',top:'54%',label:'D',key:'door-before',title:'Existing Door'}
+        ],
+        after:[
+          {left:'24%',top:'18%',label:'1',key:'fanlight-win',   title:'Fixed Fanlight — Window'},
+          {left:'13%',top:'56%',label:'2',key:'shutter-tall',   title:'Tall Central-Pivot Shutter'},
+          {left:'39%',top:'56%',label:'3',key:'shutters-horiz', title:'Horizontal Shutters × 3'},
+          {left:'24%',top:'87%',label:'4',key:'sill-glass',     title:'Glazed Sill Zone'},
+          {left:'75%',top:'18%',label:'5',key:'door-fanlight',  title:'Door Fanlight — Fixed'},
+          {left:'75%',top:'58%',label:'6',key:'teak-door',      title:'Solid Teak Door'}
+        ]
+      };
+      hsData.before.forEach(h=>{
+        const d=document.createElement('div');
+        d.className='bm-hotspot bm-hs-before';
+        d.style.cssText=`left:${h.left};top:${h.top}`;
+        d.textContent=h.label; d.title=h.title;
+        d.onclick=()=>bmShowDetail(h.key);
+        elev.appendChild(d);
+      });
+      hsData.after.forEach(h=>{
+        const d=document.createElement('div');
+        d.className='bm-hotspot bm-hs-after';
+        d.style.cssText=`left:${h.left};top:${h.top}`;
+        d.textContent=h.label; d.title=h.title;
+        d.onclick=()=>bmShowDetail(h.key);
+        elev.appendChild(d);
+      });
+    }
+
+    function bmToggleState(){
+      bmIsAfter=!bmIsAfter;
+      document.getElementById('bm-toggle').classList.toggle('active',bmIsAfter);
+      document.getElementById('bm-elevationBox').classList.toggle('bm-state-after',bmIsAfter);
+      document.getElementById('bm-stateLabel').textContent=bmIsAfter?'After':'Before';
+      document.getElementById('bm-elevLabel').textContent=bmIsAfter?'Proposed Facade — After Renovation':'Existing Facade — Before Renovation';
+      bmResetPanel();
+    }
+
+    function bmResetPanel(){
+      document.querySelectorAll('.bm-hotspot').forEach(h=>h.classList.remove('active'));
+      document.getElementById('bm-panelTitle').textContent='Select an element';
+      document.getElementById('bm-panelSub').textContent='Tap a dot on the elevation';
+      document.getElementById('bm-panelBody').innerHTML='<div class="bm-panel-empty"><div class="bm-panel-empty-icon">◎</div>Toggle before / after,<br>then tap any dot<br>to read element details.</div>';
+    }
+
+    const bmDetails = {
+      'win-before':{ title:'Existing Window', sub:'Before renovation',
+        sections:[{heading:'Element',rows:[['Type','4-wide sliding, aluminium'],['Size',"5'-6\" wide × 4'-10\" tall"],['Frame','Powder-coated aluminium'],['Glass','5mm clear float'],['Head',"At 6'-9\" lintel"]]},{heading:'Issues',rows:[['Dead wall',"1'-9\" above lintel, unused"],['Ventilation','50% opening only'],['Light','Insufficient, flat facade'],['Character','No material identity']]}],
+        note:"The 4-pane sliding window stopped at the lintel — leaving nearly 2 feet of dead wall between head and beam. The ceiling received no light.",
+        tag:'Existing · Standard Aluminium'},
+      'door-before':{ title:'Existing Door', sub:'Before renovation · inward swing',
+        sections:[{heading:'Element',rows:[['Type','Flush panel, inward swing'],['Size',"3'-0\" × 6'-9\""],['Material','Painted flush door'],['Swing','Inward — handle left'],['Fanlight','None — solid wall above']]},{heading:'Issues',rows:[['Character','No material expression'],['Light','Zero borrowed light above'],['Height',"Stops at lintel — missed beam"]]}],
+        note:"A standard flush door with no fanlight. The passage beyond was in perpetual shade because nothing brought light above the lintel level.",
+        tag:'Existing · To Be Replaced'},
+      'fanlight-win':{ title:'Fixed Fanlight', sub:"Window unit · 1'10\" tall · 2 panes",
+        sections:[{heading:'Specification',rows:[['Type','Fixed — non-operable'],['Size',"5'-6\" wide × 1'-10\" tall"],['Left pane',"2'-0\" wide"],['Right pane',"3'-6\" wide"],['Glass','8mm toughened clear'],['Frame','Teak, 75mm section'],['Position',"Flush to beam soffit — 8'-6\""]]},{heading:'Purpose',rows:[['Function','Washes ceiling in diffused light'],['Previously','Dead wall above lintel'],['Effect','No glare — soft ambient light']]}],
+        note:"Pushing the glazing from the 6'9\" lintel to the 8'6\" beam was the single most impactful move. The 1'10\" fixed strip above transforms how light reads in the room.",
+        tag:'Key Design Move',
+        links:[{url:'https://in.saint-gobain-glass.com/knowledge-center/toughened-glass',label:'Saint-Gobain India — Toughened Glass',desc:'product guide & specifications'}]},
+      'shutter-tall':{ title:'Tall Operable Shutter', sub:"Left column · 2'-0\" wide · central pivot",
+        sections:[{heading:'Specification',rows:[['Type','Single leaf, central pivot'],['Width',"2'-0\" (610mm)"],['Height',"4'-4½\" operable zone"],['Glass','6mm toughened clear'],['Frame','Teak, 75 × 50mm'],['Pivot','Horizontal central pivot bar'],['Finish','Raw teak, teak oil']]},{heading:'Operation',rows:[['Mechanism','Central pivot — top/bottom open simultaneously'],['Effect','Top in, bottom out — drives air'],['Use','Maximum ventilation in one motion']]}],
+        note:"A central pivot shutter — when opened, the top half tilts inward and the bottom half outward simultaneously, creating a powerful stack-effect ventilation without any mechanical hardware.",
+        tag:'Material: Teak + Toughened Glass',
+        links:[{url:'https://harshatimbers.com/teakwood-joinery-in-doors-and-windows/',label:'Harsha Timbers — Teak Joinery Guide',desc:'Indian context: properties, seasoning & care'}]},
+      'shutters-horiz':{ title:'Horizontal Shutters × 3', sub:"Right column · 3'-6\" wide · central pivot",
+        sections:[{heading:'Specification',rows:[['Type','3 horizontal, central pivot each'],['Width',"3'-6\" (1067mm)"],['Height each',"~1'-5\" (432mm)"],['Glass','6mm toughened clear'],['Frame','Teak, 75 × 50mm'],['Finish','Raw teak, teak oil']]},{heading:'Operation',rows:[['Control','Each shutter independent'],['Top 1','High-level light + ventilation'],['Mid 2','Cross ventilation, eye height'],['Bottom 3','Low-level airflow + privacy']]},{heading:'Maintenance',rows:[['Oiling','Teak oil annually'],['Pivot','Grease bearings every 2 years'],['Monsoon','Check silicone at frame junction']]}],
+        note:"Three independent pivot shutters on the right column let the facade be tuned continuously — each one creates an inward / outward air split that drives cross-ventilation naturally.",
+        tag:'Material: Teak + Toughened Glass',
+        links:[{url:'https://in.saint-gobain-glass.com/knowledge-center/toughened-glass',label:'Saint-Gobain India — Toughened Glass',desc:'glazing specification & product range'}]},
+      'sill-glass':{ title:'Glazed Sill Zone', sub:'Bottom of window · both columns · fixed glass',
+        sections:[{heading:'Specification',rows:[['Type','Fixed glass — non-operable'],['Height',"~1'-6\" (sill zone)"],['Left',"2'-0\" wide pane"],['Right',"3'-6\" wide pane"],['Glass','6mm toughened clear'],['Frame','Teak, 75mm section'],['Sill cap','Projecting teak nosing, 6"']]},{heading:'Why glazed',rows:[['Light','Maximises floor-level light wash'],['Intent','Full-height light — no solid zone'],['Privacy','Depth of reveals gives screening']]}],
+        note:"The sill zone is glazed rather than solid because the entire design intent is to flood the apartment with light. The depth of the teak reveal provides natural privacy screening from street level.",
+        tag:'Fixed Glass · Full-Height Light'},
+      'door-fanlight':{ title:'Door Fanlight', sub:"Fixed · 1'10½\" tall · above entrance",
+        sections:[{heading:'Specification',rows:[['Type','Fixed — non-operable'],['Size',"3'-0\" × 1'-10½\""],['Glass','8mm toughened clear'],['Frame','Teak, 75mm section'],['Alignment',"Transom at 6'-7½\" — matches window"]]},{heading:'Composition',rows:[['Datum',"Single teak transom line at 6'7½\""],['Effect','Window + door read as one facade'],['Light','Borrowed light into passage beyond']]}],
+        note:"The door and window fanlights share the same transom height. A single horizontal teak datum runs across the full facade — it is what makes both joinery elements feel like one unified composition.",
+        tag:'Fixed · Composition Move'},
+      'teak-door':{ title:'Solid Teak Door', sub:'Inward swing · handle left · hinges right',
+        sections:[{heading:'Specification',rows:[['Type','Single leaf, inward swing'],['Width',"3'-0\" (914mm)"],['Height',"6'-7½\" (2019mm)"],['Material','Solid teak, 40mm thick'],['Frame','Teak, 100 × 75mm'],['Finish','Raw — teak oil, 2 coats'],['Panels','2 raised solid teak panels'],['Hinges','Right stile'],['Handle','Left stile — mortise latch, brass']]},{heading:'Maintenance',rows:[['Annual','Teak oil — clean surface first'],['Monsoon','Frame expands ~2mm — check gap'],['Finish','Never varnish — keep it raw']]}],
+        note:"Raw teak ages honestly. In a year the surface moves from orange-brown to a deep silver-grey at exposed edges, with rich warm tones in sheltered zones. No varnish — ever.",
+        tag:'Solid Teak · Inward Swing',
+        links:[{url:'https://harshatimbers.com/teakwood-joinery-in-doors-and-windows/',label:'Harsha Timbers — Teak Joinery Guide',desc:'properties, seasoning & care for doors & windows, India'}]}
+    };
+
+    function bmShowDetail(key){
+      const d=bmDetails[key]; if(!d) return;
+      document.querySelectorAll('.bm-hotspot').forEach(h=>h.classList.remove('active'));
+      document.getElementById('bm-panelTitle').textContent=d.title;
+      document.getElementById('bm-panelSub').textContent=d.sub;
+      let html='';
+      d.sections.forEach(sec=>{
+        html+=`<div class="bm-detail-section"><div class="bm-detail-heading">${sec.heading}</div>`;
+        sec.rows.forEach(([k,v])=>{ html+=`<div class="bm-detail-row"><span class="bm-detail-key">${k}</span><span class="bm-detail-val">${v}</span></div>`; });
+        html+='</div>';
+      });
+      if(d.note) html+=`<div class="bm-detail-note">${d.note}</div>`;
+      if(d.tag)  html+=`<div><span class="bm-tag">${d.tag}</span></div>`;
+      if(d.links&&d.links.length){
+        html+=`<div class="bm-detail-links"><div class="bm-detail-links-heading">Further Reading</div>`;
+        d.links.forEach(l=>{ html+=`<div class="bm-detail-link"><a href="${l.url}" target="_blank">${l.label}</a><span class="bm-detail-link-desc">— ${l.desc}</span></div>`; });
+        html+='</div>';
+      }
+      document.getElementById('bm-panelBody').innerHTML=html;
     }
   </script>
+
+  <!-- LIFT-BED MODAL -->
+  <div id="liftbed-modal">
+    <div id="liftbed-modal-inner">
+      <button id="liftbed-modal-close" onclick="closeLiftBed()">&#x2715;</button>
+
+      <div class="lb-back-bar">
+        <span class="lb-back-txt">Stucco Stories</span>
+        <span class="lb-back-sep">/</span>
+        <span class="lb-back-txt">Chennai 2BHK</span>
+        <span class="lb-back-sep">/</span>
+        <span class="lb-back-current">Bedroom 02 &#8212; Lift-Up Bed</span>
+      </div>
+
+      <div class="lb-header">
+        <div>
+          <div class="lb-header-brand">Stucco Stories</div>
+          <div class="lb-header-title">Chennai 2BHK &#8212; Bedroom 02 &middot; Lift-Up Storage Bed</div>
+        </div>
+        <div class="lb-header-meta">Project 001<br>Chennai, 2023<br>Built</div>
+      </div>
+
+      <div class="lb-controls">
+        <span class="lb-toggle-label">Animate</span>
+        <div class="lb-toggle-wrap">
+          <span class="lb-toggle-state" id="lb-stateLabel">Closed</span>
+          <div class="lb-toggle" id="lb-toggle" onclick="lbToggleBed()">
+            <div class="lb-toggle-knob"></div>
+          </div>
+          <span class="lb-toggle-state">Open</span>
+        </div>
+        <span class="lb-hint"><span></span>Tap a dot to explore</span>
+        <button class="lb-anim-btn" onclick="lbToggleBed()">&#9654; Open / Close</button>
+      </div>
+
+      <div class="lb-main">
+        <div class="lb-bed-wrap">
+          <p class="lb-bed-label" id="lb-bedLabel">Section &#8212; Closed &middot; Hinge at headboard wall (right)</p>
+          <div class="lb-bed-canvas" id="lb-bedCanvas">
+            <svg class="lb-bed-svg" id="lb-bedSvg" viewBox="0 0 660 520" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <pattern id="lb-wGH" x="0" y="0" width="14" height="5" patternUnits="userSpaceOnUse">
+                  <rect width="14" height="5" fill="#A07040"/>
+                  <line x1="0" y1="1.8" x2="14" y2="1.8" stroke="#b07848" stroke-width="0.4" opacity="0.45"/>
+                  <line x1="0" y1="3.6" x2="14" y2="3.6" stroke="#8b6030" stroke-width="0.3" opacity="0.35"/>
+                </pattern>
+                <pattern id="lb-wGV" x="0" y="0" width="7" height="50" patternUnits="userSpaceOnUse">
+                  <rect width="7" height="50" fill="#8B5E3C"/>
+                  <line x1="1.5" y1="0" x2="2" y2="50" stroke="#9d6a44" stroke-width="0.5" opacity="0.5"/>
+                  <line x1="4" y1="0" x2="4.3" y2="50" stroke="#7a5232" stroke-width="0.4" opacity="0.4"/>
+                </pattern>
+                <pattern id="lb-mTick" x="0" y="0" width="22" height="7" patternUnits="userSpaceOnUse">
+                  <rect width="22" height="7" fill="#E8E0D6"/>
+                  <line x1="0" y1="3.5" x2="22" y2="3.5" stroke="#D0C8BE" stroke-width="0.7" opacity="0.5"/>
+                </pattern>
+                <pattern id="lb-floorP" x="0" y="0" width="36" height="6" patternUnits="userSpaceOnUse">
+                  <rect width="36" height="6" fill="#D2C8BC"/>
+                  <line x1="0" y1="0" x2="36" y2="0" stroke="#C0B6AA" stroke-width="0.5"/>
+                  <line x1="18" y1="0" x2="18" y2="6" stroke="#CABFB4" stroke-width="0.3"/>
+                </pattern>
+                <linearGradient id="lb-storeFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#28180E" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="#180E06"/>
+                </linearGradient>
+                <linearGradient id="lb-chromGrad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#AAAAAA"/>
+                  <stop offset="50%" stop-color="#EEEEEE"/>
+                  <stop offset="100%" stop-color="#AAAAAA"/>
+                </linearGradient>
+              </defs>
+              <rect x="0" y="120" width="660" height="310" fill="#EAE4DB"/>
+              <rect x="608" y="0" width="52" height="460" fill="#DDD6CC"/>
+              <line x1="608" y1="0" x2="608" y2="460" stroke="#1C1713" stroke-width="2"/>
+              <rect x="0" y="430" width="660" height="90" fill="url(#lb-floorP)"/>
+              <line x1="0" y1="430" x2="660" y2="430" stroke="#1C1713" stroke-width="1.5"/>
+              <rect x="608" y="410" width="52" height="20" fill="#CAC2B8"/>
+              <line x1="608" y1="410" x2="660" y2="410" stroke="#B8B0A6" stroke-width="0.7"/>
+              <line x1="60" y1="475" x2="610" y2="475" stroke="#7A7068" stroke-width="0.7" stroke-dasharray="3,3"/>
+              <line x1="60" y1="470" x2="60" y2="480" stroke="#7A7068" stroke-width="0.7"/>
+              <line x1="610" y1="470" x2="610" y2="480" stroke="#7A7068" stroke-width="0.7"/>
+              <text x="335" y="492" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="8" text-anchor="middle" letter-spacing="1">6'-6"  OVERALL</text>
+              <line x1="60" y1="458" x2="228" y2="458" stroke="#9B5A3C" stroke-width="0.6" stroke-dasharray="2,2"/>
+              <line x1="60" y1="454" x2="60" y2="462" stroke="#9B5A3C" stroke-width="0.6"/>
+              <line x1="228" y1="454" x2="228" y2="462" stroke="#9B5A3C" stroke-width="0.6"/>
+              <text x="144" y="469" fill="#9B5A3C" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle">2'-0"  PULLOUT</text>
+              <line x1="228" y1="458" x2="610" y2="458" stroke="#9B5A3C" stroke-width="0.6" stroke-dasharray="2,2"/>
+              <text x="419" y="469" fill="#9B5A3C" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle">4'-6"  LIFT STORAGE</text>
+              <line x1="626" y1="297" x2="626" y2="430" stroke="#7A7068" stroke-width="0.7" stroke-dasharray="3,3"/>
+              <line x1="621" y1="297" x2="631" y2="297" stroke="#7A7068" stroke-width="0.7"/>
+              <line x1="621" y1="430" x2="631" y2="430" stroke="#7A7068" stroke-width="0.7"/>
+              <text x="648" y="369" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle" transform="rotate(90,648,369)">1'-6"  FFL</text>
+              <line x1="618" y1="297" x2="618" y2="325" stroke="#7A7068" stroke-width="0.5" stroke-dasharray="1.5,2"/>
+              <line x1="614" y1="297" x2="622" y2="297" stroke="#7A7068" stroke-width="0.5"/>
+              <line x1="614" y1="325" x2="622" y2="325" stroke="#7A7068" stroke-width="0.5"/>
+              <text x="612" y="314" fill="#7A7068" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="end">4"</text>
+              <rect x="60" y="335" width="550" height="95" fill="url(#lb-wGV)" stroke="#3A2010" stroke-width="1.5"/>
+              <rect x="60" y="335" width="12" height="95" fill="#7A5230" stroke="#3A2010" stroke-width="0.8"/>
+              <rect x="228" y="335" width="8" height="95" fill="#6B4226" stroke="#3A2010" stroke-width="0.8"/>
+              <rect x="72" y="343" width="148" height="82" fill="#2A1A0A"/>
+              <rect x="236" y="343" width="368" height="84" fill="url(#lb-storeFill)"/>
+              <rect x="603" y="332" width="7" height="16" rx="1" fill="#9B5A3C" stroke="#7A3A20" stroke-width="0.8"/>
+              <circle cx="607" cy="337" r="1.8" fill="#7A3A20"/>
+              <circle cx="607" cy="345" r="1.8" fill="#7A3A20"/>
+              <rect x="64" y="426" width="16" height="7" rx="1" fill="#5A3A1A" stroke="#3A2010" stroke-width="0.8"/>
+              <rect x="588" y="426" width="16" height="7" rx="1" fill="#5A3A1A" stroke="#3A2010" stroke-width="0.8"/>
+              <g id="lb-drawerGrp">
+                <rect x="72" y="343" width="148" height="82" fill="#5A3C20" stroke="#3A2010" stroke-width="1"/>
+                <rect x="72" y="343" width="11" height="82" fill="#6B4A28" stroke="#3A2010" stroke-width="0.5"/>
+                <rect x="84" y="380" width="20" height="6" rx="2" fill="#C8A060" stroke="#A07838" stroke-width="0.8"/>
+                <circle cx="98" cy="423" r="5" fill="#3A3A3A" stroke="#222" stroke-width="0.8"/>
+                <circle cx="185" cy="423" r="5" fill="#3A3A3A" stroke="#222" stroke-width="0.8"/>
+                <circle cx="98" cy="423" r="2" fill="#666"/>
+                <circle cx="185" cy="423" r="2" fill="#666"/>
+              </g>
+              <g id="lb-lidMattGrp">
+                <rect x="60" y="325" width="550" height="10" fill="url(#lb-wGH)" stroke="#3A2010" stroke-width="1.4"/>
+                <rect x="60" y="334" width="8" height="3" fill="#5A3A1A" opacity="0.65"/>
+                <line x1="148" y1="325" x2="148" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+                <line x1="250" y1="325" x2="250" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+                <line x1="360" y1="325" x2="360" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+                <line x1="470" y1="325" x2="470" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+                <line x1="560" y1="325" x2="560" y2="335" stroke="#3A2010" stroke-width="0.5" opacity="0.35"/>
+                <g id="lb-gasGrp" opacity="0">
+                  <line x1="600" y1="330" x2="390" y2="327" stroke="url(#lb-chromGrad)" stroke-width="5" stroke-linecap="round"/>
+                  <line x1="530" y1="329" x2="450" y2="327" stroke="#EEE" stroke-width="2.5" stroke-linecap="round" opacity="0.55"/>
+                  <circle cx="600" cy="330" r="4" fill="#BBBBBB" stroke="#888" stroke-width="0.8"/>
+                  <circle cx="390" cy="327" r="3.5" fill="#BBBBBB" stroke="#888" stroke-width="0.8"/>
+                </g>
+                <rect x="60" y="297" width="550" height="28" fill="url(#lb-mTick)" stroke="#C8BEB4" stroke-width="1"/>
+                <line x1="60" y1="299" x2="610" y2="299" stroke="#DDD6CC" stroke-width="1.2"/>
+                <line x1="60" y1="323" x2="610" y2="323" stroke="#C0B8AE" stroke-width="0.8"/>
+                <text x="335" y="316" fill="#9A9088" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle" letter-spacing="1.2">MATTRESS  5' x 6'6" x 4"</text>
+              </g>
+            </svg>
+            <div class="lb-hotspot" style="left:17%;top:62%" id="lb-hs-drawer" onclick="lbShowDetail('drawer')"></div>
+            <div class="lb-hotspot" style="left:57%;top:62%" id="lb-hs-storage" onclick="lbShowDetail('storage')"></div>
+            <div class="lb-hotspot" style="left:88%;top:54%" id="lb-hs-hinge" onclick="lbShowDetail('hinge')"></div>
+            <div class="lb-hotspot" style="left:46%;top:40%" id="lb-hs-matt" onclick="lbShowDetail('mattress')"></div>
+          </div>
+          <p class="lb-credit">Section view &middot; Documented by Stucco Stories &middot; Design: Studio 360</p>
+        </div>
+        <div class="lb-detail-panel">
+          <div class="lb-panel-top">
+            <div class="lb-panel-eyebrow">Element Detail</div>
+            <div class="lb-panel-title" id="lb-panelTitle">Select an element</div>
+            <div class="lb-panel-sub" id="lb-panelSub">Animate then tap a dot</div>
+          </div>
+          <div class="lb-panel-body" id="lb-panelBody">
+            <div class="lb-panel-empty">
+              <div class="lb-panel-empty-icon">&#9711;</div>
+              Press Open / Close<br>to animate,<br>then tap any dot<br>to read details.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lb-foot">
+        <span>Stucco Stories &#8212; Chennai 2BHK &middot; Bedroom 02</span>
+        <span>Design: Studio 360 &middot; Documentation: Stucco Stories</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ── LIFT-BED MODAL ── */
+    function openLiftBed() {
+      document.getElementById('liftbed-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbSetLidAngle(0);
+      lbSetDrawerX(0);
+    }
+    function closeLiftBed() {
+      document.getElementById('liftbed-modal').classList.remove('open');
+      document.body.style.overflow = '';
+      lbIsOpen = false;
+      if (lbRafId) cancelAnimationFrame(lbRafId);
+      lbRafId = null; lbAnimStart = null;
+      lbSetLidAngle(0); lbSetDrawerX(0);
+      document.getElementById('lb-gasGrp').setAttribute('opacity', '0');
+      document.getElementById('lb-toggle').classList.remove('active');
+      document.getElementById('lb-stateLabel').textContent = 'Closed';
+      document.getElementById('lb-bedLabel').textContent = 'Section - Closed - Hinge at headboard wall (right)';
+      document.querySelectorAll('.lb-hotspot').forEach(h => h.classList.remove('lb-active'));
+      document.getElementById('lb-panelTitle').textContent = 'Select an element';
+      document.getElementById('lb-panelSub').textContent = 'Animate then tap a dot';
+      document.getElementById('lb-panelBody').innerHTML = '<div class="lb-panel-empty"><div class="lb-panel-empty-icon">&#9711;</div>Press Open / Close<br>to animate,<br>then tap any dot<br>to read details.</div>';
+    }
+    document.getElementById('liftbed-modal').addEventListener('click', function(e) { if (e.target === this) closeLiftBed(); });
+
+    var LB_PIVOT_X = 610, LB_PIVOT_Y = 335, LB_OPEN_DEG = 60, LB_DUR_MS = 1400;
+    var lbIsOpen = false, lbAnimStart = null, lbFromDeg = 0, lbToDeg = 0, lbRafId = null;
+
+    function lbSetLidAngle(deg) {
+      document.getElementById('lb-lidMattGrp').setAttribute('transform', 'rotate(' + deg + ',' + LB_PIVOT_X + ',' + LB_PIVOT_Y + ')');
+    }
+    function lbSetDrawerX(px) {
+      document.getElementById('lb-drawerGrp').setAttribute('transform', 'translate(' + px + ',0)');
+    }
+    function lbEase(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    function lbAnimateFrame(ts) {
+      if (!lbAnimStart) lbAnimStart = ts;
+      var t = Math.min((ts - lbAnimStart) / LB_DUR_MS, 1);
+      var e = lbEase(t);
+      lbSetLidAngle(lbFromDeg + (lbToDeg - lbFromDeg) * e);
+      var dFrom = lbIsOpen ? 0 : -75, dTo = lbIsOpen ? -75 : 0;
+      lbSetDrawerX(dFrom + (dTo - dFrom) * e);
+      if (t < 1) {
+        lbRafId = requestAnimationFrame(lbAnimateFrame);
+      } else {
+        lbSetLidAngle(lbToDeg); lbSetDrawerX(dTo);
+        if (lbIsOpen) document.getElementById('lb-gasGrp').setAttribute('opacity', '1');
+      }
+    }
+
+    function lbToggleBed() {
+      lbIsOpen = !lbIsOpen;
+      if (lbRafId) cancelAnimationFrame(lbRafId);
+      lbAnimStart = null;
+      var cur = document.getElementById('lb-lidMattGrp').getAttribute('transform') || 'rotate(0,0,0)';
+      var m = cur.match(/rotate\(([-\d.]+)/);
+      lbFromDeg = m ? parseFloat(m[1]) : 0;
+      lbToDeg = lbIsOpen ? LB_OPEN_DEG : 0;
+      if (!lbIsOpen) document.getElementById('lb-gasGrp').setAttribute('opacity', '0');
+      document.getElementById('lb-toggle').classList.toggle('active', lbIsOpen);
+      document.getElementById('lb-stateLabel').textContent = lbIsOpen ? 'Open' : 'Closed';
+      document.getElementById('lb-bedLabel').textContent = lbIsOpen
+        ? 'Section - Open - Foot end rises - Gas lift active'
+        : 'Section - Closed - Hinge at headboard wall (right)';
+      lbRafId = requestAnimationFrame(lbAnimateFrame);
+    }
+
+    var lbDetails = {
+      drawer: {
+        title: 'Pullout Drawer',
+        sub: "Front 2\u2019-0\u2033 \u00b7 Full bed width \u00b7 Caster-mounted",
+        sections: [
+          { heading: 'Dimensions', rows: [['Depth', "2\u2019-0\u2033 (610 mm)"], ['Width', "5\u2019-6\u2033 full bed width"], ['Height', "~10\u2033 internal clear"]] },
+          { heading: 'Operation', rows: [['Action', 'Full pull-out from foot end'], ['Runners', 'Heavy-duty ball-bearing slides'], ['Casters', '4 no. \u00b7 rolls freely on floor']] }
+        ],
+        note: 'Flush face \u00b7 no handle visible when closed. Operates independently of the lift lid.',
+        tag: "Pullout \u00b7 2\u2019-0\u2033 Depth"
+      },
+      storage: {
+        title: 'Lift Storage',
+        sub: "4\u2019-6\u2033 deep \u00b7 Full 6\u20196\u2033 top opens as one lid",
+        sections: [
+          { heading: 'Dimensions', rows: [['Zone', "4\u2019-6\u2033 (1372 mm)"], ['Width', "5\u2019-6\u2033 full bed"], ['Clear ht', "~10\u2033 internal"]] },
+          { heading: 'Access', rows: [['Lid', "Full 6\u20196\u2033 top lifts as one piece"], ['Pivot', 'Hinge at headboard wall \u00b7 foot rises'], ['Max angle', '60\u00b0 \u00b7 stops clear of wall'], ['Hardware', 'Fully sealed inside when closed']] }
+        ],
+        note: 'All gas lift hardware lives inside the sealed box. Only the teak surface is visible when closed.',
+        tag: "Lift Storage \u00b7 4\u2019-6\u2033",
+        links: [{ url: 'https://ebco.in/livsmart/pro-lift-bed-system-lift-system-frame-with-slats-and-mounting-bracket-kit-without-gas-lifts', label: 'Ebco \u00b7 Pro-Lift Bed System', desc: 'Lift frame, slat base and bracket kit reference' }]
+      },
+      hinge: {
+        title: 'Hinge & Gas Lift',
+        sub: 'Ebco Pro-Lift \u00b7 Pivot at headboard wall',
+        sections: [
+          { heading: 'Mechanism', rows: [['System', 'Ebco Pro-Lift bed system'], ['Pivot', 'Headboard wall \u00b7 foot end lifts up'], ['Max open', '60\u00b0 from horizontal'], ['Gas lifts', '2 no. \u00b7 sized per mattress weight'], ['Slats', 'Integrated base rides with lid']] }
+        ],
+        note: 'All hardware concealed inside the storage box. 60\u00b0 stop prevents lid contacting the wall.',
+        tag: 'Ebco Pro-Lift \u00b7 Concealed',
+        links: [{ url: 'https://ebco.in/livsmart/pro-lift-bed-system-lift-system-frame-with-slats-and-mounting-bracket-kit-without-gas-lifts', label: 'Ebco \u00b7 Pro-Lift Bed System', desc: 'Lift frame, slat base and bracket kit (gas lifts ordered separately)' }]
+      },
+      mattress: {
+        title: 'Mattress',
+        sub: "5\u2019 \u00d7 6\u20196\u2033 \u00d7 4\u2033 \u00b7 Queen \u00b7 Top at 1\u20196\u2033 FFL",
+        sections: [
+          { heading: 'Dimensions', rows: [['Length', "6\u2019-6\u2033 (1981 mm)"], ['Width', "5\u2019-0\u2033 (1524 mm)"], ['Thickness', "4\u2033 (100 mm)"], ['FFL', "1\u2019-6\u2033 to top of mattress"]] }
+        ],
+        note: "Low-slung intentionally \u00b7 1\u20196\u2033 FFL is lower than standard bed height for the aesthetic of this room.",
+        tag: "Queen \u00b7 4\u2033 \u00b7 1\u2019-6\u2033 FFL"
+      }
+    };
+
+    function lbShowDetail(key) {
+      var d = lbDetails[key];
+      if (!d) return;
+      document.querySelectorAll('.lb-hotspot').forEach(function(h) { h.classList.remove('lb-active'); });
+      var hs = document.getElementById('lb-hs-' + key);
+      if (hs) hs.classList.add('lb-active');
+      document.getElementById('lb-panelTitle').textContent = d.title;
+      document.getElementById('lb-panelSub').textContent = d.sub;
+      var html = '';
+      d.sections.forEach(function(sec) {
+        html += '<div class="lb-detail-section"><div class="lb-detail-heading">' + sec.heading + '</div>';
+        sec.rows.forEach(function(row) {
+          html += '<div class="lb-detail-row"><span class="lb-detail-key">' + row[0] + '</span><span class="lb-detail-val">' + row[1] + '</span></div>';
+        });
+        html += '</div>';
+      });
+      if (d.note) html += '<div class="lb-detail-note">' + d.note + '</div>';
+      if (d.tag)  html += '<div><span class="lb-tag">' + d.tag + '</span></div>';
+      if (d.links && d.links.length) {
+        html += '<div class="lb-detail-links"><div class="lb-detail-links-heading">Hardware Reference</div>';
+        d.links.forEach(function(l) {
+          html += '<div class="lb-detail-link"><a href="' + l.url + '" target="_blank" rel="noopener">' + l.label + '</a><span class="lb-detail-link-desc">' + l.desc + '</span></div>';
+        });
+        html += '</div>';
+      }
+      document.getElementById('lb-panelBody').innerHTML = html;
+    }
+
+    lbSetLidAngle(0);
+    lbSetDrawerX(0);
+  </script>
+
 </body>
 </html>
