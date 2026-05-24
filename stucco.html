@@ -254,20 +254,106 @@
       gap:1rem;
       grid-auto-flow: dense;
     }
+    .g-grid .gi-project { margin-top: 0.5rem; }
 
     .gi {
       position:relative; overflow:hidden;
       background:var(--plaster);
       transition:opacity 0.5s;
     }
-    .gi:nth-child(1)  { grid-column:span 8; aspect-ratio:16/9; }
-    .gi:nth-child(2)  { grid-column:span 4; aspect-ratio:3/4; }
-    .gi:nth-child(3)  { grid-column:span 4; aspect-ratio:1; }
-    .gi:nth-child(4)  { grid-column:span 4; aspect-ratio:1; }
-    .gi:nth-child(5)  { grid-column:span 4; aspect-ratio:3/4; }
-    .gi:nth-child(6)  { grid-column:span 6; aspect-ratio:4/3; }
-    .gi:nth-child(7)  { grid-column:span 6; aspect-ratio:4/3; }
-    .gi:nth-child(8)  { grid-column:span 12; aspect-ratio:21/6; }
+    /* nth-child sizing only applies to photo/media tiles, NOT project cards */
+    .gi:not(.gi-project):nth-child(1)  { grid-column:span 8; aspect-ratio:16/9; }
+    .gi:not(.gi-project):nth-child(2)  { grid-column:span 4; aspect-ratio:3/4; }
+    .gi:not(.gi-project):nth-child(3)  { grid-column:span 4; aspect-ratio:1; }
+    .gi:not(.gi-project):nth-child(4)  { grid-column:span 4; aspect-ratio:1; }
+    .gi:not(.gi-project):nth-child(5)  { grid-column:span 4; aspect-ratio:3/4; }
+    .gi:not(.gi-project):nth-child(6)  { grid-column:span 6; aspect-ratio:4/3; }
+    .gi:not(.gi-project):nth-child(7)  { grid-column:span 6; aspect-ratio:4/3; }
+    .gi:not(.gi-project):nth-child(8)  { grid-column:span 12; aspect-ratio:21/6; }
+
+    /* ── PROJECT CARDS ── */
+    .gi-project {
+      grid-column: span 12;
+      aspect-ratio: unset !important;
+      background: var(--cream);
+      border: 1px solid var(--sand);
+      display: grid !important;
+      grid-template-columns: 380px 1fr;
+      transition: box-shadow 0.4s, transform 0.4s;
+      text-decoration: none;
+      cursor: none;
+      color: inherit;
+      overflow: hidden;
+    }
+    .gi-project + .gi-project { margin-top: 0; border-top: none; }
+    .gi-project:hover { box-shadow: 0 20px 50px rgba(58,46,40,0.1); transform: translateY(-3px); }
+
+    /* visual panel — fixed height, SVG centred, no overflow */
+    .gi-project-visual {
+      background: #f0ebe0;
+      min-height: 300px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border-right: 1px solid var(--sand);
+    }
+    .gi-project-visual svg { flex-shrink: 0; }
+    .gi-project-caption {
+      position: absolute; bottom: 1rem; left: 1rem;
+      font-size: 0.5rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--teak); opacity: 0.5; font-family: 'DM Sans', sans-serif;
+      pointer-events: none;
+    }
+
+    /* info panel */
+    .gi-project-info {
+      padding: 2.8rem 2.8rem 2.4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 300px;
+    }
+    .gi-project-eyebrow {
+      font-size: 0.5rem; letter-spacing: 0.38em; text-transform: uppercase;
+      color: var(--terracota); margin-bottom: 1rem; font-family: 'DM Sans', sans-serif;
+    }
+    .gi-project-title {
+      font-family: 'Cormorant', serif;
+      font-size: clamp(1.8rem, 2.8vw, 2.6rem);
+      font-weight: 300; line-height: 1.05; color: var(--shadow);
+      margin-bottom: 1.4rem;
+    }
+    .gi-project-title em { font-style: italic; color: var(--terracota); display: block; }
+    .gi-project-desc {
+      font-size: 0.78rem; line-height: 2; color: var(--teak);
+      font-family: 'DM Sans', sans-serif;
+      flex-grow: 1;
+    }
+    /* foot — identical on every card */
+    .gi-project-foot {
+      display: flex; align-items: center; justify-content: space-between;
+      border-top: 1px solid var(--sand);
+      padding-top: 1.4rem;
+      margin-top: 2rem;
+      flex-shrink: 0;
+    }
+    .gi-project-tags { display: flex; gap: 1.5rem; }
+    .gi-project-tag {
+      font-size: 0.52rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--teak); font-family: 'DM Sans', sans-serif; opacity: 0.7;
+    }
+    .gi-project-cta {
+      font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--terracota); font-family: 'DM Sans', sans-serif; white-space: nowrap;
+    }
+
+    @media(max-width:800px) {
+      .gi-project { grid-template-columns: 1fr; }
+      .gi-project-visual { min-height: 220px; border-right: none; border-bottom: 1px solid var(--sand); }
+      .gi-project-info { padding: 2rem 1.8rem; }
+    }
 
     .gi img {
       width:100%; height:100%; object-fit:cover;
@@ -527,8 +613,8 @@
       #connect { grid-template-columns:1fr; }
       .disc-grid { grid-template-columns:1fr 1fr; }
       .gallery-top { flex-direction:column; align-items:flex-start; gap:1.5rem; }
-      .gi:nth-child(n) { grid-column:span 12; }
-      .gi:nth-child(3),.gi:nth-child(4) { grid-column:span 6; }
+      .gi:not(.gi-project):nth-child(n) { grid-column:span 12; }
+      .gi:not(.gi-project):nth-child(3),.gi:not(.gi-project):nth-child(4) { grid-column:span 6; }
     }
   
     /* ── LIFT-BED MODAL ── */
@@ -697,10 +783,161 @@
         <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add architecture photo</p></div>
         <div class="gi-over"><span class="gi-label">Architecture</span></div>
       </div>
-      <div class="gi" data-cat="interior">
-        <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add interior photo</p></div>
-        <div class="gi-over"><span class="gi-label">Interior</span></div>
-      </div>
+      <a class="gi gi-project reveal" data-cat="interior" href="#" onclick="openBhk(); return false;">
+        <div class="gi-project-visual">
+          <svg viewBox="0 0 220 160" width="176" opacity="0.85" xmlns="http://www.w3.org/2000/svg">
+            <rect x="8" y="8" width="204" height="144" fill="#e8e2d9" stroke="#6b5540" stroke-width="1"/>
+            <rect x="8" y="8" width="10" height="144" fill="#c8c0b2"/>
+            <rect x="8" y="8" width="204" height="8" fill="#d0c8be"/>
+            <line x1="8" y1="16" x2="212" y2="16" stroke="#3a2010" stroke-width="1"/>
+            <line x1="8" y1="152" x2="212" y2="152" stroke="#3a2010" stroke-width="1"/>
+            <rect x="22" y="16" width="80" height="136" fill="#6B4226" stroke="#3a2010" stroke-width="1"/>
+            <rect x="25" y="19" width="74" height="22" fill="rgba(180,210,230,0.55)" stroke="#3a2010" stroke-width="0.6"/>
+            <line x1="22" y1="44" x2="102" y2="44" stroke="#3a2010" stroke-width="1.5"/>
+            <line x1="62" y1="16" x2="62" y2="152" stroke="#3a2010" stroke-width="1.5"/>
+            <rect x="25" y="47" width="34" height="72" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
+            <rect x="65" y="47" width="34" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
+            <rect x="65" y="71" width="34" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
+            <rect x="65" y="95" width="34" height="24" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
+            <rect x="25" y="122" width="74" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
+            <rect x="20" y="144" width="84" height="5" fill="#57341a"/>
+            <rect x="122" y="16" width="46" height="136" fill="#6B4226" stroke="#3a2010" stroke-width="1"/>
+            <rect x="125" y="19" width="40" height="22" fill="rgba(180,210,230,0.55)" stroke="#3a2010" stroke-width="0.6"/>
+            <line x1="122" y1="44" x2="168" y2="44" stroke="#3a2010" stroke-width="1.5"/>
+            <rect x="125" y="47" width="40" height="97" fill="#7a4a2a" stroke="#3a2010" stroke-width="0.8"/>
+            <rect x="128" y="51" width="34" height="40" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <rect x="128" y="96" width="34" height="42" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+            <circle cx="127" cy="76" r="2" fill="#c8a96a"/>
+            <rect x="162" y="54" width="2" height="8" fill="#9B8060"/>
+            <rect x="162" y="118" width="2" height="8" fill="#9B8060"/>
+            <rect x="120" y="144" width="50" height="5" fill="#57341a"/>
+          </svg>
+          <div class="gi-project-caption">Interactive elevation study</div>
+        </div>
+        <div class="gi-project-info">
+          <div>
+            <div class="gi-project-eyebrow">Project 001 · Residential</div>
+            <h3 class="gi-project-title">Chennai 2BHK<br><em>Facade Renovation</em></h3>
+            <p class="gi-project-desc">An interactive before/after study of a facade renovation — full-height teak glazing, operable shutters, and a brass-handled solid teak door. Click each element to explore materials and specifications.</p>
+          </div>
+          <div class="gi-project-foot">
+            <div class="gi-project-tags">
+              <span class="gi-project-tag">Teak</span>
+              <span class="gi-project-tag">Glass</span>
+              <span class="gi-project-tag">Brass</span>
+            </div>
+            <span class="gi-project-cta">Open study →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="gi gi-project reveal" data-cat="interior" href="#" onclick="openLiftBed(); return false;">
+        <div class="gi-project-visual">
+          <svg viewBox="0 0 220 160" width="190" opacity="0.88" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="wV2" x="0" y="0" width="5" height="40" patternUnits="userSpaceOnUse">
+                <rect width="5" height="40" fill="#8B5E3C"/>
+                <line x1="1.2" y1="0" x2="1.5" y2="40" stroke="#9d6a44" stroke-width="0.5" opacity="0.5"/>
+              </pattern>
+              <pattern id="wH2" x="0" y="0" width="10" height="4" patternUnits="userSpaceOnUse">
+                <rect width="10" height="4" fill="#A07040"/>
+                <line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#b07848" stroke-width="0.3" opacity="0.4"/>
+              </pattern>
+            </defs>
+            <rect x="8" y="8" width="204" height="110" fill="#EAE4DB"/>
+            <rect x="178" y="8" width="34" height="120" fill="#DDD6CC"/>
+            <line x1="178" y1="8" x2="178" y2="128" stroke="#1C1713" stroke-width="1.5"/>
+            <rect x="8" y="118" width="204" height="34" fill="#D2C8BC"/>
+            <line x1="8" y1="118" x2="212" y2="118" stroke="#1C1713" stroke-width="1"/>
+            <rect x="20" y="88" width="158" height="32" fill="url(#wV2)" stroke="#3A2010" stroke-width="1"/>
+            <rect x="20" y="88" width="6" height="32" fill="#7A5230" stroke="#3A2010" stroke-width="0.5"/>
+            <rect x="26" y="91" width="147" height="26" fill="#1C0E06"/>
+            <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
+            <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
+            <g transform="rotate(60, 178, 89)">
+              <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
+              <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
+              <line x1="172" y1="86" x2="100" y2="84" stroke="#CCCCCC" stroke-width="2.5" stroke-linecap="round"/>
+            </g>
+            <text x="14" y="155" fill="#7A7068" font-family="monospace" font-size="6" letter-spacing="0.5">Lift-up · Gas assisted · 60°</text>
+          </svg>
+          <div class="gi-project-caption">Section · Open state</div>
+        </div>
+        <div class="gi-project-info">
+          <div>
+            <div class="gi-project-eyebrow">Project 001 · Bedroom 02</div>
+            <h3 class="gi-project-title">Chennai 2BHK<br><em>Space Saving Furniture</em></h3>
+            <p class="gi-project-desc">An animated section study of a lift-up storage bed — gas-assisted lid, pullout drawer, and concealed hardware. Tap each element to read dimensions and specifications.</p>
+          </div>
+          <div class="gi-project-foot">
+            <div class="gi-project-tags">
+              <span class="gi-project-tag">Teak</span>
+              <span class="gi-project-tag">Gas Lift</span>
+              <span class="gi-project-tag">Storage</span>
+            </div>
+            <span class="gi-project-cta">Open study →</span>
+          </div>
+        </div>
+      </a>
+
+      <a class="gi gi-project reveal" data-cat="interior" href="office-interior.html">
+        <div class="gi-project-visual">
+          <svg viewBox="0 0 220 160" width="190" opacity="0.88" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="brickPat2" x="0" y="0" width="18" height="9" patternUnits="userSpaceOnUse">
+                <rect width="18" height="9" fill="#c08060"/>
+                <rect x="0" y="0" width="18" height="9" fill="none" stroke="#a06040" stroke-width="0.5"/>
+                <rect x="9" y="4.5" width="18" height="9" fill="#b87050" stroke="#a06040" stroke-width="0.5"/>
+              </pattern>
+              <pattern id="hbPat2" x="0" y="0" width="16" height="8" patternUnits="userSpaceOnUse">
+                <rect width="16" height="8" fill="#d4bc98"/>
+                <line x1="0" y1="0" x2="8" y2="8" stroke="#c4aa84" stroke-width="0.6"/>
+                <line x1="8" y1="0" x2="16" y2="8" stroke="#c4aa84" stroke-width="0.6"/>
+              </pattern>
+            </defs>
+            <rect x="8" y="8" width="204" height="18" fill="#c8c4be" stroke="#9a9690" stroke-width="0.8"/>
+            <rect x="8" y="20" width="204" height="5" fill="#b0aca6" stroke="#9a9690" stroke-width="0.5"/>
+            <rect x="8" y="130" width="204" height="22" fill="url(#hbPat2)" stroke="#b09070" stroke-width="0.5"/>
+            <rect x="8" y="26" width="80" height="104" fill="url(#brickPat2)"/>
+            <rect x="88" y="26" width="124" height="104" fill="#e8e2d8"/>
+            <rect x="148" y="26" width="2" height="104" fill="#8aacbc" stroke="#6a8898" stroke-width="0.5" opacity="0.7"/>
+            <rect x="148" y="26" width="64" height="104" fill="rgba(180,210,230,0.18)" stroke="#8aacbc" stroke-width="0.8"/>
+            <rect x="148" y="74" width="64" height="18" fill="rgba(192,120,40,0.35)" stroke="rgba(192,120,40,0.6)" stroke-width="0.5"/>
+            <rect x="20" y="100" width="55" height="5" fill="#c8a870" stroke="#9a7840" stroke-width="0.8"/>
+            <rect x="22" y="105" width="3" height="22" fill="#9a7840"/>
+            <rect x="70" y="105" width="3" height="22" fill="#9a7840"/>
+            <rect x="36" y="108" width="18" height="14" rx="2" fill="#d8d4ce" stroke="#a8a49e" stroke-width="0.7"/>
+            <rect x="88" y="100" width="55" height="5" fill="#c8a870" stroke="#9a7840" stroke-width="0.8"/>
+            <rect x="90" y="105" width="3" height="22" fill="#9a7840"/>
+            <rect x="140" y="105" width="3" height="22" fill="#9a7840"/>
+            <rect x="104" y="108" width="18" height="14" rx="2" fill="#d8d4ce" stroke="#a8a49e" stroke-width="0.7"/>
+            <rect x="20" y="88" width="55" height="10" fill="rgba(192,120,40,0.22)" stroke="rgba(192,120,40,0.5)" stroke-width="0.5"/>
+            <rect x="88" y="88" width="55" height="10" fill="rgba(192,120,40,0.22)" stroke="rgba(192,120,40,0.5)" stroke-width="0.5"/>
+            <line x1="40" y1="26" x2="40" y2="44" stroke="#6a6460" stroke-width="1"/>
+            <ellipse cx="40" cy="46" rx="8" ry="5" fill="#b8b090" stroke="#6a6460" stroke-width="0.8"/>
+            <ellipse cx="40" cy="46" rx="5" ry="3" fill="#e8d870" opacity="0.4"/>
+            <line x1="108" y1="26" x2="108" y2="44" stroke="#6a6460" stroke-width="1"/>
+            <ellipse cx="108" cy="46" rx="8" ry="5" fill="#b8b090" stroke="#6a6460" stroke-width="0.8"/>
+            <ellipse cx="108" cy="46" rx="5" ry="3" fill="#e8d870" opacity="0.4"/>
+          </svg>
+          <div class="gi-project-caption">Spatial Planning &amp; Design</div>
+        </div>
+        <div class="gi-project-info">
+          <div>
+            <div class="gi-project-eyebrow">Project 002 · Commercial Interior</div>
+            <h3 class="gi-project-title">Office Interior<br><em>IT Startup, Coimbatore</em></h3>
+            <p class="gi-project-desc">Spatial planning, furniture selection, colour palette and material application for an IT startup. An industrial scheme — exposed concrete, raw brick and amber accents — designed to feel alive without trying too hard.</p>
+          </div>
+          <div class="gi-project-foot">
+            <div class="gi-project-tags">
+              <span class="gi-project-tag">Concrete</span>
+              <span class="gi-project-tag">Brick</span>
+              <span class="gi-project-tag">Amber</span>
+            </div>
+            <span class="gi-project-cta">View project →</span>
+          </div>
+        </div>
+      </a>
       <div class="gi" data-cat="material">
         <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add material study</p></div>
         <div class="gi-over"><span class="gi-label">Material</span></div>
@@ -708,10 +945,6 @@
       <div class="gi" data-cat="arch">
         <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add architecture photo</p></div>
         <div class="gi-over"><span class="gi-label">Structure</span></div>
-      </div>
-      <div class="gi" data-cat="interior">
-        <div class="gi-ph"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6b5540" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 21V9"/></svg><p>Add interior photo</p></div>
-        <div class="gi-over"><span class="gi-label">Space</span></div>
       </div>
       <div class="gi gi-guide" data-cat="material" onclick="openGuide()">
         <div class="gi-guide-inner">
@@ -785,169 +1018,6 @@
       </div>
 
     </div>
-  </section>
-
-  <!-- FEATURED PROJECT -->
-  <section id="projects" style="padding:10vh 5vw; border-top:1px solid var(--sand);">
-    <div class="disc-head reveal">
-      <span class="sec-label">Featured Studies</span>
-      <h2>An <em>interactive</em><br>project</h2>
-    </div>
-
-    <!-- Card 1: Facade Renovation (existing) -->
-    <a href="#" onclick="openBhk(); return false;" style="display:block; text-decoration:none; cursor:none;" class="reveal">
-      <div style="
-        display:grid; grid-template-columns:1fr 1fr; gap:0;
-        border:1px solid var(--sand);
-        transition:box-shadow 0.4s, transform 0.4s;
-        background:var(--cream);
-      "
-      onmouseenter="this.style.boxShadow='0 20px 50px rgba(58,46,40,0.1)'; this.style.transform='translateY(-4px)'"
-      onmouseleave="this.style.boxShadow='none'; this.style.transform='translateY(0)'"
-      >
-        <!-- left: visual -->
-        <div style="
-          background:#f2ebe0;
-          aspect-ratio:4/3; position:relative; overflow:hidden;
-          display:flex; align-items:center; justify-content:center;
-        ">
-          <!-- mini facade illustration -->
-          <svg viewBox="0 0 220 160" width="176" opacity="0.85" xmlns="http://www.w3.org/2000/svg">
-            <!-- wall -->
-            <rect x="8" y="8" width="204" height="144" fill="#e8e2d9" stroke="#6b5540" stroke-width="1"/>
-            <rect x="8" y="8" width="10" height="144" fill="#c8c0b2"/>
-            <rect x="8" y="8" width="204" height="8" fill="#d0c8be"/>
-            <line x1="8" y1="16" x2="212" y2="16" stroke="#3a2010" stroke-width="1"/>
-            <line x1="8" y1="152" x2="212" y2="152" stroke="#3a2010" stroke-width="1"/>
-            <!-- WINDOW UNIT x=22-102 full height -->
-            <rect x="22" y="16" width="80" height="136" fill="#6B4226" stroke="#3a2010" stroke-width="1"/>
-            <rect x="25" y="19" width="74" height="22" fill="rgba(180,210,230,0.55)" stroke="#3a2010" stroke-width="0.6"/>
-            <line x1="22" y1="44" x2="102" y2="44" stroke="#3a2010" stroke-width="1.5"/>
-            <line x1="62" y1="16" x2="62" y2="152" stroke="#3a2010" stroke-width="1.5"/>
-            <rect x="25" y="47" width="34" height="72" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="65" y="47" width="34" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="65" y="71" width="34" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="65" y="95" width="34" height="24" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="25" y="122" width="74" height="22" fill="rgba(180,210,230,0.45)" stroke="#3a2010" stroke-width="0.6"/>
-            <rect x="20" y="144" width="84" height="5" fill="#57341a"/>
-            <!-- DOOR UNIT x=122-168 full height -->
-            <rect x="122" y="16" width="46" height="136" fill="#6B4226" stroke="#3a2010" stroke-width="1"/>
-            <rect x="125" y="19" width="40" height="22" fill="rgba(180,210,230,0.55)" stroke="#3a2010" stroke-width="0.6"/>
-            <line x1="122" y1="44" x2="168" y2="44" stroke="#3a2010" stroke-width="1.5"/>
-            <rect x="125" y="47" width="40" height="97" fill="#7a4a2a" stroke="#3a2010" stroke-width="0.8"/>
-            <rect x="128" y="51" width="34" height="40" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <rect x="128" y="96" width="34" height="42" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
-            <circle cx="127" cy="76" r="2" fill="#c8a96a"/>
-            <rect x="162" y="54" width="2" height="8" fill="#9B8060"/>
-            <rect x="162" y="118" width="2" height="8" fill="#9B8060"/>
-            <rect x="120" y="144" width="50" height="5" fill="#57341a"/>
-          </svg>
-          <div style="
-            position:absolute; bottom:1rem; left:1rem;
-            font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase;
-            color:var(--teak); opacity:0.6;
-            font-family:'DM Sans',sans-serif;
-          ">Interactive elevation study</div>
-        </div>
-        <!-- right: info -->
-        <div style="padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--terracota); margin-bottom:1rem; font-family:'DM Sans',sans-serif;">Project 001 · Residential</div>
-            <h3 style="font-family:'Cormorant',serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:300; line-height:1.1; color:var(--shadow); margin-bottom:1.2rem;">Chennai 2BHK<br><em style="font-style:italic; color:var(--terracota);">Facade Renovation</em></h3>
-            <p style="font-size:0.78rem; line-height:2; color:var(--teak); max-width:340px; font-family:'DM Sans',sans-serif;">An interactive before/after study of a facade renovation — full-height teak glazing, operable shutters, and a brass-handled solid teak door. Click each element to explore materials and specifications.</p>
-          </div>
-          <div style="margin-top:2.5rem; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--sand); padding-top:1.5rem;">
-            <div style="display:flex; gap:1.5rem;">
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Teak</span>
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Glass</span>
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Brass</span>
-            </div>
-            <span style="font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--terracota); font-family:'DM Sans',sans-serif;">Open study →</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
-    <!-- Card 2: Bedroom — Space Saving Furniture -->
-    <a href="#" onclick="openLiftBed(); return false;" style="display:block; text-decoration:none; cursor:none; margin-top:1.5rem;" class="reveal">
-      <div style="
-        display:grid; grid-template-columns:1fr 1fr; gap:0;
-        border:1px solid var(--sand);
-        transition:box-shadow 0.4s, transform 0.4s;
-        background:var(--cream);
-      "
-      onmouseenter="this.style.boxShadow='0 20px 50px rgba(58,46,40,0.1)'; this.style.transform='translateY(-4px)'"
-      onmouseleave="this.style.boxShadow='none'; this.style.transform='translateY(0)'"
-      >
-        <!-- left: visual — mini lift-bed section drawing -->
-        <div style="
-          background:#f2ebe0;
-          aspect-ratio:4/3; position:relative; overflow:hidden;
-          display:flex; align-items:center; justify-content:center;
-        ">
-          <svg viewBox="0 0 220 160" width="190" opacity="0.88" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="wV2" x="0" y="0" width="5" height="40" patternUnits="userSpaceOnUse">
-                <rect width="5" height="40" fill="#8B5E3C"/>
-                <line x1="1.2" y1="0" x2="1.5" y2="40" stroke="#9d6a44" stroke-width="0.5" opacity="0.5"/>
-              </pattern>
-              <pattern id="wH2" x="0" y="0" width="10" height="4" patternUnits="userSpaceOnUse">
-                <rect width="10" height="4" fill="#A07040"/>
-                <line x1="0" y1="1.5" x2="10" y2="1.5" stroke="#b07848" stroke-width="0.3" opacity="0.4"/>
-              </pattern>
-            </defs>
-            <!-- room wall -->
-            <rect x="8" y="8" width="204" height="110" fill="#EAE4DB"/>
-            <rect x="178" y="8" width="34" height="120" fill="#DDD6CC"/>
-            <line x1="178" y1="8" x2="178" y2="128" stroke="#1C1713" stroke-width="1.5"/>
-            <!-- floor -->
-            <rect x="8" y="118" width="204" height="34" fill="#D2C8BC"/>
-            <line x1="8" y1="118" x2="212" y2="118" stroke="#1C1713" stroke-width="1"/>
-            <!-- bed base -->
-            <rect x="20" y="88" width="158" height="32" fill="url(#wV2)" stroke="#3A2010" stroke-width="1"/>
-            <rect x="20" y="88" width="6" height="32" fill="#7A5230" stroke="#3A2010" stroke-width="0.5"/>
-            <!-- storage void -->
-            <rect x="26" y="91" width="147" height="26" fill="#1C0E06"/>
-            <!-- lid closed -->
-            <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
-            <!-- mattress -->
-            <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
-            <!-- lid open — rotated CW 60deg around pivot (178,89) -->
-            <g transform="rotate(60, 178, 89)">
-              <rect x="20" y="84" width="158" height="5" fill="url(#wH2)" stroke="#3A2010" stroke-width="0.8"/>
-              <rect x="20" y="74" width="158" height="10" fill="#E8E0D6" stroke="#C8BEB4" stroke-width="0.6"/>
-              <!-- gas arm -->
-              <line x1="172" y1="86" x2="100" y2="84" stroke="#CCCCCC" stroke-width="2.5" stroke-linecap="round"/>
-            </g>
-            <!-- label -->
-            <text x="14" y="155" fill="#7A7068" font-family="monospace" font-size="6" letter-spacing="0.5">Lift-up · Gas assisted · 60°</text>
-          </svg>
-          <div style="
-            position:absolute; bottom:1rem; left:1rem;
-            font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase;
-            color:var(--teak); opacity:0.6;
-            font-family:'DM Sans',sans-serif;
-          ">Section · Open state</div>
-        </div>
-        <!-- right: info -->
-        <div style="padding:3rem 2.5rem; display:flex; flex-direction:column; justify-content:space-between;">
-          <div>
-            <div style="font-size:0.55rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--terracota); margin-bottom:1rem; font-family:'DM Sans',sans-serif;">Project 001 · Bedroom 02</div>
-            <h3 style="font-family:'Cormorant',serif; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:300; line-height:1.1; color:var(--shadow); margin-bottom:1.2rem;">Chennai 2BHK<br><em style="font-style:italic; color:var(--terracota);">Space Saving Furniture</em></h3>
-            <p style="font-size:0.78rem; line-height:2; color:var(--teak); max-width:340px; font-family:'DM Sans',sans-serif;">An animated section study of a lift-up storage bed — gas-assisted lid, pullout drawer, and concealed hardware. Tap each element to read dimensions and specifications.</p>
-          </div>
-          <div style="margin-top:2.5rem; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--sand); padding-top:1.5rem;">
-            <div style="display:flex; gap:1.5rem;">
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Teak</span>
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Gas Lift</span>
-              <span style="font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--clay); font-family:'DM Sans',sans-serif;">Storage</span>
-            </div>
-            <span style="font-size:0.62rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--terracota); font-family:'DM Sans',sans-serif;">Open study →</span>
-          </div>
-        </div>
-      </div>
-    </a>
-
   </section>
 
   <!-- CONNECT -->
@@ -1498,7 +1568,11 @@
       btn.classList.add('active');
       document.querySelectorAll('.gi').forEach(item=>{
         const show = cat==='all' || item.dataset.cat===cat;
-        item.style.display = show ? '' : 'none';
+        if (!show) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = item.classList.contains('gi-project') ? 'grid' : '';
+        }
       });
     }
 

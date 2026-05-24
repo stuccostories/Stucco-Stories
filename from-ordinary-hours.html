@@ -277,6 +277,23 @@
     }
     .g-item:hover .g-label { opacity: 1; transform: translateY(0); }
 
+    /* ── LOGO WATERMARK ── */
+    .g-overlay { flex-direction: column; align-items: flex-end; justify-content: flex-end; gap: 0.15rem; }
+    .g-logo-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.52rem;
+      letter-spacing: 0.14em;
+      color: rgba(245,240,232,0.75);
+      text-shadow: 0 1px 6px rgba(44,37,32,0.9);
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+    .g-logo-line {
+      width: 44px; height: 0.5px;
+      background: rgba(245,240,232,0.45);
+    }
+
     .g-ph-placeholder {
       display: flex; flex-direction: column;
       align-items: center; justify-content: center; gap: 0.8rem;
@@ -544,43 +561,43 @@
       <div class="gallery-grid">
         <div class="g-item" style="grid-column:span 7; height:480px;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157846_jpg_uk3gch.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Chettinad</span></div>
+          <div class="g-overlay"><span class="g-label">Chettinad</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 5; height:480px;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157842_jpg_o2lzyc.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Noon light</span></div>
+          <div class="g-overlay"><span class="g-label">Noon light</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157844_jpg_cusk05.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Detail</span></div>
+          <div class="g-overlay"><span class="g-label">Detail</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203558/1000157850_jpg_scivrk.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Stillness</span></div>
+          <div class="g-overlay"><span class="g-label">Stillness</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157832_jpg_hwf2v1.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203558/1000157834_jpg_gsu8e6.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203558/1000157836_jpg_llwvuy.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157838_jpg_hayjgr.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157840_jpg_fiofux.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
         <div class="g-item" style="grid-column:span 4; aspect-ratio:1;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203559/1000157848_jpg_a5qis8.jpg" alt="Chettinad"></div>
-          <div class="g-overlay"><span class="g-label">Texture</span></div>
+          <div class="g-overlay"><span class="g-label">Texture</span><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
       </div>
     </div>
@@ -594,49 +611,47 @@
           <p class="story-meta">Hoi An, Vietnam &nbsp;·&nbsp; 2023</p>
         </div>
       </div>
-
-      <p style="font-size:0.82rem; line-height:2.1; color:var(--bark); max-width:560px; margin-bottom:2rem;">
-        Hoi An doesn't need golden hour. It has lanterns instead — red and warm against wet yellow walls, reflected in the river long after the sun has gone. We arrived in the rain and never wanted it to stop.
-      </p>
-
+      <p style="font-size:0.82rem;line-height:2.1;color:var(--bark);max-width:560px;margin-bottom:2rem;">Hoi An doesn't need golden hour. It has lanterns instead — red and warm against wet yellow walls, reflected in the river long after the sun has gone. We arrived in the rain and never wanted it to stop.</p>
       <div class="gallery-grid">
 
         <!-- LANDSCAPE 1 — full width -->
-        <div class="g-item" style="grid-column:span 12; height:480px;">
-          <div class="g-ph">
-            <img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161553_jpg_xtqoig.jpg" alt="Hoi An river at night">
-          </div>
+        <div class="g-item" style="grid-column:span 12;height:480px;">
+          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161553_jpg_xtqoig.jpg" alt="Hoi An river at night"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
 
-        <!-- LANDSCAPE 2 — full width -->
-        <div class="g-item" style="grid-column:span 12; height:480px;">
-          <div class="g-ph">
-            <img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203549/1000161554_jpg_m1h0w0.jpg" alt="Hoi An shophouse street">
-          </div>
+        <!-- LANDSCAPE 2 — full width, crop sky, show buildings + river -->
+        <div class="g-item" style="grid-column:span 12;height:480px;">
+          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203549/1000161554_jpg_m1h0w0.jpg" alt="Hoi An street" style="object-position: 50% 65%;"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
 
         <!-- PORTRAIT ROW 1 -->
-        <div class="g-item" style="grid-column:span 4; aspect-ratio:3/4;">
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161548_jpg_kvhr3r.jpg" alt="Hoi An lanterns"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
-        <div class="g-item" style="grid-column:span 4; aspect-ratio:3/4;">
-          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161549_jpg_gzo4d0.jpg" alt="Hoi An cafe interior"></div>
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
+          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161549_jpg_gzo4d0.jpg" alt="Hoi An cafe"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
-        <div class="g-item" style="grid-column:span 4; aspect-ratio:3/4;">
-          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161546_jpg_m2jvuy.jpg" alt="Hoi An sofa lantern rain"></div>
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
+          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161546_jpg_m2jvuy.jpg" alt="Hoi An rain"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
 
         <!-- PORTRAIT ROW 2 -->
-        <div class="g-item" style="grid-column:span 4; aspect-ratio:3/4;">
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161551_jpg_owjvjo.jpg" alt="Hoi An street cafe"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
-        <div class="g-item" style="grid-column:span 4; aspect-ratio:3/4;">
-          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161552_jpg_jzhajq.jpg" alt="Hoi An night street"></div>
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
+          <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161552_jpg_jzhajq.jpg" alt="Hoi An night"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
-
-        <!-- PORTRAIT — last, centred -->
-        <div class="g-item" style="grid-column:3/span 8; aspect-ratio:3/4;">
+        <div class="g-item" style="grid-column:span 4;aspect-ratio:3/4;">
           <div class="g-ph"><img src="https://res.cloudinary.com/dtknbclym/image/upload/v1775203550/1000161550_jpg_ndfkf5.jpg" alt="Hoi An cafe people"></div>
+          <div class="g-overlay"><div class="g-logo-line"></div><span class="g-logo-text">from ordinary hours</span></div>
         </div>
 
       </div>
