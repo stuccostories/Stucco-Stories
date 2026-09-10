@@ -784,7 +784,47 @@
     .lb-below-panel-img-wrap { flex:1; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#000; min-height:220px; max-height:340px; }
     .lb-below-panel-img-wrap.white-bg { background:#fff; }
     .lb-below-panel-img { width:100%; height:100%; object-fit:cover; display:block; }
+
+    .work-intro {
+      max-width: 520px;
+      margin: 18px 0 0;
+      font-size: 13px;
+      line-height: 1.75;
+      color: var(--muted, #7a7068);
+    }
 </style>
+
+<style id="stucco-responsive-fix">
+/* STUCCO STORIES — responsive layout: same HTML, no separate mobile page */
+@media (max-width: 768px) {
+  #hero {
+    min-height: auto !important;
+    height: auto !important;
+    padding: 7rem 5vw 3rem !important;
+    gap: 1.5rem !important;
+    align-items: start !important;
+  }
+
+  #hero > div:first-child { width: 100%; }
+  .hero-kicker { margin-bottom: 1rem !important; letter-spacing: .28em !important; }
+  h1 { font-size: clamp(3rem, 15vw, 4.5rem) !important; line-height: .9 !important; }
+  .hero-desc { margin-top: 1.4rem !important; line-height: 1.75 !important; max-width: 34rem !important; }
+  .hero-right { width: 100%; align-items: flex-start !important; gap: 1rem !important; }
+  .material-strip, .hero-scroll { display: none !important; }
+  .hero-cats { width: 100% !important; max-width: none !important; }
+  .hcat { padding: .72rem 0 !important; }
+
+  /* Never leave the page blank if the reveal observer is delayed/blocked on mobile. */
+  .reveal { opacity: 1 !important; transform: none !important; }
+
+  #about { grid-template-columns: 1fr; padding: 4.5rem 5vw; gap: 1.8rem; }
+  #gallery { padding: 4.5rem 5vw; }
+  #disciplines { padding: 4.5rem 5vw; }
+  #connect { grid-template-columns: 1fr; padding: 4.5rem 5vw; gap: 2rem; }
+  footer { flex-direction: column; gap: .6rem; padding: 2rem 5vw; }
+}
+</style>
+
 </head>
 <body>
 
@@ -808,9 +848,9 @@
   <!-- HERO -->
   <section id="hero">
     <div>
-      <p class="hero-kicker">Architecture & Interiors</p>
+      <p class="hero-kicker">Architecture · Interiors · Spatial Design</p>
       <h1>Stucco<br><em>Stories</em></h1>
-      <p class="hero-desc">Where walls hold memory. An exploration of built spaces, materials, and the quiet poetry of architecture.</p>
+      <p class="hero-desc">An independent architecture practice based in Chennai.<br>Spaces shaped by climate, material and everyday life.<br><span>Available for selected projects &amp; collaborations.</span></p>
     </div>
 
     <div class="hero-right">
@@ -843,9 +883,9 @@
       <h2>Buildings<br>that <em>breathe</em></h2>
     </div>
     <div class="about-right reveal">
-      <p>Stucco Stories is a visual exploration of the <strong>built environment</strong> — from the grandeur of monumental structures to the quiet intimacy of a well-worn interior. Based in Chennai, a city layered with colonial, Dravidian, and modern architecture.</p>
-      <p>The work documents <strong>architecture, interiors, materials, and texture</strong> — always through the lens of natural light and honest observation. No staging. No styling. Just spaces as they are.</p>
-      <p>Every crack in a wall, every patch of afternoon light on plaster, every shadow thrown by a column — these are the stories worth telling.</p>
+      <p>Stucco Stories is an <strong>independent architecture and spatial design practice</strong> based in Chennai, working across residential, interior, renovation, and small-scale spatial projects.</p>
+      <p>With professional experience across <strong>residential, commercial, and institutional work</strong>, the practice brings together design development, detailing, material thinking, and visual documentation — with a particular interest in climate, natural light, and how spaces are lived.</p>
+      <p>Alongside commissioned work, Stucco Stories continues to document <strong>architecture, interiors, materials, and texture</strong> through photography and personal studies.</p>
     </div>
   </section>
 
@@ -853,6 +893,7 @@
   <section id="gallery">
     <div class="gallery-top reveal">
       <h2>Selected <em>Work</em></h2>
+      <p class="work-intro">A mix of professional work, independent design studies, and material research — brought together with a focus on space, detail, and the way things are made.</p>
       <div class="ftabs">
         <button class="ftab active" onclick="filter(this,'all')">All</button>
         <button class="ftab" onclick="filter(this,'arch')">Architecture</button>
@@ -901,9 +942,9 @@
         </div>
         <div class="gi-project-info">
           <div>
-            <div class="gi-project-eyebrow">Project 001 · Residential</div>
+            <div class="gi-project-eyebrow">Professional Work · Studio 360 · Residential</div>
             <h3 class="gi-project-title">Chennai 2BHK<br><em>Facade Renovation</em></h3>
-            <p class="gi-project-desc">An interactive before/after study of a facade renovation — full-height teak glazing, operable shutters, and a brass-handled solid teak door. Click each element to explore materials and specifications.</p>
+            <p class="gi-project-desc">Facade renovation and joinery design developed as part of professional work at Studio 360 — including teak glazing, operable shutters, door and window detailing, and material specifications.</p>
           </div>
           <div class="gi-project-foot">
             <div class="gi-project-tags">
@@ -950,9 +991,9 @@
         </div>
         <div class="gi-project-info">
           <div>
-            <div class="gi-project-eyebrow">Project 001 · Bedroom 02</div>
+            <div class="gi-project-eyebrow">Professional Work · Studio 360 · Bedroom 02</div>
             <h3 class="gi-project-title">Chennai 2BHK<br><em>Space Saving Furniture</em></h3>
-            <p class="gi-project-desc">An animated section study of a lift-up storage bed — gas-assisted lid, pullout drawer, and concealed hardware. Tap each element to read dimensions and specifications.</p>
+            <p class="gi-project-desc">A space-saving lift-up storage bed developed as part of professional interior work at Studio 360, with gas-assisted mechanism, storage and concealed hardware detailing.</p>
           </div>
           <div class="gi-project-foot">
             <div class="gi-project-tags">
@@ -1009,7 +1050,7 @@
         </div>
         <div class="gi-project-info">
           <div>
-            <div class="gi-project-eyebrow">Project 002 · Commercial Interior</div>
+            <div class="gi-project-eyebrow">Professional Work · Commercial Interior</div>
             <h3 class="gi-project-title">Office Interior<br><em>IT Startup, Coimbatore</em></h3>
             <p class="gi-project-desc">Spatial planning, furniture selection, colour palette and material application for an IT startup. An industrial scheme — exposed concrete, raw brick and amber accents — designed to feel alive without trying too hard.</p>
           </div>
@@ -1071,9 +1112,9 @@
         </div>
         <div class="gi-project-info">
           <div>
-            <div class="gi-project-eyebrow">Project 003 · Residential Interior</div>
+            <div class="gi-project-eyebrow">Professional Work · Studio 360 · Residential Interior</div>
             <h3 class="gi-project-title">Kitchen<br><em>Design &amp; Layout</em></h3>
-            <p class="gi-project-desc">Coming soon — a full kitchen design study covering layout planning, cabinet selection, material palette and finish specification.</p>
+            <p class="gi-project-desc">Kitchen planning and interior detailing developed as part of professional work at Studio 360, covering layout, cabinetry, materials and finish selection.</p>
           </div>
           <div class="gi-project-foot">
             <div class="gi-project-tags">
@@ -1081,7 +1122,7 @@
               <span class="gi-project-tag">Cabinetry</span>
               <span class="gi-project-tag">Materials</span>
             </div>
-            <span class="gi-project-cta">Coming soon</span>
+            <span class="gi-project-cta">View project →</span>
           </div>
         </div>
       </a>
@@ -1093,7 +1134,7 @@
         </div>
         <div class="gi-project-info">
           <div>
-            <div class="gi-project-eyebrow">Surface Library &middot; Material Study</div>
+            <div class="gi-project-eyebrow">Material Study · Surface Library</div>
             <h3 class="gi-project-title">Athangudi<br><em>Tiles</em></h3>
             <p class="gi-project-desc">Handmade hydraulic tiles from Athangudi, Tamil Nadu &mdash; a study in pattern, colour, and repetition. Each motif a conversation between four tiles meeting.</p>
           </div>
@@ -1193,21 +1234,29 @@
   <!-- CONNECT -->
   <section id="connect">
     <div class="reveal">
-      <h2>Let's talk<br>about <em>space</em></h2>
-      <p>Open to collaborations, documentation projects, and conversations about the built world.</p>
+      <h2>Start a<br><em>conversation</em></h2>
+      <p>For architecture, interiors, renovation, spatial design, or project-based design support, get in touch. Stucco Stories takes on selected projects and collaborations from Chennai.</p>
     </div>
     <div class="clist reveal">
-      <a class="clink" href="https://www.instagram.com/_vaishou_" target="_blank">
-        <div class="clink-inner"><span class="c-platform">Instagram</span><span class="c-handle">@_vaishou_</span></div>
-        <span class="c-arr">→</span>
+      <a class="clink" href="tel:+919500100248">
+        <div class="clink-inner"><span class="c-platform">Phone</span><span class="c-handle">+91 95001 00248</span></div>
+        <span class="c-arr">↗</span>
       </a>
-      <a class="clink" href="https://www.behance.net/vaishalisuresh" target="_blank">
-        <div class="clink-inner"><span class="c-platform">Behance</span><span class="c-handle">vaishalisuresh</span></div>
-        <span class="c-arr">→</span>
+      <a class="clink" href="mailto:stuccostories@gmail.com">
+        <div class="clink-inner"><span class="c-platform">Email</span><span class="c-handle">stuccostories@gmail.com</span></div>
+        <span class="c-arr">↗</span>
+      </a>
+      <a class="clink" href="https://www.instagram.com/_vaishou_" target="_blank" rel="noopener">
+        <div class="clink-inner"><span class="c-platform">Connect</span><span class="c-handle">Instagram</span></div>
+        <span class="c-arr">↗</span>
+      </a>
+      <a class="clink" href="https://www.behance.net/vaishalisuresh" target="_blank" rel="noopener">
+        <div class="clink-inner"><span class="c-platform">Portfolio</span><span class="c-handle">Behance</span></div>
+        <span class="c-arr">↗</span>
       </a>
       <a class="clink" href="from-ordinary-hours.html">
-        <div class="clink-inner"><span class="c-platform">Also explore</span><span class="c-handle">from ordinary hours</span></div>
-        <span class="c-arr">→</span>
+        <div class="clink-inner"><span class="c-platform">Also explore</span><span class="c-handle">From Ordinary Hours</span></div>
+        <span class="c-arr">↗</span>
       </a>
     </div>
   </section>
