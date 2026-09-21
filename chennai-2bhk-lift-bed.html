@@ -213,9 +213,103 @@
   .below-panel-img {
     width: 100%; height: 100%; object-fit: cover; display: block;
   }
+
+
+/* ═════════════════════════════════════════════
+   STUCCO STORIES — SHARED SITE SIGNATURE
+   Header + footer only. Page content preserved.
+   ═════════════════════════════════════════════ */
+
+.ss-site-nav{
+  position:fixed; top:0; left:0; right:0; z-index:2000;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1.6rem 5vw;
+  background:rgba(250,246,238,0.92);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid transparent;
+  transition:border-color .4s;
+  font-family:'DM Sans',sans-serif;
+}
+.ss-site-nav.ss-scrolled{border-color:#d9cfc0;}
+.ss-nav-left{display:flex;flex-direction:column;gap:.1rem;}
+.ss-nav-brand{
+  font-family:'Cormorant Garamond','Cormorant',serif;
+  font-style:italic;font-size:1rem;
+  color:#6b5540;text-decoration:none;
+}
+.ss-nav-parent{
+  font-family:'DM Sans',sans-serif;
+  font-size:.5rem;letter-spacing:.3em;
+  text-transform:uppercase;color:#c07850;
+  text-decoration:none;opacity:.7;transition:opacity .3s;
+}
+.ss-nav-parent:hover{opacity:1;}
+.ss-nav-links{
+  display:flex;gap:2.5rem;list-style:none;
+  margin:0;padding:0;
+}
+.ss-nav-links a{
+  font-family:'DM Sans',sans-serif;
+  font-size:.6rem;letter-spacing:.28em;
+  text-transform:uppercase;color:#6b5540;
+  text-decoration:none;opacity:.6;transition:opacity .3s;
+}
+.ss-nav-links a:hover{opacity:1;}
+
+.ss-site-footer{
+  position:relative;z-index:10;
+  min-height:72px;
+  padding:1rem 5vw;
+  background:#faf6ee;
+  border-top:1px solid #d9cfc0;
+  display:flex;justify-content:space-between;align-items:center;
+  gap:1rem;
+  font-family:'DM Sans',sans-serif;
+  font-size:.55rem;letter-spacing:.18em;
+  text-transform:uppercase;color:#7a7068;
+}
+.ss-f-left{display:flex;flex-direction:column;gap:.25rem;}
+.ss-f-brand{
+  font-family:'Cormorant Garamond','Cormorant',serif;
+  font-style:italic;font-size:.85rem;
+  letter-spacing:normal;text-transform:none;color:#6b5540;
+}
+.ss-f-parent{color:#c07850;text-decoration:none;opacity:.75;transition:opacity .3s;}
+.ss-f-parent:hover{opacity:1;}
+.ss-site-footer p{margin:0;color:#7a7068;}
+
+@media(max-width:700px){
+  .ss-site-nav{padding:1rem 5vw;}
+  .ss-nav-links{gap:1rem;}
+  .ss-nav-links a{font-size:.48rem;letter-spacing:.16em;}
+  .ss-nav-parent{font-size:.42rem;letter-spacing:.2em;}
+  .ss-nav-brand{font-size:.9rem;}
+  .ss-site-footer{
+    min-height:auto;padding:1rem 5vw;
+    align-items:flex-start;flex-direction:column;
+    letter-spacing:.12em;
+  }
+}
+
 </style>
 </head>
 <body>
+
+<!-- STUCCO STORIES — SHARED SITE HEADER -->
+<nav class="ss-site-nav" id="ss-site-nav">
+  <div class="ss-nav-left">
+    <a class="ss-nav-brand" href="stucco.html">Stucco Stories</a>
+    <a class="ss-nav-parent" href="index.html">← Back to Vaishali Suresh</a>
+  </div>
+  <ul class="ss-nav-links">
+    <li><a href="stucco.html#about">About</a></li>
+    <li><a href="stucco.html#gallery">Work</a></li>
+    <li><a href="stucco.html#disciplines">Disciplines</a></li>
+    <li><a href="stucco.html#connect">Connect</a></li>
+  </ul>
+</nav>
+
 
 <div class="back-bar">
   <a class="back-link" href="stucco.html">← Stucco Stories</a>
@@ -660,5 +754,15 @@
 <div class="foot">
 <span>Design: Studio 360 &nbsp;·&nbsp; Documentation: Stucco Stories</span>
 </div>
+
+<!-- STUCCO STORIES — SHARED SITE FOOTER -->
+<footer class="ss-site-footer">
+  <div class="ss-f-left">
+    <span class="ss-f-brand">Stucco Stories</span>
+    <a class="ss-f-parent" href="index.html">Part of Vaishali Suresh ↗</a>
+  </div>
+  <p>© 2025 · Chennai, Tamil Nadu</p>
+</footer>
+
 </body>
 </html>
