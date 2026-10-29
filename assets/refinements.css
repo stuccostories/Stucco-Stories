@@ -1,0 +1,66 @@
+/* The warm plaster and painted timber palette carries through every chapter. */
+:root{--paper:#e8dfcf;--green:#526f62;--bg:#e8dfcf;--cream:#e8dfcf;--off:#e8dfcf;--coconut:#e8dfcf;--panel:#f5f0e6;--panel-bg:#f5f0e6;--linen:#e1d6bf;--ink:#51443a;--accent:#526f62;--terra:#ac7059}
+body{background-color:#e8dfcf;color:#51443a}
+.content-page{background-color:var(--wall);background-image:radial-gradient(ellipse at 15% 35%,#d4c59544,transparent 45%),radial-gradient(ellipse at 52% 35%,#f5ecd777,transparent 55%)}
+.enquiry-panel,.contact-main [data-enquiry-form]{background:#e8dfcf}
+.practice-bio{display:block;max-width:850px;margin:auto;padding:60px 0 70px}
+.bio-copy p.bio-lead{font-size:32px;color:var(--ink)}
+.about-image{padding:0}.about-image:before{display:none}.about-image img{height:440px}
+/* A restrained editorial index lets a small image collection carry the work. */
+.work-main{max-width:1380px;padding:0 5%}
+.work-heading{padding:65px 0 45px;align-items:flex-end}.work-heading h1{font-size:72px;line-height:1.02}.work-heading>p{max-width:310px;font-size:13px}
+.project-film{margin:0 0 75px}.project-film video{aspect-ratio:2.65;border-radius:3px}
+.index-title{border:0;padding-bottom:18px}.index-title h2{font:400 37px/1.15 'Cormorant',Georgia,serif;letter-spacing:-.5px}.index-title>span{font-size:8px}
+.chapter-nav{border-top:1px solid #a79d8755;padding:20px 0 32px;gap:12px}.chapter-nav a{padding:9px 15px;border:1px solid #a79d87;border-radius:25px;font-size:10px}.chapter-nav a.active{background:#526f62;color:#f5f0e6;border-color:#526f62}.chapter-nav a small{display:none}.chapter-nav a.active>span{color:inherit}
+.chapter-descriptions{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);padding:0}
+.architectural-index{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:55px 28px;padding:0;background:none}
+.project-bay,.project-bay:nth-child(even){border:0;padding:0;transform:none;min-width:0}
+.project-visual{height:auto;aspect-ratio:4/5;border:0;border-radius:5px;background:#d9cdb4;position:relative}
+.project-visual>img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .65s ease;filter:none}
+.project-bay:hover .project-visual>img{transform:scale(1.035)}
+.bay-6 .project-visual>img{object-fit:contain;padding:30px}
+.project-visual .project-arrow{position:absolute;bottom:15px;right:15px;background:#e8dfcfec;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;padding:0;font-size:19px;color:#51443a}
+.project-title{display:block;padding:21px 0 0}.project-title h3{font:400 31px/1.12 'Cormorant',Georgia,serif;letter-spacing:-.4px;max-width:95%}.project-title h3 i{font-style:normal}
+.project-scope{font-size:11px;line-height:1.8;margin:12px 0 17px;max-width:290px;min-height:40px}.project-credit{font-size:8px;margin:15px 0 0;color:#796c57}
+.project-tags{display:flex;flex-wrap:wrap;gap:6px}.project-tags span{border:1px solid #9e9681;border-radius:20px;padding:4px 9px;text-transform:uppercase;letter-spacing:1px;font-size:7px}
+.work-end{border-top:1px solid #a79d8755;margin-top:65px;padding:30px 0}
+@media(max-width:900px){.architectural-index{grid-template-columns:repeat(2,minmax(0,1fr))}.work-heading h1{font-size:60px}.work-heading>p{max-width:240px}.about-image img{height:340px}}
+@media(max-width:560px){.work-main{padding:0 25px}.work-heading{padding:32px 0 22px}.work-heading h1{font-size:48px}.work-heading>p{max-width:none;font-size:12px}.project-film{margin:0 0 38px}.project-film video{aspect-ratio:1.6}.index-title h2{font-size:30px}.index-title>span{display:none}.chapter-nav{gap:8px;padding-bottom:25px}.chapter-nav a{padding:8px 12px;font-size:9px}.architectural-index{grid-template-columns:1fr;gap:38px}.project-visual{aspect-ratio:1.1}.project-title h3{font-size:32px}.project-scope{min-height:0;margin-bottom:13px}.about-image img{height:300px}.work-end{margin-top:38px}}
+.commissions{font-size:10px;line-height:1.8;color:var(--muted);text-align:right}
+/* Each SVG component moves independently. Cycles begin immediately. */
+.curtain{transform-origin:57px 83px;animation:work-curtain 6.8s ease-in-out infinite}
+.work-drawing{opacity:.72;transition:opacity .5s}
+.work:is(:hover,:focus-visible) .work-drawing{opacity:1}
+.work:is(:hover,:focus-visible) .curtain{animation:work-curtain-reveal 3.8s ease-in-out infinite}
+.room-light{animation:room-sunlight 6.8s ease-in-out infinite}
+.lamp-glow{animation:lamp-breathe 4.8s ease-in-out infinite}
+.shutter-left{transform-origin:40px 160px;animation:shutter-left-open 8s ease-in-out infinite}
+.shutter-right{transform-origin:200px 160px;animation:shutter-right-open 8s ease-in-out infinite}
+.materials:is(:hover,:focus-visible) .shutter-left,.materials:is(:hover,:focus-visible) .shutter-right{animation-duration:4.5s}
+.material-swatch{animation:material-colour 6s ease-in-out infinite}
+.sample-hand{transform-origin:136px 180px;animation:sample-consider 6s ease-in-out infinite}
+.sketch-arm{transform-origin:130px 178px;animation:draw-line 4.6s ease-in-out infinite}
+.camera-arm{transform-origin:130px 175px;animation:camera-lift 6.4s ease-in-out infinite}
+.photography:is(:hover,:focus-visible) .camera-arm{animation-duration:3.8s}
+.contact-curtain{transform-origin:184px 81px;animation:contact-breeze 7s ease-in-out infinite}
+.wave{transform-origin:143px 180px;animation:welcome-wave 5.5s ease-in-out infinite}
+.contact-pane{transform-origin:183px 164px;transform:scaleX(1);transition:transform .65s cubic-bezier(.2,.7,.3,1),opacity .65s}
+.contact:is(:hover,:focus-visible) .contact-pane{transform:scaleX(.83)}
+.contact.conversation-open .contact-pane{transform:scaleX(.04);opacity:.3}
+.contact.conversation-open .contact-curtain{animation:none;transform:scaleX(.25)}
+.window-portal{position:fixed;z-index:1000;pointer-events:none;background:#dec187;overflow:hidden;box-shadow:0 0 0 100vmax #e8dfcf00}
+.window-portal svg{position:absolute;width:184.615%;height:180.723%;left:-42.308%;top:-50%;max-width:none}
+@keyframes work-curtain{0%,100%{transform:scaleX(1) skewX(0)}40%,60%{transform:scaleX(.68) skewX(-3deg)}}
+@keyframes work-curtain-reveal{0%,100%{transform:scaleX(.5) skewX(-2deg)}50%{transform:scaleX(.32) skewX(1deg)}}
+@keyframes room-sunlight{0%,100%{opacity:.08}45%,65%{opacity:.4}}
+@keyframes lamp-breathe{0%,100%{opacity:.2}50%{opacity:.9}}
+@keyframes shutter-left-open{0%,100%{transform:scaleX(-.65)}35%,70%{transform:scaleX(1.12)}}
+@keyframes shutter-right-open{0%,100%{transform:scaleX(-.65)}42%,76%{transform:scaleX(1.12)}}
+@keyframes material-colour{0%,100%{fill:#888a6a}33%{fill:#b57959}66%{fill:#637f78}}
+@keyframes sample-consider{0%,100%{transform:rotate(0)}40%,65%{transform:rotate(-10deg) translateY(-2px)}}
+@keyframes draw-line{0%,100%{transform:rotate(0)}18%,48%{transform:rotate(7deg)}30%,60%{transform:rotate(-3deg)}76%{transform:rotate(4deg)}}
+@keyframes camera-lift{0%,15%,100%{transform:translateY(9px) rotate(4deg)}40%,72%{transform:translateY(-2px) rotate(-2deg)}}
+@keyframes contact-breeze{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.7)}}
+@keyframes welcome-wave{0%,22%,100%{transform:rotate(0)}38%,62%{transform:rotate(-12deg)}50%,74%{transform:rotate(5deg)}}
+@media(max-width:560px){.commissions{max-width:115px;font-size:8px}.wordmark small{letter-spacing:.8px}.bio-copy p.bio-lead{font-size:27px}.practice-bio{padding:35px 0 40px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.window-portal{display:none}}

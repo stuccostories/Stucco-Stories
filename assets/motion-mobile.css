@@ -1,0 +1,35 @@
+/* Short typographic performance, followed by the living facade. */
+.studio-entering .studio-intro{animation:studio-curtain-exit 1.4s cubic-bezier(.45,0,.25,1) 2.45s forwards;overflow:hidden}
+.studio-intro .intro-wordmark{display:flex;flex-direction:row;align-items:baseline;justify-content:center;gap:.22em;transform:none;font:italic 400 clamp(64px,14vw,210px)/1 'Cormorant',Georgia,serif;letter-spacing:-.04em;padding:20px;color:#526f62}
+.studio-intro .intro-line{display:block;white-space:nowrap;font:inherit;letter-spacing:inherit;color:#526f62;padding:0;text-align:center}
+.studio-intro .intro-letter{display:inline-block;position:relative;font:inherit;letter-spacing:inherit;padding:0;color:inherit;transform:none;animation:studio-gentle-bounce 1.1s cubic-bezier(.22,.65,.3,1) var(--letter-delay) both}
+.studio-intro .intro-line:nth-child(2){color:#526f62;margin-left:0}
+.studio-entering body>*:not(.studio-intro):not(script){animation:studio-content-ready 0s 2.45s forwards}
+@keyframes studio-gentle-bounce{0%{opacity:0;transform:translateY(.16em)}30%{opacity:1;transform:translateY(-.045em)}55%{transform:translateY(.015em)}78%{transform:translateY(-.008em)}100%{opacity:1;transform:translateY(0)}}
+.studio-revealing .window .illustration{animation:window-arrives 1.4s cubic-bezier(.22,1,.36,1) both}
+.studio-revealing .window.work .illustration{animation-delay:.08s}.studio-revealing .window.materials .illustration{animation-delay:.16s}.studio-revealing .window.about .illustration{animation-delay:.24s}.studio-revealing .window.photography .illustration{animation-delay:.32s}.studio-revealing .window.contact .illustration{animation-delay:.4s}
+@keyframes studio-letter-jump{0%{opacity:0;transform:translateY(.65em) rotate(-5deg) scaleY(.85)}24%{opacity:1;transform:translateY(-.12em) rotate(2deg) scaleY(1.04)}43%{transform:translateY(.025em) rotate(-1deg) scaleY(.98)}58%{transform:translateY(-.035em) rotate(0) scaleY(1)}75%,100%{opacity:1;transform:translateY(0) rotate(0) scaleY(1)}}
+@keyframes studio-curtain-exit{0%{transform:translateY(0)}100%{transform:translateY(-101%);visibility:hidden}}
+@keyframes window-arrives{from{opacity:0;transform:translateY(22px) scale(.96)}to{opacity:1;transform:none}}
+/* The same website adapts to phones, including its project studies and forms. */
+@media(max-width:650px){
+ .studio-header{gap:14px;padding:20px 6% 12px}.studio-heading{gap:6px}.studio-brand{font-size:33px}.studio-page-name{font-size:9px;letter-spacing:.8px}
+ .studio-navigation{width:100%;justify-content:space-between;gap:12px}.studio-navigation a{font-size:12px;min-height:44px;display:flex;align-items:center}
+ .studio-footer{padding:26px 6%!important}.studio-contact-links{display:grid;gap:5px}.studio-contact-links a{font-size:12px;min-height:38px;display:flex;align-items:center}
+ .studio-intro .intro-line{font:inherit;padding:0}.studio-intro .intro-wordmark{font-size:clamp(44px,11.7vw,76px);gap:.22em;padding:14px;max-width:100%}
+ .chapter-nav a{min-height:38px;display:flex;align-items:center}.project-arrow{min-width:36px;min-height:36px}
+ .enquiry-panel{width:100%;padding:60px 24px 30px}.enquiry-panel .close-panel{min-height:44px}.enquiry-panel input,.enquiry-panel select,.enquiry-panel textarea{font-size:16px}
+ body[data-natural-scroll] .dot{min-width:30px;min-height:30px}.hotspot{min-width:30px;min-height:30px}
+}
+@media(max-width:560px){
+ .facade:has(>a.window){height:720px;max-width:460px;width:100%;margin-top:0}
+ .facade>a.window.work{left:1%;top:1%;width:48%}.facade>a.window.materials{right:1%;top:1%;width:48%}
+ .facade>a.window.about{left:28%;top:32%;width:44%}
+ .facade>a.window.photography{left:1%;top:62%;width:48%}.facade>a.window.contact{right:1%;top:62%;width:48%}
+ .window-label{font-size:10px;letter-spacing:1px}.window-note{font-size:14px;margin-top:8px}
+ .window .window-note{opacity:0}.window:hover .window-note,.window:focus-visible .window-note{opacity:1}
+ .work-main,.about-main{padding-left:25px;padding-right:25px}
+ .study-intro{gap:12px}.study-intro>div{min-width:0}.study-intro img{width:90px;flex-shrink:0;margin-right:0}.study-intro h1{font-size:clamp(34px,10vw,44px)}
+}
+@media(max-width:360px){.facade:has(>a.window){height:650px}.window-label{font-size:9px;letter-spacing:.5px}.window-note{font-size:12px}.studio-navigation a{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.studio-intro{display:none!important}.studio-revealing .window .illustration{animation:none!important}.studio-entering body>*{visibility:visible!important}}

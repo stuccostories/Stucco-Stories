@@ -1,417 +1,126 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Vaishali Suresh</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-    :root {
-      --coconut:  #faf6ee;
-      --cream:    #f2ebe0;
-      --rice:     #e8dfd0;
-      --turmeric: #c8a84b;
-      --terracota:#c07850;
-      --palm:     #7a8c6e;
-      --teak:     #6b5540;
-      --shadow:   #3a2e28;
-      --mango:    #d4824a;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--coconut);
-      color: var(--shadow);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      overflow-x: hidden;
-      cursor: none;
-    }
-
-    .cur { position:fixed; pointer-events:none; z-index:9999; }
-    #cdot {
-      width:7px; height:7px; background:var(--terracota);
-      border-radius:50%; transform:translate(-50%,-50%);
-    }
-    #cring {
-      width:32px; height:32px;
-      border:1px solid rgba(192,120,80,0.45);
-      border-radius:50%; transform:translate(-50%,-50%);
-      transition: width .3s, height .3s, border-color .3s;
-    }
-    #cring.expand { width:52px; height:52px; border-color:var(--terracota); }
-
-    body::before {
-      content:'';
-      position:fixed; inset:0; pointer-events:none; z-index:0;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
-      opacity: 0.6;
-    }
-
-    nav {
-      position:fixed; top:0; left:0; right:0; z-index:100;
-      display:flex; justify-content:space-between; align-items:center;
-      padding:1.6rem 5vw;
-      background: rgba(250,246,238,0.82);
-      backdrop-filter: blur(16px);
-    }
-
-    .nav-name {
-      font-family:'Cormorant', serif;
-      font-style:italic; font-size:1rem;
-      color:var(--teak); text-decoration:none;
-      letter-spacing:0.04em;
-    }
-
-    .nav-right { display:flex; gap:2rem; align-items:center; }
-    .nav-right a {
-      font-size:0.6rem; letter-spacing:0.28em;
-      text-transform:uppercase; color:var(--teak);
-      text-decoration:none; opacity:0.6; transition:opacity 0.3s;
-    }
-    .nav-right a:hover { opacity:1; }
-
-    #hero {
-      min-height:100vh;
-      display:flex; flex-direction:column;
-      justify-content:center; align-items:center;
-      text-align:center;
-      padding:14vh 6vw 10vh;
-      position:relative;
-    }
-
-    .ring-deco {
-      position:absolute; border-radius:50%;
-      border:1px solid rgba(122,140,110,0.12);
-      pointer-events:none;
-    }
-    .ring-deco.r1 { width:420px; height:420px; top:50%; left:50%; transform:translate(-50%,-50%); }
-    .ring-deco.r2 { width:660px; height:660px; top:50%; left:50%; transform:translate(-50%,-50%); }
-    .ring-deco.r3 { width:920px; height:920px; top:50%; left:50%; transform:translate(-50%,-50%); opacity:0.4; }
-
-    .leaf {
-      position:absolute; font-size:1.4rem;
-      opacity:0.18; pointer-events:none;
-      animation: leafSway 6s ease-in-out infinite;
-    }
-    .leaf.l1 { top:22%; left:12%; animation-delay:0s; }
-    .leaf.l2 { top:18%; right:10%; animation-delay:1.5s; }
-    .leaf.l3 { bottom:24%; left:8%; animation-delay:3s; }
-    .leaf.l4 { bottom:20%; right:14%; animation-delay:1s; }
-
-    @keyframes leafSway {
-      0%,100% { transform:rotate(-5deg) scale(1); }
-      50%      { transform:rotate(5deg) scale(1.05); }
-    }
-
-    .hero-eyebrow {
-      font-size:0.58rem; letter-spacing:0.45em;
-      text-transform:uppercase; color:var(--palm);
-      margin-bottom:2.2rem;
-      opacity:0; animation:up 0.9s 0.2s forwards;
-    }
-
-    .hero-name {
-      font-family:'Cormorant', serif;
-      font-size:clamp(1rem, 2.5vw, 1.6rem);
-      font-weight:300; letter-spacing:0.15em;
-      text-transform:uppercase; color:var(--teak);
-      margin-bottom:1rem;
-      opacity:0; animation:up 0.9s 0.4s forwards;
-    }
-
-    .hero-tagline {
-      font-family:'Cormorant', serif;
-      font-style:italic;
-      font-size:clamp(0.85rem, 1.8vw, 1.1rem);
-      color:var(--terracota); letter-spacing:0.06em;
-      margin-bottom:5rem;
-      opacity:0; animation:up 0.9s 0.6s forwards;
-    }
-
-    .cards {
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:2rem; width:100%; max-width:900px;
-      opacity:0; animation:up 1s 0.9s forwards;
-    }
-
-    .card {
-      position:relative; overflow:hidden;
-      background:var(--cream);
-      border:1px solid rgba(107,85,64,0.1);
-      text-decoration:none;
-      display:flex; flex-direction:column;
-      transition:transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.5s;
-      cursor:none;
-    }
-    .card:hover {
-      transform:translateY(-6px);
-      box-shadow:0 24px 60px rgba(58,46,40,0.1);
-    }
-
-    .card-img { aspect-ratio:4/3; position:relative; overflow:hidden; }
-    .card-img.stucco { background: linear-gradient(135deg, #e8dac8 0%, #d4c4a8 40%, #c8b898 100%); }
-    .card-img.hours  { background: linear-gradient(135deg, #dde4d8 0%, #c8d4c0 40%, #b8c8b0 100%); }
-
-    .card-img-inner {
-      position:absolute; inset:0;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .card-img-text {
-      font-family:'Cormorant', serif;
-      font-style:italic; font-size:0.8rem;
-      color:rgba(107,85,64,0.35); letter-spacing:0.1em;
-      text-align:center; padding:1rem; line-height:1.8;
-    }
-
-    .card-img::after {
-      content:'';
-      position:absolute; inset:0;
-      background:linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.15) 50%, transparent 70%);
-      transform:translateX(-100%); transition:transform 0.7s;
-    }
-    .card:hover .card-img::after { transform:translateX(100%); }
-
-    .card-body { padding:2rem 2rem 2.5rem; }
-
-    .card-tag {
-      font-size:0.55rem; letter-spacing:0.35em;
-      text-transform:uppercase; margin-bottom:0.8rem; display:block;
-    }
-    .tag-stucco { color:var(--terracota); }
-    .tag-hours  { color:var(--palm); }
-
-    .card-title {
-      font-family:'Cormorant', serif;
-      font-size:clamp(1.4rem, 2.5vw, 2rem);
-      font-weight:300; line-height:1.1;
-      color:var(--shadow); margin-bottom:1rem;
-    }
-    .card-title em { font-style:italic; }
-
-    .card-desc {
-      font-size:0.75rem; line-height:1.9;
-      color:var(--teak); margin-bottom:1.8rem;
-    }
-
-    .card-cta {
-      display:inline-flex; align-items:center; gap:0.6rem;
-      font-size:0.58rem; letter-spacing:0.28em;
-      text-transform:uppercase; transition:gap 0.3s;
-    }
-    .cta-stucco { color:var(--terracota); }
-    .cta-hours  { color:var(--palm); }
-    .card:hover .card-cta { gap:1rem; }
-
-    .card-accent {
-      height:2px; width:0; background:var(--terracota);
-      transition:width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
-      position:absolute; bottom:0; left:0;
-    }
-    .card.hours-card .card-accent { background:var(--palm); }
-    .card:hover .card-accent { width:100%; }
-
-    .scroll-hint {
-      position:absolute; bottom:6vh; left:50%;
-      transform:translateX(-50%);
-      display:flex; flex-direction:column; align-items:center; gap:0.5rem;
-      opacity:0; animation:fadeIn 1s 1.5s forwards;
-    }
-    .scroll-hint span {
-      font-size:0.52rem; letter-spacing:0.35em;
-      text-transform:uppercase; color:var(--palm); opacity:0.6;
-    }
-    .s-line {
-      width:1px; height:44px;
-      background:linear-gradient(to bottom, var(--palm), transparent);
-      animation:pulse 2.2s infinite;
-    }
-
-    #about {
-      padding:10vh 5vw;
-      display:grid; grid-template-columns:1fr 2fr;
-      gap:6vw; align-items:start;
-      border-top:1px solid rgba(107,85,64,0.1);
-    }
-
-    .about-left { position:sticky; top:30vh; }
-
-    .about-kicker {
-      font-size:0.58rem; letter-spacing:0.4em;
-      text-transform:uppercase; color:var(--terracota);
-      display:flex; align-items:center; gap:0.7rem; margin-bottom:1.5rem;
-    }
-    .about-kicker::before { content:''; width:24px; height:1px; background:var(--terracota); }
-
-    .about-left h2 {
-      font-family:'Cormorant', serif;
-      font-size:clamp(2rem, 4vw, 3.2rem);
-      font-weight:300; line-height:1.1; color:var(--shadow);
-    }
-    .about-left h2 em { font-style:italic; color:var(--terracota); }
-
-    .about-right p {
-      font-size:0.85rem; line-height:2.2; color:var(--teak);
-      margin-bottom:1.5rem; max-width:540px;
-    }
-    .about-right p strong { font-weight:400; color:var(--shadow); }
-
-    .location-tag {
-      display:inline-flex; align-items:center; gap:0.6rem;
-      margin-top:1rem; font-size:0.6rem; letter-spacing:0.25em;
-      text-transform:uppercase; color:var(--palm);
-      border:1px solid rgba(122,140,110,0.25); padding:0.5rem 1rem;
-    }
-
-    footer {
-      padding:3vh 5vw;
-      border-top:1px solid rgba(107,85,64,0.1);
-      display:flex; justify-content:space-between; align-items:center;
-      flex-wrap:wrap; gap:1rem;
-    }
-    .footer-brand {
-      font-family:'Cormorant', serif;
-      font-style:italic; font-size:0.9rem; color:var(--teak);
-    }
-    footer p {
-      font-size:0.58rem; letter-spacing:0.2em;
-      text-transform:uppercase; color:var(--teak); opacity:0.5;
-    }
-    .footer-links { display:flex; gap:2rem; }
-    .footer-links a {
-      font-size:0.58rem; letter-spacing:0.2em;
-      text-transform:uppercase; color:var(--teak);
-      text-decoration:none; opacity:0.5; transition:opacity 0.3s;
-    }
-    .footer-links a:hover { opacity:1; }
-
-    .reveal {
-      opacity:0; transform:translateY(24px);
-      transition:opacity 0.9s ease, transform 0.9s ease;
-    }
-    .reveal.visible { opacity:1; transform:translateY(0); }
-
-    @keyframes up {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    @keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
-    @keyframes pulse { 0%,100%{opacity:0.3;} 50%{opacity:0.9;} }
-
-    @media(max-width:700px) {
-      .cards { grid-template-columns:1fr; max-width:420px; }
-      #about { grid-template-columns:1fr; }
-      .about-left { position:static; }
-      footer { flex-direction:column; align-items:flex-start; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="cur" id="cdot"></div>
-  <div class="cur" id="cring"></div>
-
-  <nav>
-    <a class="nav-name" href="#">Vaishali Suresh</a>
-    <div class="nav-right">
-      <a href="#about">About</a>
-      <a href="https://www.instagram.com/_vaishou_" target="_blank">Instagram</a>
-      <a href="https://www.behance.net/vaishalisuresh" target="_blank">Behance</a>
-    </div>
-  </nav>
-
-  <section id="hero">
-    <div class="ring-deco r1"></div>
-    <div class="ring-deco r2"></div>
-    <div class="ring-deco r3"></div>
-    <span class="leaf l1">🌿</span>
-    <span class="leaf l2">🌴</span>
-    <span class="leaf l3">🌱</span>
-    <span class="leaf l4">🪴</span>
-
-    <p class="hero-eyebrow">A creative practice by</p>
-    <h2 class="hero-name">Vaishali Suresh</h2>
-    <p class="hero-tagline">Chennai, India &nbsp;·&nbsp; Architect · Interiors · Casual Photographer</p>
-
-    <div class="cards">
-      <a class="card" href="stucco.html" title="Visit Stucco Stories">
-        <div class="card-img stucco">
-          <div class="card-img-inner">
-            <p class="card-img-text">Add a preview image<br>of your architecture work</p>
-          </div>
-        </div>
-        <div class="card-body">
-          <span class="card-tag tag-stucco">Architecture & Interiors</span>
-          <h3 class="card-title">Stucco<br><em>Stories</em></h3>
-          <p class="card-desc">Where walls hold memory. An exploration of built spaces, material textures, and the quiet poetry of architecture.</p>
-          <span class="card-cta cta-stucco">Enter &nbsp;→</span>
-        </div>
-        <div class="card-accent"></div>
-      </a>
-
-      <a class="card hours-card" href="from-ordinary-hours.html" title="Visit From Ordinary Hours">
-        <div class="card-img hours">
-          <div class="card-img-inner">
-            <p class="card-img-text">Add a preview image<br>of your photography</p>
-          </div>
-        </div>
-        <div class="card-body">
-          <span class="card-tag tag-hours">Photography</span>
-          <h3 class="card-title">from<br><em>ordinary hours</em></h3>
-          <p class="card-desc">Finding the extraordinary in everyday light. Portraits, moments, and the texture of time passing slowly.</p>
-          <span class="card-cta cta-hours">Enter &nbsp;→</span>
-        </div>
-        <div class="card-accent"></div>
-      </a>
-    </div>
-
-    <div class="scroll-hint">
-      <div class="s-line"></div>
-      <span>Scroll</span>
-    </div>
-  </section>
-
-  <section id="about">
-    <div class="about-left reveal">
-      <p class="about-kicker">About</p>
-      <h2>Two worlds,<br><em>one eye</em></h2>
-    </div>
-    <div class="about-right reveal">
-      <p>I'm Vaishali — an architect and interior designer based in <strong>Chennai, Tamil Nadu.</strong> My work is rooted in material honesty, spatial light, and the quiet character of built things.</p>
-      <p><strong>Stucco Stories</strong> is my architectural practice — renovation, interiors, heritage, and the careful documentation of spaces that hold memory.</p>
-      <p><strong>From Ordinary Hours</strong> is what happens when I'm not at a drawing board — a casual photographer's eye turned toward the world around me. Architecture, people, places, light. Both practices share the same instinct: <em>to notice what most people walk past.</em></p>
-      <span class="location-tag">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
-          <circle cx="12" cy="9" r="2.5"/>
-        </svg>
-        Chennai, Tamil Nadu
-      </span>
-    </div>
-  </section>
-
-  <footer>
-    <span class="footer-brand">Vaishali Suresh</span>
-    <div class="footer-links">
-      <a href="https://www.instagram.com/_vaishou_" target="_blank">Instagram</a>
-      <a href="https://www.behance.net/vaishalisuresh" target="_blank">Behance</a>
-    </div>
-    <p>© 2025 · All rights reserved</p>
-  </footer>
-
-  <script>
-    const dot = document.getElementById('cdot');
-    const ring = document.getElementById('cring');
-    let mx=0,my=0,rx=0,ry=0;
-    document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; });
-    (function loop(){ rx+=(mx-rx)*0.11; ry+=(my-ry)*0.11; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
-    document.querySelectorAll('a,.card').forEach(el=>{ el.addEventListener('mouseenter',()=>ring.classList.add('expand')); el.addEventListener('mouseleave',()=>ring.classList.remove('expand')); });
-    window.addEventListener('scroll',()=>{ document.querySelector('nav').classList.toggle('scrolled', scrollY>40); });
-    const obs=new IntersectionObserver(entries=>{ entries.forEach((e,i)=>{ if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*120); }); },{threshold:0.1});
-    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
-  </script>
-</body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#e8dfcf"><meta name="description" content="Stucco Stories. Spaces shaped by people, material and everyday life. Explore work, material studies and observations through five illustrated windows."><title>Stucco Stories — Every window, a different story</title><link rel="stylesheet" href="assets/site.css"><link rel="stylesheet" href="assets/content.css"><link rel="stylesheet" href="assets/refinements.css"><link rel="stylesheet" href="assets/shell.css"><link rel="stylesheet" href="assets/motion-mobile.css"><script src="assets/intro.js"></script></head><body><div class="studio-intro" aria-hidden="true"><div class="intro-wordmark"><span class="intro-line"><span class="intro-letter" style="--letter-delay:0.000s">S</span><span class="intro-letter" style="--letter-delay:0.035s">t</span><span class="intro-letter" style="--letter-delay:0.070s">u</span><span class="intro-letter" style="--letter-delay:0.105s">c</span><span class="intro-letter" style="--letter-delay:0.140s">c</span><span class="intro-letter" style="--letter-delay:0.175s">o</span></span><span class="intro-line"><span class="intro-letter" style="--letter-delay:0.120s">S</span><span class="intro-letter" style="--letter-delay:0.155s">t</span><span class="intro-letter" style="--letter-delay:0.190s">o</span><span class="intro-letter" style="--letter-delay:0.225s">r</span><span class="intro-letter" style="--letter-delay:0.260s">i</span><span class="intro-letter" style="--letter-delay:0.295s">e</span><span class="intro-letter" style="--letter-delay:0.330s">s</span></span></div></div><header class="studio-header" id="nav"><div class="studio-heading"><a class="studio-brand" href="stucco.html">Stucco Stories</a><span class="studio-page-name">Architecture &amp; Interiors / Chennai</span></div><div class="studio-navigation" role="navigation" aria-label="Site navigation"><a href="stucco.html">Windows</a><a href="work.html">Work</a><a href="about.html">About</a><a href="contact.html" data-enquiry>Enquire ↗</a></div></header><a class="skip" href="#windows">Explore the windows</a><main><h1 class="sr-only">Every window, a different story</h1><nav class="facade" id="windows" aria-label="Explore Stucco Stories"><svg class="wall-drawing" viewBox="0 0 1200 690" preserveAspectRatio="none" aria-hidden="true"><g fill="none" stroke="#8d8168" opacity=".25"><path d="M13 18L1187 15M16 23L1185 20M23 27L1179 25M16 28L17 644M1183 25L1181 644M10 648Q532 653 1190 647M13 653L1188 655M17 662L1184 660"/><path d="M20 30L23 71L19 97M1181 584L1177 601L1181 621"/></g><g transform="translate(56 138) scale(1)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(395 135) scale(0.8)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(704 386) scale(1)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(957 355) scale(1)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(58 546) scale(0.8)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(662 559) scale(1)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(1092 201) scale(0.9)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g transform="translate(347 620) scale(0.7)" fill="none" stroke="#9c8265" stroke-width="1" opacity=".33"><path d="M0 0L49 1M-22 12H73M-9 24L57 25M14 36H47M24 1V12M-2 12V24M49 12V25M24 25V36"/></g><g fill="none" stroke="#b29c7e" opacity=".35"><path d="M353 333L370 333L370 341L353 342Z M732 78L748 78L749 86L732 86Z M1081 552L1096 552L1095 560L1080 560Z"/></g></svg><a class="window work" href="work.html" aria-label="Work — Spaces with stories."><span class="illustration"><svg viewBox="0 0 240 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs><clipPath id="clip-work"><path d="M55 55L185 56L184 249L55 249Z" fill="#333e36" /></clipPath><filter id="grain-work"><feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter><filter id="edge-work" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale=".65"/></filter></defs>
+ <g filter="url(#edge-work)">
+ <path d="M43 48L201 49L203 266L51 265Z" fill="#807253" opacity=".18" transform="translate(8 7)"/>
+ <path d="M40 47L200 45L199 252L41 253Z" fill="#627f75" />
+ <path d="M55 55L185 56L184 249L55 249Z" fill="#304e44" />
+ <g clip-path="url(#clip-work)">
+ <rect x="54" y="43" width="132" height="207" fill="#cfad6c" /><path d="M55 55L70 66L70 237L185 249H55Z" fill="#ad915f" /><rect x="69" y="67" width="117" height="179" fill="#dec187" /><path d="M70 66L184 66L184 100L70 117Z" fill="#e5cd97" />
+ <path class="room-light" d="M56 83H184V134L55 214Z" fill="#f9e8ae" opacity=".14"/>
+ <path d="M113 244V126Q113 101 135 100Q156 101 156 126V243Z" fill="#af8b57" /><path d="M117 244V129Q118 105 135 106Q151 106 151 129V243Z" fill="#c3a36c" /><path d="M126 126V219L148 227" fill="none" stroke="#aa895e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <g class="work-drawing"><path d="M65 129L97 130L97 172L65 171Z" fill="#e8dab5" stroke="#ac956e" stroke-width=".7"/><path d="M70 136H91V165H70Z M70 148H83V165 M83 148V141H91 M76 136V143 M83 157H91" fill="none" stroke="#66765f" stroke-width=".8"/><path d="M68 168H94M94 134V165" fill="none" stroke="#ad9772" stroke-width=".45"/><circle cx="81" cy="132" r="1" fill="#8b7357"/></g><g class="curtain"><path d="M57 83Q80 121 64 174L58 240L79 242Q89 184 87 145L87 84Z" fill="#dfcbaa" /><path d="M66 88Q80 148 66 221M77 91Q85 145 74 232" fill="none" stroke="#b7a37e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <g class="lamp-glow"><ellipse cx="161" cy="176" rx="29" ry="42" fill="#f1d68e" opacity=".35"/></g>
+ <path d="M161 147V219M149 219H171" fill="none" stroke="#333e36" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M147 119L172 119L178 145Q159 149 141 144Z" fill="#ad724f" /><path d="M150 124L146 141M155 123L153 142" fill="none" stroke="#d5a474" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M91 213L121 211L126 220L89 223Z" fill="#735d40" /><path d="M83 181Q80 177 79 186L83 216L90 221L88 184Z" fill="#4c5b46" /><path d="M86 219L83 245M119 219L125 245M91 198L115 196L120 212" fill="none" stroke="#333e36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M92 202L116 201M94 207L118 206" fill="none" stroke="#806e48" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+ <ellipse cx="158" cy="224" rx="29" ry="5" fill="#59624a" /><path d="M139 227L136 248M177 226L180 248" fill="none" stroke="#4f5743" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+ <g transform="translate(158 202) scale(0.53)"><path d="M-13 0L14 0L10 25Q0 29-8 24Z" fill="#b57d5b" /><path d="M-15 0Q0-3 16 0M-11 5L12 5" fill="none" stroke="#785c45" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 0Q-5-25 6-49M1-8Q-14-17-18-30M3-22Q18-27 20-43" fill="none" stroke="#536750" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5-32Q-8-47 6-56Q15-44 5-32M-8-15Q-28-14-24-31Q-10-31-8-15M10-29Q8-48 25-48Q28-34 10-29" fill="#67765a" /></g><path d="M131 243Q150 238 179 244L181 248H129Z" fill="#b38b5b" />
+ <rect x="54" y="42" width="132" height="208" fill="#bcae8b" opacity=".16" filter="url(#grain-work)"/>
+ </g>
+ <path d="M47 247L47 53L192 52L192 246" fill="none" stroke="#8fa18e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 58L185 59L184 82L56 83Z" fill="#35544a" /><path d="M57 79H181" fill="none" stroke="#6c8271" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 29L209 28L202 41L38 42Z" fill="#627f75" /><path d="M36 42L205 40L203 50L39 51Z" fill="#8fa18e" /><path d="M32 30L209 29M40 45L198 44" fill="none" stroke="#3f645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 34L205 33" fill="none" stroke="#b6b69a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M54 246V57H185V246" fill="none" stroke="#355c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M42 83L43 244M48 116L48 210M194 88L194 239" fill="none" stroke="#8fa18e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+ <path d="M32 248L207 247L212 258L29 259Z" fill="#8fa18e" /><path d="M29 259L212 258L205 265L36 266Z" fill="#627f75" /><path d="M34 251L207 250" fill="none" stroke="#c0bfa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M39 262L202 261" fill="none" stroke="#395d53" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M46 61L46 75M195 151L194 171M46 213L46 232" fill="none" stroke="#d1c9a1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></svg></span><span class="window-label"><span class="number">01</span> Work <span class="link-arrow" aria-hidden="true">↗</span></span><span class="window-note">Spaces with stories.</span></a><a class="window about" href="about.html" aria-label="About — The practice behind the spaces."><span class="illustration"><svg viewBox="0 0 240 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs><clipPath id="clip-about"><path d="M55 249V105C55 34 185 34 185 105V249Z" fill="#333e36" /></clipPath><filter id="grain-about"><feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter><filter id="edge-about" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale=".65"/></filter></defs>
+ <g filter="url(#edge-about)">
+ <path d="M44 260V100C45 13 203 15 201 100L203 260Z" fill="#807253" opacity=".18" transform="translate(8 7)"/>
+ <path d="M41 254V99C42 13 198 13 199 100L199 254Z" fill="#a87962" />
+ <path d="M55 249V105C55 34 185 34 185 105V249Z" fill="#304e44" />
+ <g clip-path="url(#clip-about)">
+ <rect x="54" y="43" width="132" height="207" fill="#cfad6c" /><path d="M55 55L70 66L70 237L185 249H55Z" fill="#ad915f" /><rect x="69" y="67" width="117" height="179" fill="#dec187" /><path d="M70 66L184 66L184 100L70 117Z" fill="#e5cd97" />
+ 
+ <rect x="71" y="100" width="59" height="3" fill="#716b4c" /><g transform="translate(74 66)"><rect x="0" y="0" width="9" height="34" fill="#8b604c" /><rect x="10" y="6" width="7" height="28" fill="#dad0a5" /><rect x="18" y="2" width="10" height="32" fill="#556d61" /><path d="M30 5L38 3L47 32L39 34Z" fill="#b49764" /><path d="M3 4V29M13 10V29M22 7V29" fill="none" stroke="#e6d5aa" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/></g><g transform="translate(166 103) scale(0.47)"><path d="M-13 0L14 0L10 25Q0 29-8 24Z" fill="#b57d5b" /><path d="M-15 0Q0-3 16 0M-11 5L12 5" fill="none" stroke="#785c45" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 0Q-5-25 6-49M1-8Q-14-17-18-30M3-22Q18-27 20-43" fill="none" stroke="#536750" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5-32Q-8-47 6-56Q15-44 5-32M-8-15Q-28-14-24-31Q-10-31-8-15M10-29Q8-48 25-48Q28-34 10-29" fill="#67765a" /></g><path d="M150 117L181 117" fill="none" stroke="#6c7252" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M147 242L156 216L140 196L117 200L109 222L128 224L133 247Z" fill="#333e36" />
+ <path d="M111 206Q111 175 128 162L143 167Q151 184 142 205L136 218Z" fill="#333e36" />
+ <ellipse cx="139" cy="151" rx="10" ry="13" fill="#333e36" transform="rotate(19 139 151)"/><path d="M129 148Q128 134 139 136Q151 136 150 150L141 145Z" fill="#333e36" />
+ <g class="sketch-arm"><path d="M126 173Q117 180 109 191L91 188L90 193Q108 202 115 198L136 181Z" fill="#333e36" /><path d="M88 184L93 197" fill="none" stroke="#414937" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <path d="M69 200L129 197L141 203L70 208Z" fill="#786b4c" /><path d="M76 207L73 248M126 205L133 248" fill="none" stroke="#525640" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M80 196L105 194L115 200L89 202Z" fill="#f0dfb7" /><path d="M87 197L103 197" fill="none" stroke="#ad9b71" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M73 185L81 185L80 197H75Z" fill="#a26d4e" /><path d="M81 187Q88 187 82 193" fill="none" stroke="#a26d4e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M147 196L156 202L153 222H119M152 222L152 247" fill="none" stroke="#333e36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="58" y="236" width="126" height="13" fill="#b99564" />
+ <rect x="54" y="42" width="132" height="208" fill="#bcae8b" opacity=".16" filter="url(#grain-about)"/>
+ </g>
+ <path d="M47 246V101C47 29 191 30 192 101V247" fill="none" stroke="#c29a7c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M54 247V105C54 37 184 36 185 105V247" fill="none" stroke="#355c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M42 83L43 244M48 116L48 210M194 88L194 239" fill="none" stroke="#c29a7c" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+ <path d="M32 248L207 247L212 258L29 259Z" fill="#c29a7c" /><path d="M29 259L212 258L205 265L36 266Z" fill="#a87962" /><path d="M34 251L207 250" fill="none" stroke="#c0bfa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M39 262L202 261" fill="none" stroke="#395d53" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M46 61L46 75M195 151L194 171M46 213L46 232" fill="none" stroke="#d1c9a1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></svg></span><span class="window-label"><span class="number">02</span> About <span class="link-arrow" aria-hidden="true">↗</span></span><span class="window-note">The practice behind the spaces.</span></a><a class="window materials" href="materials.html" aria-label="Material studies — An ongoing experiment."><span class="illustration"><svg viewBox="0 0 240 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs><clipPath id="clip-materials"><path d="M55 55L185 56L184 249L55 249Z" fill="#333e36" /></clipPath><filter id="grain-materials"><feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter><filter id="edge-materials" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale=".65"/></filter></defs>
+ <g filter="url(#edge-materials)">
+ <path d="M43 48L201 49L203 266L51 265Z" fill="#807253" opacity=".18" transform="translate(8 7)"/>
+ <path d="M40 47L200 45L199 252L41 253Z" fill="#627f75" />
+ <path d="M55 55L185 56L184 249L55 249Z" fill="#304e44" />
+ <g clip-path="url(#clip-materials)">
+ <rect x="54" y="43" width="132" height="207" fill="#cfad6c" /><path d="M55 55L70 66L70 237L185 249H55Z" fill="#ad915f" /><rect x="69" y="67" width="117" height="179" fill="#dec187" /><path d="M70 66L184 66L184 100L70 117Z" fill="#e5cd97" />
+ 
+ <rect x="67" y="91" width="112" height="3" fill="#7c7150" /><g transform="translate(73 57)"><rect x="0" y="0" width="9" height="34" fill="#8b604c" /><rect x="10" y="6" width="7" height="28" fill="#dad0a5" /><rect x="18" y="2" width="10" height="32" fill="#556d61" /><path d="M30 5L38 3L47 32L39 34Z" fill="#b49764" /><path d="M3 4V29M13 10V29M22 7V29" fill="none" stroke="#e6d5aa" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M135 71L155 67L157 89L138 91Z" fill="#ba8067" /><path d="M157 66L178 70L174 91L154 90Z" fill="#899078" />
+ <path d="M80 99V132M106 99V138M164 99V126" fill="none" stroke="#7b7551" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M75 109L84 109L86 150L72 148Z" fill="#c1b08d" /><path d="M97 108L117 107L115 158L99 158Z" fill="#a97358" /><path d="M99 119L116 119M100 126L115 126" fill="none" stroke="#d6ad87" stroke-width="0.6" stroke-linecap="round" stroke-linejoin="round"/>
+ <ellipse cx="141" cy="155" rx="10" ry="13" fill="#333e36" transform="rotate(-18 141 155)"/><path d="M131 146Q134 134 145 142L150 151L144 149Z" fill="#333e36" />
+ <path d="M132 168Q114 178 121 212L113 247H156L153 204L149 175Z" fill="#333e36" />
+ <g class="sample-hand"><path d="M137 175L121 177L106 159L103 164Q109 182 122 186L140 184Z" fill="#333e36" /><path d="M89 141L106 136L114 158L97 164Z" fill="#ece0b7" /><path d="M93 143L103 140L110 155L98 160Z" fill="#888a6a" class="material-swatch"/></g>
+ <path d="M74 211L175 209L179 216L70 219Z" fill="#847354" /><path d="M77 219L75 248M170 217L174 248" fill="none" stroke="#333e36" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M80 205L106 204L109 209L81 211Z" fill="#b3785d" /><path d="M82 200L109 198L112 204L81 205Z" fill="#778475" /><path d="M78 196L104 195L109 199L81 201Z" fill="#e5d1a4" />
+ <path d="M157 193L170 193L168 208L160 209Z" fill="#aa7851" /><path d="M162 194L158 179M167 193L170 178" fill="none" stroke="#4d5c46" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M155 173L160 172L161 182L158 183Z" fill="#785b42" />
+ <path d="M110 214L139 212L138 237Q130 235 124 240L116 235Z" fill="#d7c5a0" /><path d="M117 217L122 233M128 217V232" fill="none" stroke="#aa9877" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <rect x="54" y="42" width="132" height="208" fill="#bcae8b" opacity=".16" filter="url(#grain-materials)"/>
+ </g>
+ <path d="M47 247L47 53L192 52L192 246" fill="none" stroke="#8fa18e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 58L185 59L184 82L56 83Z" fill="#35544a" /><path d="M57 79H181" fill="none" stroke="#6c8271" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 29L209 28L202 41L38 42Z" fill="#627f75" /><path d="M36 42L205 40L203 50L39 51Z" fill="#8fa18e" /><path d="M32 30L209 29M40 45L198 44" fill="none" stroke="#3f645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 34L205 33" fill="none" stroke="#b6b69a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M54 246V57H185V246" fill="none" stroke="#355c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M42 83L43 244M48 116L48 210M194 88L194 239" fill="none" stroke="#8fa18e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ <g class="shutter"><g class="shutter-left"><path d="M13 93L40 77V248L12 241Z" fill="#737f61" /><path d="M17 101L35 94" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 109L35 102" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 117L35 110" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 125L35 118" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 133L35 126" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 141L35 134" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 149L35 142" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 157L35 150" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 165L35 158" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 173L35 166" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 181L35 174" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 189L35 182" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 197L35 190" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 205L35 198" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 213L35 206" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 221L35 214" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 96V234" fill="none" stroke="#a4a58a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g><g class="shutter-right"><path d="M200 77L228 91L230 242L200 249Z" fill="#7e8869" /><path d="M205 94L223 101" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 102L223 109" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 110L223 117" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 118L223 125" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 126L223 133" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 134L223 141" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 142L223 149" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 150L223 157" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 158L223 165" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 166L223 173" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 174L223 181" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 182L223 189" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 190L223 197" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 198L223 205" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 206L223 213" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M205 214L223 221" fill="none" stroke="#4d6555" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M225 97V235" fill="none" stroke="#a4a58a" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></g></g>
+ <path d="M32 248L207 247L212 258L29 259Z" fill="#8fa18e" /><path d="M29 259L212 258L205 265L36 266Z" fill="#627f75" /><path d="M34 251L207 250" fill="none" stroke="#c0bfa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M39 262L202 261" fill="none" stroke="#395d53" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M46 61L46 75M195 151L194 171M46 213L46 232" fill="none" stroke="#d1c9a1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></svg></span><span class="window-label"><span class="number">03</span> Material studies <span class="link-arrow" aria-hidden="true">↗</span></span><span class="window-note">An ongoing experiment.</span></a><a class="window photography" href="from-ordinary-hours.html" aria-label="Photography — Things I notice."><span class="illustration"><svg viewBox="0 0 240 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs><clipPath id="clip-photography"><path d="M55 55L185 56L184 249L55 249Z" fill="#333e36" /></clipPath><filter id="grain-photography"><feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter><filter id="edge-photography" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale=".65"/></filter></defs>
+ <g filter="url(#edge-photography)">
+ <path d="M43 48L201 49L203 266L51 265Z" fill="#807253" opacity=".18" transform="translate(8 7)"/>
+ <path d="M40 47L200 45L199 252L41 253Z" fill="#627f75" />
+ <path d="M55 55L185 56L184 249L55 249Z" fill="#304e44" />
+ <g clip-path="url(#clip-photography)">
+ <rect x="54" y="43" width="132" height="207" fill="#cfad6c" /><path d="M55 55L70 66L70 237L185 249H55Z" fill="#ad915f" /><rect x="69" y="67" width="117" height="179" fill="#dec187" /><path d="M70 66L184 66L184 100L70 117Z" fill="#e5cd97" />
+ 
+ <rect x="56" y="83" width="128" height="163" fill="#d1b488" /><path d="M55 83H184V143L55 181Z" fill="#e2c799" />
+ <rect x="67" y="91" width="30" height="35" fill="#8e7958" /><rect x="70" y="94" width="24" height="29" fill="#ead8b0" /><path d="M71 116L82 105L92 115V121H71Z" fill="#738270" /><ellipse cx="86" cy="101" rx="3" ry="3" fill="#b78a57" />
+ <path d="M107 94Q143 103 181 90" fill="none" stroke="#776d4d" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><rect x="121" y="100" width="16" height="22" fill="#f0debb" transform="rotate(7 121 100)"/><rect x="146" y="99" width="16" height="22" fill="#e4d1ab" transform="rotate(-8 146 99)"/><rect x="124" y="103" width="10" height="13" fill="#8e9678" /><rect x="149" y="100" width="10" height="13" fill="#b99c70" />
+ <path d="M99 246Q101 218 110 197L110 177Q118 166 137 169L143 197L155 245Z" fill="#333e36" />
+ <ellipse cx="128" cy="157" rx="11" ry="14" fill="#333e36" /><path d="M117 153Q109 150 113 143Q117 139 122 144Q138 137 141 153L132 151Z" fill="#333e36" />
+ <g class="camera-arm"><path d="M116 175Q102 185 100 177L109 156L115 158L111 174L119 172M136 174Q143 177 147 169L145 151L139 151L139 165L131 171Z" fill="#333e36" /><rect x="120" y="148" width="25" height="15" fill="#334238" rx="2"/><rect x="126" y="144" width="11" height="5" fill="#334238" /><ellipse cx="138" cy="155" rx="6" ry="6" fill="#89947a" /><ellipse cx="138" cy="155" rx="3.5" ry="3.5" fill="#37443b" /></g>
+ <path d="M158 241L177 240L179 247H156Z" fill="#ad7754" /><g transform="translate(168 225) scale(0.55)"><path d="M-13 0L14 0L10 25Q0 29-8 24Z" fill="#b57d5b" /><path d="M-15 0Q0-3 16 0M-11 5L12 5" fill="none" stroke="#785c45" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 0Q-5-25 6-49M1-8Q-14-17-18-30M3-22Q18-27 20-43" fill="none" stroke="#536750" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5-32Q-8-47 6-56Q15-44 5-32M-8-15Q-28-14-24-31Q-10-31-8-15M10-29Q8-48 25-48Q28-34 10-29" fill="#67765a" /></g>
+ <path d="M68 205V230M64 230H79" fill="none" stroke="#6f7052" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M62 190L75 190L79 205H59Z" fill="#b69063" />
+ <rect x="54" y="42" width="132" height="208" fill="#bcae8b" opacity=".16" filter="url(#grain-photography)"/>
+ </g>
+ <path d="M47 247L47 53L192 52L192 246" fill="none" stroke="#8fa18e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 58L185 59L184 82L56 83Z" fill="#35544a" /><path d="M57 79H181" fill="none" stroke="#6c8271" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 29L209 28L202 41L38 42Z" fill="#627f75" /><path d="M36 42L205 40L203 50L39 51Z" fill="#8fa18e" /><path d="M32 30L209 29M40 45L198 44" fill="none" stroke="#3f645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 34L205 33" fill="none" stroke="#b6b69a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M54 246V57H185V246" fill="none" stroke="#355c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M42 83L43 244M48 116L48 210M194 88L194 239" fill="none" stroke="#8fa18e" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+ <path d="M32 248L207 247L212 258L29 259Z" fill="#8fa18e" /><path d="M29 259L212 258L205 265L36 266Z" fill="#627f75" /><path d="M34 251L207 250" fill="none" stroke="#c0bfa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M39 262L202 261" fill="none" stroke="#395d53" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M46 61L46 75M195 151L194 171M46 213L46 232" fill="none" stroke="#d1c9a1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></svg></span><span class="window-label"><span class="number">04</span> Photography <span class="link-arrow" aria-hidden="true">↗</span></span><span class="window-note">Things I notice.</span></a><a class="window contact" href="contact.html" aria-label="Contact — Come say hello."><span class="illustration"><svg viewBox="0 0 240 300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+ <defs><clipPath id="clip-contact"><path d="M55 55L185 56L184 249L55 249Z" fill="#333e36" /></clipPath><filter id="grain-contact"><feTurbulence type="fractalNoise" baseFrequency=".64" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".14"/></feComponentTransfer><feBlend in="SourceGraphic" mode="multiply"/></filter><filter id="edge-contact" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale=".65"/></filter></defs>
+ <g filter="url(#edge-contact)">
+ <path d="M43 48L201 49L203 266L51 265Z" fill="#807253" opacity=".18" transform="translate(8 7)"/>
+ <path d="M40 47L200 45L199 252L41 253Z" fill="#75846b" />
+ <path d="M55 55L185 56L184 249L55 249Z" fill="#304e44" />
+ <g clip-path="url(#clip-contact)">
+ <rect x="54" y="43" width="132" height="207" fill="#cfad6c" /><path d="M55 55L70 66L70 237L185 249H55Z" fill="#ad915f" /><rect x="69" y="67" width="117" height="179" fill="#dec187" /><path d="M70 66L184 66L184 100L70 117Z" fill="#e5cd97" />
+ 
+ <g class="contact-curtain"><path d="M157 81L184 81V245L162 245Q175 184 166 151Q159 122 157 81Z" fill="#c3b492" /><path d="M168 86Q181 150 173 190L168 241" fill="none" stroke="#a49674" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/></g>
+ <path d="M82 247Q91 224 91 205Q91 181 110 177Q127 174 135 199L139 246Z" fill="#333e36" />
+ <ellipse cx="117" cy="163" rx="11" ry="14" fill="#333e36" transform="rotate(-10 117 163)"/><path d="M108 153Q104 140 116 140Q130 139 129 151L128 161L121 155Z" fill="#333e36" />
+ <g class="wave"><path d="M124 184Q137 191 143 176L150 153L155 155Q155 182 142 195Q130 201 121 195Z" fill="#333e36" /><path d="M150 158L149 148L150 138Q152 136 153 148L155 137Q158 136 157 149L160 140Q163 140 160 153L164 148Q167 148 163 155L155 164Z" fill="#333e36" /></g>
+ <path d="M95 194Q83 210 89 222L117 229L121 224L99 215L108 199Z" fill="#333e36" />
+ <path d="M110 223L137 222L141 238L112 240Z" fill="#ecdcba" /><path d="M111 224L126 232L137 223M113 239L122 231M139 237L131 231" fill="none" stroke="#a9946e" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <g class="contact-pane"><path d="M57 85H182V242H57Z" fill="#dfd5ac" fill-opacity=".12" stroke="#7c9176" stroke-width="2"/><path d="M61 89L177 89L61 215Z" fill="#f2e5bb" opacity=".12"/><path d="M62 157V169" stroke="#a78b5e" stroke-width="2"/></g><g transform="translate(69 226) scale(0.58)"><path d="M-13 0L14 0L10 25Q0 29-8 24Z" fill="#b57d5b" /><path d="M-15 0Q0-3 16 0M-11 5L12 5" fill="none" stroke="#785c45" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 0Q-5-25 6-49M1-8Q-14-17-18-30M3-22Q18-27 20-43" fill="none" stroke="#536750" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5-32Q-8-47 6-56Q15-44 5-32M-8-15Q-28-14-24-31Q-10-31-8-15M10-29Q8-48 25-48Q28-34 10-29" fill="#67765a" /></g><rect x="53" y="244" width="133" height="5" fill="#a28b61" />
+ <rect x="54" y="42" width="132" height="208" fill="#bcae8b" opacity=".16" filter="url(#grain-contact)"/>
+ </g>
+ <path d="M47 247L47 53L192 52L192 246" fill="none" stroke="#a0a78a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M55 58L185 59L184 82L56 83Z" fill="#35544a" /><path d="M57 79H181" fill="none" stroke="#6c8271" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M31 29L209 28L202 41L38 42Z" fill="#75846b" /><path d="M36 42L205 40L203 50L39 51Z" fill="#a0a78a" /><path d="M32 30L209 29M40 45L198 44" fill="none" stroke="#3f645b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M37 34L205 33" fill="none" stroke="#b6b69a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M54 246V57H185V246" fill="none" stroke="#355c52" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M42 83L43 244M48 116L48 210M194 88L194 239" fill="none" stroke="#a0a78a" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round"/>
+ 
+ <path d="M32 248L207 247L212 258L29 259Z" fill="#a0a78a" /><path d="M29 259L212 258L205 265L36 266Z" fill="#75846b" /><path d="M34 251L207 250" fill="none" stroke="#c0bfa3" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M39 262L202 261" fill="none" stroke="#395d53" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ <path d="M46 61L46 75M195 151L194 171M46 213L46 232" fill="none" stroke="#d1c9a1" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+ </g></svg></span><span class="window-label"><span class="number">05</span> Contact <span class="link-arrow" aria-hidden="true">↗</span></span><span class="window-note">Come say hello.</span></a></nav></main><dialog class="enquiry-panel" aria-labelledby="enquiry-title"><button class="close-panel" type="button" aria-label="Close enquiry">Close <span aria-hidden="true">×</span></button><p class="eyebrow">A SPACE, A QUESTION, A POSSIBILITY</p><h2 id="enquiry-title">Got a <i>space?</i></h2><p class="enquiry-intro">Spatial planning for residential, commercial and institutional spaces. Tell Stucco Stories about your space and what it needs to make possible.</p><form data-enquiry-form action="mailto:stuccostories@gmail.com" method="post" enctype="text/plain"><div class="form-grid"><label class="full">Project type<select name="projectType" required><option value="">Select a space</option><option>Residential</option><option>Commercial</option><option>Institutional</option></select></label><label class="full">Service required<select name="service" required><option value="">Select a service</option><option>Spatial Planning</option><option>Interior Design</option><option>Renovations</option><option>Design Consultation</option></select></label><label class="full">Project description<textarea name="description" rows="3" maxlength="2000" required placeholder="What do you have in mind? What would you like the space to make possible?"></textarea></label><label class="full">Project location<input name="location" autocomplete="address-level2" maxlength="150" required placeholder="City or town"></label><label>Your name<input name="name" autocomplete="name" maxlength="100" required></label><label>Email<input name="email" type="email" autocomplete="email" maxlength="150" required></label><label class="full">Phone <span>(optional)</span><input name="phone" type="tel" autocomplete="tel" maxlength="30"></label></div><p class="form-note">This prepares an email to stuccostories@gmail.com. You’ll review and send it from your email app.</p><button class="ink-button" type="submit">Prepare email draft <span aria-hidden="true">↗</span></button><div class="draft-result" hidden><p role="status">Your draft is ready. Nothing has been sent.</p><a class="draft-link" href="mailto:stuccostories@gmail.com">Open in your email app ↗</a><button class="copy-draft" type="button">Copy enquiry text</button><p class="copy-status" aria-live="polite"></p></div></form><div class="panel-direct"><a href="tel:+919500100248">+91 95001 00248</a><a href="https://www.instagram.com/stucco_stories/">Instagram ↗</a></div></dialog><script src="assets/site.js"></script><footer class="studio-footer" id="studio-contact"><a class="studio-invitation" href="contact.html" data-enquiry>Got a space? <i>Let’s talk.</i> ↗</a><div class="studio-contact-links"><a href="mailto:stuccostories@gmail.com">stuccostories@gmail.com</a><a href="tel:+919500100248">+91 95001 00248</a><a href="https://www.instagram.com/stucco_stories/">Instagram ↗</a></div></footer></body></html>
